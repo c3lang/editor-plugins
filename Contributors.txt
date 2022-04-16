@@ -1,5 +1,6 @@
 The following contributors worked on these plugins in the C3C repository:
 
+dte: data-man
 Nano: André, data-man
 Kakoune: Hanna
 VsCode: Pyxel, Thsm
