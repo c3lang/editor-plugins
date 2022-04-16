@@ -1,0 +1,316 @@
+syntax .c3-multi-line-comment
+
+state comment
+    char '*' star
+    eat this
+
+state star comment
+    char / END comment
+    noeat comment
+
+syntax .c3-uchar4
+
+state 4left
+    char 0-9a-fA-F 3left special
+    eat END error
+
+state 3left
+    char 0-9a-fA-F 2left special
+    eat END error
+
+state 2left
+    char 0-9a-fA-F 1left special
+    eat END error
+
+state 1left
+    char 0-9a-fA-F END special
+    eat END error
+
+syntax .c3-uchar8
+
+state 8left
+    char 0-9a-fA-F 7left special
+    eat END error
+
+state 7left
+    char 0-9a-fA-F 6left special
+    eat END error
+
+state 6left
+    char 0-9a-fA-F 5left special
+    eat END error
+
+state 5left
+    char 0-9a-fA-F .c3-uchar4:END special
+    eat END error
+
+syntax .c3-esc
+
+state start special
+    char "abfnrtv'\\\"" END special
+    char 0-3 oct1
+    char 4-7 oct2
+    char x hex0
+    char u .c3-uchar4:END special
+    char U .c3-uchar8:END special
+    # Anything but \n
+    char -n "\n" END error
+    # Don't eat \n
+    noeat END
+
+state oct1 special
+    char 0-7 oct2
+    noeat END
+
+state oct2 special
+    char 0-7 END special
+    noeat END
+
+state hex0 special
+    char 0-9a-fA-F hex1
+    noeat END
+
+state hex1 special
+    char 0-9a-fA-F hex2
+    noeat END
+
+# In strings "\xaff" is an error but "\xafg" is not.
+# In chars both are errors.
+state hex2 special
+    char 0-9a-fA-F END error
+    noeat END
+
+syntax .c3-string
+
+state string
+    char '"' END string
+    # Avoid highlighting rest of the file again
+    char "\n" END error
+    char "\\" .c3-esc:this
+    eat this
+
+syntax .c3-char
+
+state char
+    char "'\n" END error
+    char \\ .c3-esc:char-end
+    eat char-end
+
+state char-end char
+    char "'" END char
+    eat END error
+
+syntax .c3-one-line-comment
+
+state comment
+    char "\n" END
+    char \\ backslash
+    eat this
+
+state backslash comment
+    # Multi-line comment?
+    char "\n" comment
+    noeat comment
+
+syntax c3
+
+state start code
+    char " \t" this
+    char # preproc
+    char -b a-z_ ident-label
+    char -b A-Z ident-upper-label
+    noeat c3
+
+state preproc
+    char " \t" this
+    char -b a-zA-Z_ preproc-ident
+    noeat preproc-misc
+
+state preproc-ident preproc
+    char -b a-zA-Z0-9_ this
+    bufis 'include' preproc-include
+    inlist preproccond preproccond
+    noeat preproc-misc
+
+state preproccond
+    # Recolor to start of the line
+    recolor preproccond 100
+    noeat preproc-misc
+
+state preproc-misc preproc
+    char "\n" start
+    char "\\" preproc-cont
+    char \" .c3-string:this
+    char \' .c3-char:this
+    str '/*' .c3-multi-line-comment:this
+    str '//' .c3-one-line-comment:start
+    eat this
+
+state preproc-include preproc
+    char " \t" this
+    char "\n" start
+    char "\\" preproc-cont
+    char '"' local-include
+    # Not an error: #include DEFINE
+    noeat preproc-misc
+
+state preproc-cont preproc
+    char "\n" preproc-misc
+    noeat preproc-misc
+
+state local-include string
+    char '"' end-include string
+    char "\n" start
+    eat this
+
+state end-include preproc
+    char "\n" start
+    char " \t" this
+    str '/*' .c3-multi-line-comment:this
+    str '//' .c3-one-line-comment:start
+    eat preproc-error
+
+state preproc-error error
+    char "\n" start
+    eat this
+
+state c3 code
+    char -b a-z_ ident
+    char -b A-Z ident-upper
+    char 0 zero
+    char 1-9 dec
+    char . dot
+    char \" .c3-string:this
+    char \' .c3-char:this
+    char "\n" start
+    char ';' semicolon
+    str '/*' .c3-multi-line-comment:this
+    str '//' .c3-one-line-comment:start
+    eat this
+
+state semicolon code
+    char " \t" this
+    char -b a-zA-Z_ ident-label
+    noeat c3
+
+state ident-label ident
+    char -b a-zA-Z0-9_ this
+    char -b : label
+    noeat -b ident
+
+state label
+    recolor label
+    noeat c3
+
+state ident
+    char -b a-zA-Z0-9_ this
+    inlist keywords c3
+    inlist types c3
+    inlist constants c3
+    noeat c3
+
+state ident-upper ident
+    char -b a-z class-name
+    char -b A-Z0-9_ ident
+    noeat c3
+
+state class-name
+    recolor class-name
+    char a-zA-Z0-9_ this
+    noeat c3
+
+state ident-upper-label ident
+    char -b a-z class-name-label
+    char -b A-Z0-9_ ident-label
+    char -b : label
+    noeat c3
+
+state class-name-label class-name
+    char -b a-zA-Z0-9_ this
+    char -b : label
+    noeat -b class-name
+
+state zero numeric
+    char bB bin
+    char xX hex
+    char 0-7 oct
+    char . float
+    noeat check-suffix
+
+state oct numeric
+    char 0-7 this
+    noeat check-suffix
+
+state dec numeric
+    char 0-9 this
+    char eE exp
+    char . float
+    noeat check-suffix
+
+state bin numeric
+    char 01 this
+    noeat check-suffix
+
+state hex numeric
+    char 0-9a-fA-F this
+    noeat check-suffix
+
+state check-suffix error
+    char -b a-zA-Z0-9_ this
+    inlist numeric-suffix c3 numeric
+    noeat c3
+
+state dot numeric
+    char 0-9 float
+    recolor code 1
+    noeat c3
+
+state float numeric
+    char 0-9 this
+    char eE exp
+    char fFlL float-suffix
+    char a-zA-Z0-9_ error-ident
+    noeat c3
+
+state float-suffix numeric
+    char a-zA-Z0-9_ error-ident
+    noeat c3
+
+state exp numeric
+    char +- exp-digit
+    char 0-9 exp-digit
+    char a-zA-Z0-9_ error-ident
+    noeat c3
+
+state exp-digit numeric
+    char 0-9 this
+    char a-zA-Z0-9_ error-ident
+    noeat c3
+
+state error-ident error
+    char a-zA-Z0-9_ this
+    noeat c3
+
+list keywords \
+    alias as asm assert break case catch const continue default defer define do \
+    else extern fn for foreach func generic if import macro module nextcase \
+    null private return static switch tlocal try typeid var while
+
+list types \
+    bitstruct bool anyerr char double enum fault float float16 float128 ichar \
+    int int128 iptr iptrdiff isize long short struct uint uint128 ulong union \
+    uptr uptrdiff ushort usize variant void
+
+list constants \
+    null stdin stdout stderr false true
+
+list preproccond \
+    elif else endif if ifdef ifndef
+
+list -i numeric-suffix \
+    ULL UL U LLU LU LL L
+
+default ident class-name
+default keyword keywords
+default preproc preproccond
+default type types
