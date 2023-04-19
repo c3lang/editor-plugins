@@ -14,7 +14,7 @@ addhl shared/c3/code/           regex '\b(?:do|else|for|goto|if|return)\b' 0:key
 addhl shared/c3/code/           regex '\b(?:define|local|errtype|module|as|import)\b' 0:keyword
 addhl shared/c3/code/           regex '\b(?:generic|switch|typedef)\b' 0:keyword
 addhl shared/c3/code/           regex '\b(?:while|fn|null|nextcase|$for|$case)\b' 0:keyword
-addhl shared/c3/code/           regex '\b(?:%switch|$default|$case|$if|$elif|$typeof|$else|$sizeof)\b' 0:keyword
+addhl shared/c3/code/           regex '\b(?:%switch|$default|$case|$if|$typeof|$else|$sizeof)\b' 0:keyword
 
 addhl shared/c3/code/builtin    regex '($)(\w+)' 1:default 2:function
 addhl shared/c3/code/bool       regex '\b(?:true|false)\b' 0:keyword

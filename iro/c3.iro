@@ -200,7 +200,7 @@ contexts [] {
 
    keywords : context {
       : pattern {
-         regex       \= (import|for|foreach|return|else|if|default|switch|while|do|module|assert|distinct|break|nextcase|case|continue|defer)
+         regex       \= (import|for|foreach|foreach_r|return|else|if|default|switch|while|do|module|assert|distinct|break|nextcase|case|continue|defer)
          styles []   = .keyword;
       }
    }
@@ -289,7 +289,7 @@ main : context {
 
    : include "top_level";
    : pattern {
-      regex          \= (bitstruct|define|extern|if|module|import|fn|struct|while|do|return|union|errtype)
+      regex          \= (bitstruct|typedef|define|extern|if|module|import|fn|struct|while|do|return|union|fault)
       styles []       = .keyword;
    }
 

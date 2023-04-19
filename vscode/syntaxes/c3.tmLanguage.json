@@ -19,11 +19,11 @@
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(do|else|for|goto|if|return|null|macro)\\b"
+					"match": "\\b(do|else|for|if|return|null|macro)\\b"
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(define|local|errtype|module|as|import)\\b"
+					"match": "\\b(define|static|fault|module|import)\\b"
 				},
 				{
 					"name": "keyword",
@@ -31,11 +31,11 @@
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(while|fn|nil|next|in|$for|$case)\\b"
+					"match": "\\b(while|fn|null|nextcase|$foreach|$for|$case)\\b"
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(%switch|$default|$if|$elif|$else)\\b"
+					"match": "\\b(%switch|$default|$if|$else)\\b"
 				},
 				{
 					"name": "keyword",
@@ -135,7 +135,7 @@
 		},
 		"types": {
 			"name": "storage.type",
-			"match": "\\b(double|usize|isize|type|ireg|ureg|bool|char|enum|float|int|uint|long|ulong|short|ushort|struct|void)\\b"
+			"match": "\\b(double|usz|isz|type|ireg|ureg|bool|char|enum|float|int|uint|long|ulong|short|ushort|struct|void)\\b"
 		},
 		"support": {
 			"patterns": [

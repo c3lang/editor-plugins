@@ -15,13 +15,13 @@ color magenta "\<[A-Za-z_]+\>\("
 color normal "\(|\)"
 
 # Types
-color green "\<(anyerr|void|bool|quad|double|float|long|ulong|int|uint|short|ushort|ichar|char|isize|usize|iptr|uptr|iptrdiff|uptrdiff|half)\>"
+color green "\<(anyfault|void|bool|float128|float16|double|float|long|ulong|int|uint|short|ushort|ichar|char|isz|usz|iptr|uptr|int128|uint128|any|typeid)\>"
 
 # Keywords
-color yellow "\<(alias|as|asm|assert|attribute|break|bitstruct|case|catch|const|continue|default|defer|define|do|else|enum|extern|errtype|false|for|foreach|fn|generic|if|import|macro|module|nextcase|null|private|return|static|struct|switch|true|try|typeid|typeof|union|while|var|volatile|yield)\>"
+color yellow "\<(asm|assert|attribute|break|bitstruct|case|catch|const|continue|default|defer|define|do|else|enum|extern|fault|false|for|foreach|foreach_r|fn|if|import|macro|module|nextcase|null|return|static|struct|switch|true|try|typedef|union|while|var)\>"
 
 # $ Statements
-color brightyellow "\$\<(assert|sizeof|typeof|case|default|elif|else|endif|endswitch|for|if|switch|unreachable)\>"
+color brightyellow "\$\<(assert|echo|sizeof|typeof|case|default|else|endif|endswitch|endfor|endforeach|for|foreach|if|switch)\>"
 
 # @ Attributes
 color brightred "@\<[A-Za-z_]+\>"
