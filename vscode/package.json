@@ -13,7 +13,7 @@
         "languages": [{
             "id": "c3",
             "aliases": ["C3", "c3"],
-            "extensions": ["c3"],
+            "extensions": ["c3", "c3i"],
             "configuration": "./language-configuration.json"
         }],
         "grammars": [{
