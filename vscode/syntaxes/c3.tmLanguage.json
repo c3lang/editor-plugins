@@ -23,11 +23,11 @@
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(define|static|fault|module|import)\\b"
+					"match": "\\b(define|def|static|fault|module|import)\\b"
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(generic|switch|typedef|volatile|private)\\b"
+					"match": "\\b(switch|typedef|volatile|private)\\b"
 				},
 				{
 					"name": "keyword",

@@ -292,8 +292,8 @@ state error-ident error
     noeat c3
 
 list keywords \
-    alias as asm assert break case catch const continue default defer define do \
-    else extern fn for foreach func generic if import macro module nextcase \
+    alias as asm assert break case catch const continue def default defer define do \
+    else extern fn for foreach func if import macro module nextcase \
     null private return static switch tlocal try typeid var while
 
 list types \
@@ -308,7 +308,7 @@ list preproccond \
     elif else endif if ifdef ifndef
 
 list -i numeric-suffix \
-    ULL UL U LLU LU LL L
+    UL U L ul uL Ul u l
 
 default ident class-name
 default keyword keywords

@@ -18,10 +18,10 @@ color normal "\(|\)"
 color green "\<(anyfault|void|bool|float128|float16|double|float|long|ulong|int|uint|short|ushort|ichar|char|isz|usz|iptr|uptr|int128|uint128|any|typeid)\>"
 
 # Keywords
-color yellow "\<(asm|assert|attribute|break|bitstruct|case|catch|const|continue|default|defer|define|do|else|enum|extern|fault|false|for|foreach|foreach_r|fn|if|import|macro|module|nextcase|null|return|static|struct|switch|true|try|typedef|union|while|var)\>"
+color yellow "\<(asm|assert|attribute|break|bitstruct|case|catch|const|continue|default|def|defer|define|do|else|enum|extern|fault|false|for|foreach|foreach_r|fn|if|import|macro|module|nextcase|null|return|static|struct|switch|true|try|typedef|union|while|var)\>"
 
 # $ Statements
-color brightyellow "\$\<(assert|echo|sizeof|typeof|case|default|else|endif|endswitch|endfor|endforeach|for|foreach|if|switch)\>"
+color brightyellow "\$\<(assert|echo|error|sizeof|typeof|case|default|else|endif|endswitch|endfor|endforeach|for|foreach|if|switch)\>"
 
 # @ Attributes
 color brightred "@\<[A-Za-z_]+\>"

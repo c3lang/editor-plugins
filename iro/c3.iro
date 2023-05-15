@@ -289,7 +289,7 @@ main : context {
 
    : include "top_level";
    : pattern {
-      regex          \= (bitstruct|typedef|define|extern|if|module|import|fn|struct|while|do|return|union|fault)
+      regex          \= (bitstruct|typedef|define|def|extern|if|module|import|fn|struct|while|do|return|union|fault)
       styles []       = .keyword;
    }
 
