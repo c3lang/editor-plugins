@@ -26,7 +26,7 @@
     ;; Floating point types
     "float16" "float" "double" "float128"
     ;; Other types
-    "any" "anyfault "typeid"        
+    "any" "anyfault" "typeid"        
     ;; C compatibility types
     "CChar" "CShort" "CUShort" "CInt" "CUInt" "CLong" "CULong" "CLongLong" "CULongLong" "CFloat" "CDouble" "CLongDouble"
     ;; CT types
