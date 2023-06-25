@@ -25,33 +25,37 @@
     "isz" "usz"
     ;; Floating point types
     "float16" "float" "double" "float128"
+    ;; Other types
+    "any" "anyfault "typeid"        
     ;; C compatibility types
     "CChar" "CShort" "CUShort" "CInt" "CUInt" "CLong" "CULong" "CLongLong" "CULongLong" "CFloat" "CDouble" "CLongDouble"
+    ;; CT types
+    "$typefrom" "$tyypeof" "$vatype"       
     ))
 
 (defun c3-keywords ()
-  '("alias"       "as"          "asm"
-"anyerr"
-"assert"      "attribute"   "break"
-"case"        "cast"        "catch"
-"const"       "continue"    "default"
-"defer"       "def"         "do"
-"else"        "enum"        "extern"
-"errtype"     "false"       "fn"
-"generic"     "if"          "import"
-"in"          "local"       "macro"
-"module"      "nextcase"    "nil"
-"public"      "return"      "struct"
-"switch"      "true"        "try"
-"typeid"      "$typeof"     "define"
-"var"         "volatile"    "void"
-"while"
-
-"$assert"     "$case"       "$default"
-"$if"         "$for"        "$else"
-"$elif"       "$if"         "$switch"
-"$foreach"    "$endswitch"  "$endif"      
-"$endforeach"      
+  '("asm"         "assert"      "bitstruct"   
+    "break"       "case"        "catch"
+    "const"       "continue"    "def"
+    "default"     "defer"       "distinct"
+    "do"          "else"        "enum"        
+    "extern"      "false"       "fault"
+    "for"         "foreach"     "foreach_r"
+    "fn"          "tlocal"      "if"
+    "inline"      "import"      "macro"
+    "module"      "nextcase"    "null"
+    "return"      "static"      "struct"
+    "switch"      "true"        "try"
+    "union"       "var"         "while"
+    "$alignof"    "$assert"     "$case"
+    "$checks"     "$default"    "$defined"
+    "$echo"       "$else"       "$endfor"
+    "$endforeach" "$endif"      "$endswitch"
+    "$for"        "$foreach"    "$if"
+    "$include"    "$nameof"     "$offsetof"
+    "$qnameof"    "$sizeof"     "$stringify"
+    "$vacount"    "$vaconst"    "$varef"
+    "$vaarg"      "$vaexpr"     "$vasplat" 
 ))
 
 (defun c3-font-lock-keywords ()
