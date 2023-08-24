@@ -15,31 +15,27 @@
 			"patterns": [
 				{
 					"name": "keyword",
-					"match": "\\b(extern|break|case|const|continue|default)\\b"
+					"match": "\\b(asm|assert|bitstruct|break|case|catch|const|continue)\\b"
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(do|else|for|if|return|null|macro)\\b"
+					"match": "\\b(def|default|defer|distinct|do|else|enum|extern)\\b"
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(define|def|static|fault|module|import)\\b"
+					"match": "\\b(false|fault|for|foreach|foreach_r|fn|tlocal|if)\\b"
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(switch|typedef|volatile|private)\\b"
+					"match": "\\b(inline|import|macro|module|nextcase|null|return|static)\\b"
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(while|fn|null|nextcase|$foreach|$for|$case)\\b"
+					"match": "\\b(struct|switch|true|try|union|var|while)\\b"
 				},
 				{
 					"name": "keyword",
-					"match": "\\b(%switch|$default|$if|$else)\\b"
-				},
-				{
-					"name": "keyword",
-					"match": "\\b(true|false)\\b"
+					"match": "\\b(%switch|$default|$case|$if|$typeof|$else|$sizeof|$for|$case)\\b"
 				}
 			]
 		},
@@ -135,7 +131,7 @@
 		},
 		"types": {
 			"name": "storage.type",
-			"match": "\\b(double|usz|isz|type|ireg|ureg|bool|char|enum|float|int|uint|long|ulong|short|ushort|struct|void)\\b"
+			"match": "\\b(any|anyfault|bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128|typeid|void)\\b"
 		},
 		"support": {
 			"patterns": [
