@@ -2,7 +2,7 @@
     "name": "c3-vscode",
     "displayName": "c3-vscode",
     "description": "C3 Language Support for VSCode",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "engines": {
         "vscode": "^1.63.0"
     },
