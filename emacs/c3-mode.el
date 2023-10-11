@@ -103,11 +103,16 @@
       (indent-line-to desired-indentation)
       (forward-char n))))
 
+;;;###autoload
 (define-derived-mode c3-mode prog-mode "Simple C3"
   "Simple major mode for C3."
   :syntax-table c3-mode-syntax-table
   (setq-local font-lock-defaults '(c3-font-lock-keywords))
   (setq-local indent-line-function 'c3-indent-line)
   (setq-local comment-start "// "))
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.c3\\'" . c3-mode))
+(add-to-list 'auto-mode-alist '("\\.c3i\\'" . c3-mode))
 
 (provide 'c3-mode)
