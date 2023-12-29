@@ -2,13 +2,13 @@ if exists("b:current_syntax")
   finish
 endif
 
+syn match c3Identifier  display "\v<_*[a-z][A-Za-z0-9_]*>"
 syn match c3Function    display "\zs\(\w*\)*\s*\ze("
 syn match c3Macro       display "@\zs\(\w*\)*\s*\ze("
-syn match c3Identifier  display "\v<_*[a-z][A-Za-z0-9_]*>"
-syn match c3Attribute   display "\v\@<_*[A-Z][A-Za-z0-9_]*>"
 syn match c3UserType    display "_*[A-Z][a-zA-Z0-9_]\+"
+syn match c3UserAttr    display "@_*[A-Z][a-zA-Z0-9_]\+"
 syn match c3GlobalConst display "_*[A-Z][A-Z0-9_]\+"
-syn match c3Label       display "_*[A-Z][A-Z0-9_]\+:"
+syn match c3Label       display "^\s*_*[A-Z][A-Z0-9_]\+:"
 syn match c3ComptimeId  display "\v\$<_*[a-z][A-Za-z0-9_]*>"
 
 syn match c3Number display "\v<0[Xx][0-9A-Fa-f](_*[0-9A-Fa-f])*>"
@@ -57,7 +57,7 @@ syn keyword c3Keyword
       \ defer return
       \ switch case nextcase default
       \ cast asm
-      \ def fn enum macro fault struct bitstruct
+      \ def fn enum macro fault struct bitstruct interface
       \ module import
 
 syn keyword c3Repeat
@@ -68,76 +68,83 @@ syn keyword c3Repeat
 syn keyword c3Specifier extern inline static tlocal
 syn keyword c3Specifier var const
 
-syn match c3ComptimeKw "\$and"
-syn match c3ComptimeKw "\$assert"
-syn match c3ComptimeKw "\$case"
-syn match c3ComptimeKw "\$default"
-syn match c3ComptimeKw "\$echo"
-syn match c3ComptimeKw "\$else"
-syn match c3ComptimeKw "\$error"
-syn match c3ComptimeKw "\$endfor"
-syn match c3ComptimeKw "\$endforeach"
-syn match c3ComptimeKw "\$endif"
-syn match c3ComptimeKw "\$endswitch"
-syn match c3ComptimeKw "\$for"
-syn match c3ComptimeKw "\$foreach"
-syn match c3ComptimeKw "\$if"
-syn match c3ComptimeKw "\$switch"
-syn match c3ComptimeKw "\$typef"
-syn match c3ComptimeKw "\$vaarg"
-syn match c3ComptimeKw "\$vaconst"
-syn match c3ComptimeKw "\$vacount"
-syn match c3ComptimeKw "\$varef"
-syn match c3ComptimeKw "\$vatype"
-
-
-syn keyword c3BuiltinType typeid errtype void any anyfault
-syn keyword c3BuiltinType bool char short int long int128 isz
-syn keyword c3BuiltinType char short int long int128 usz isz
+syn keyword c3BuiltinType typeid errtype void any anyfault bool
+syn keyword c3BuiltinType ichar short  int  long  int128  isz iptr
+syn keyword c3BuiltinType char  ushort uint ulong uint128 usz uptr
 syn keyword c3BuiltinType float16 float double float128
 
 syn keyword c3Null null
 syn keyword c3Boolean true false
 
-syn match c3BuiltinAttr "\v\@align"
-syn match c3BuiltinAttr "\v\@benchmark"
-syn match c3BuiltinAttr "\v\@bigendian"
-syn match c3BuiltinAttr "\v\@builtin"
-syn match c3BuiltinAttr "\v\@callconv"
-syn match c3BuiltinAttr "\v\@deprecated"
-syn match c3BuiltinAttr "\v\@dynamic"
-syn match c3BuiltinAttr "\v\@export"
-syn match c3BuiltinAttr "\v\@extern"
-syn match c3BuiltinAttr "\v\@if"
-syn match c3BuiltinAttr "\v\@inline"
-syn match c3BuiltinAttr "\v\@interface"
-syn match c3BuiltinAttr "\v\@littleendian"
-syn match c3BuiltinAttr "\v\@local"
-syn match c3BuiltinAttr "\v\@maydiscard"
-syn match c3BuiltinAttr "\v\@naked"
-syn match c3BuiltinAttr "\v\@nodiscard"
-syn match c3BuiltinAttr "\v\@noinit"
-syn match c3BuiltinAttr "\v\@noreturn"
-syn match c3BuiltinAttr "\v\@nostrip"
-syn match c3BuiltinAttr "\v\@obfuscate"
-syn match c3BuiltinAttr "\v\@operator"
-syn match c3BuiltinAttr "\v\@overlap"
-syn match c3BuiltinAttr "\v\@priority"
-syn match c3BuiltinAttr "\v\@private"
-syn match c3BuiltinAttr "\v\@public"
-syn match c3BuiltinAttr "\v\@pure"
-syn match c3BuiltinAttr "\v\@reflect"
-syn match c3BuiltinAttr "\v\@section"
-syn match c3BuiltinAttr "\v\@test"
-syn match c3BuiltinAttr "\v\@used"
-syn match c3BuiltinAttr "\v\@unused"
+syn match c3BuiltinAttr display "\v\@align"
+syn match c3BuiltinAttr display "\v\@benchmark"
+syn match c3BuiltinAttr display "\v\@bigendian"
+syn match c3BuiltinAttr display "\v\@builtin"
+syn match c3BuiltinAttr display "\v\@callconv"
+syn match c3BuiltinAttr display "\v\@deprecated"
+syn match c3BuiltinAttr display "\v\@dynamic"
+syn match c3BuiltinAttr display "\v\@export"
+syn match c3BuiltinAttr display "\v\@extern"
+syn match c3BuiltinAttr display "\v\@if"
+syn match c3BuiltinAttr display "\v\@inline"
+syn match c3BuiltinAttr display "\v\@interface"
+syn match c3BuiltinAttr display "\v\@littleendian"
+syn match c3BuiltinAttr display "\v\@local"
+syn match c3BuiltinAttr display "\v\@maydiscard"
+syn match c3BuiltinAttr display "\v\@naked"
+syn match c3BuiltinAttr display "\v\@nodiscard"
+syn match c3BuiltinAttr display "\v\@noinit"
+syn match c3BuiltinAttr display "\v\@noreturn"
+syn match c3BuiltinAttr display "\v\@nostrip"
+syn match c3BuiltinAttr display "\v\@obfuscate"
+syn match c3BuiltinAttr display "\v\@operator"
+syn match c3BuiltinAttr display "\v\@optional"
+syn match c3BuiltinAttr display "\v\@overlap"
+syn match c3BuiltinAttr display "\v\@priority"
+syn match c3BuiltinAttr display "\v\@private"
+syn match c3BuiltinAttr display "\v\@public"
+syn match c3BuiltinAttr display "\v\@pure"
+syn match c3BuiltinAttr display "\v\@reflect"
+syn match c3BuiltinAttr display "\v\@section"
+syn match c3BuiltinAttr display "\v\@test"
+syn match c3BuiltinAttr display "\v\@used"
+syn match c3BuiltinAttr display "\v\@unused"
+
+syn match c3ComptimeKw display "\$and"
+syn match c3ComptimeKw display "\$assert"
+syn match c3ComptimeKw display "\$case"
+syn match c3ComptimeKw display "\$default"
+syn match c3ComptimeKw display "\$echo"
+syn match c3ComptimeKw display "\$else"
+syn match c3ComptimeKw display "\$error"
+syn match c3ComptimeKw display "\$endfor"
+syn match c3ComptimeKw display "\$endforeach"
+syn match c3ComptimeKw display "\$endif"
+syn match c3ComptimeKw display "\$endswitch"
+syn match c3ComptimeKw display "\$for"
+syn match c3ComptimeKw display "\$foreach"
+syn match c3ComptimeKw display "\$if"
+syn match c3ComptimeKw display "\$switch"
+syn match c3ComptimeKw display "\$typef"
+syn match c3ComptimeKw display "\$vaarg"
+syn match c3ComptimeKw display "\$vaconst"
+syn match c3ComptimeKw display "\$vacount"
+syn match c3ComptimeKw display "\$varef"
+syn match c3ComptimeKw display "\$vatype"
 
 hi def link c3Number       Number
 hi def link c3Float        Number
 hi def link c3Identifier   Identifier
 hi def link c3ComptimeId   Identifier
-hi def link c3UserAttr     Tag
-hi def link c3BuiltinAttr  Tag
+
+if hlexists('@namespace')
+  hi def link c3UserAttr     @namespace
+  hi def link c3BuiltinAttr  @namespace
+else
+  hi def link c3UserAttr     Special
+  hi def link c3BuiltinAttr  Special
+endif
+
 hi def link c3Function     Function
 hi def link c3Function     Macro
 hi def link c3BuiltinType  Type
