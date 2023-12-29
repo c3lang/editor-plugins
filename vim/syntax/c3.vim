@@ -1,145 +1,162 @@
 if exists("b:current_syntax")
-	finish
+  finish
 endif
 
-syntax match c3Operator "\v\.\.\.?"
-syntax match c3Operator "\v(\<\<|\>\>|[<>=!+*/%&^|-])\=?"
-syntax match c3Operator "\v\+\+|--|\&\&|\|\||\?\?|::|\?:|\=>|[(\[]<|>[)\]]|\$\$"
-syntax match c3Operator "\v\{\|?|\|?\}|[;,:()\[\].~?]"
+syn match c3Function    display "\zs\(\w*\)*\s*\ze("
+syn match c3Macro       display "@\zs\(\w*\)*\s*\ze("
+syn match c3Identifier  display "\v<_*[a-z][A-Za-z0-9_]*>"
+syn match c3Attribute   display "\v\@<_*[A-Z][A-Za-z0-9_]*>"
+syn match c3UserType    display "_*[A-Z][a-zA-Z0-9_]\+"
+syn match c3GlobalConst display "_*[A-Z][A-Z0-9_]\+"
+syn match c3Label       display "_*[A-Z][A-Z0-9_]\+:"
+syn match c3ComptimeId  display "\v\$<_*[a-z][A-Za-z0-9_]*>"
 
-syntax match c3Identifier "\v<_*[a-z][A-Za-z0-9_]*>"
+syn match c3Number display "\v<0[Xx][0-9A-Fa-f](_*[0-9A-Fa-f])*>"
+syn match c3Number display "\v<0[Oo][0-7](_*[0-7])*>"
+syn match c3Number display "\v<0[Bb][01](_*[01])*>"
+syn match c3Number display "\v<[0-9](_*[0-9])*([iu](8|16|32|64|128)|([Uu][Ll]?|[Ll]))?>"
 
-syntax match c3Constant "\v<_*[A-Z][A-Z0-9_]*>"
+syn match c3Float display "\v<[0-9](_*[0-9])*[Ee][+-]?[0-9]+(f(8|16|32|64|128))?>"
+syn match c3Float display "\v<0[Xx][0-9A-Fa-f](_*[0-9A-Fa-f])*[Pp][+-]?[0-9]+(f(8|16|32|64|128))?>"
+syn match c3Float display "\v<[0-9](_*[0-9])*\.[0-9](_*[0-9])*([Ee][+-]?[0-9]+)?(f(8|16|32|64|128))?>"
+syn match c3Float display "\v<0[Xx][0-9A-Fa-f](_*[0-9A-Fa-f])*\.[0-9A-Fa-f](_*[0-9A-Fa-f])*([Pp][+-]?[0-9]+)?(f(8|16|32|64|128))?>"
 
-syntax match c3Label "\v<_*[A-Z][A-Z0-9_]*:"
+syn match c3Operator display "\v\.\.\.?"
+syn match c3Operator display "\v(\<\<|\>\>|[<>=!+*/%&~^|-])\=?"
+syn match c3Operator display "\v\+\+|--|\&\&|\|\||\?\?|::|\?:|\=>|[\[]<|>[\]]|\$\$"
 
-syntax match c3Type "\v<_*[A-Z]_*[a-z][A-Za-z0-9_]*>"
+syn match c3Delimiter display "\v[;,:\{\}\(\)\[\].?]"
 
-syntax match c3PreProc "\v\$_*[a-z][A-Za-z0-9_]*>"
-syntax match c3PreProc "\v\$_*[A-Z][A-Z0-9_]*>"
-syntax match c3PreProc "\v\$_*[A-Z]_*[a-z][A-Za-z0-9_]*>"
+syn match c3HexBytes display "\v<x'([ \f\n\t\v]?[0-9A-Fa-f][ \f\n\t\v0-9A-Fa-f]+)+'"
+syn match c3HexBytes display "\v<x\"([ \f\n\t\v]?[0-9A-Fa-f][ \f\n\t\v0-9A-Fa-f]+)+\""
+syn match c3HexBytes display "\v<x`([ \f\n\t\v]?[0-9A-Fa-f][ \f\n\t\v0-9A-Fa-f]+)+`"
 
-syntax match c3Macro "\v[\@#]_*[a-z][A-Za-z0-9_]*>"
-syntax match c3Macro "\v[\@#]_*[A-Z][A-Z0-9_]*>"
-syntax match c3Macro "\v[\@#]_*[A-Z]_*[a-z][A-Za-z0-9_]*>"
+syn match c3Base64 display "\v<b64'([ \f\n\t\v]?[A-Za-z0-9+/][ \f\n\t\vA-Za-z0-9+/]+)+(\=|\=\=)?'"
+syn match c3Base64 display "\v<b64\"([ \f\n\t\v]?[A-Za-z0-9+/][ \f\n\t\vA-Za-z0-9+/]+)+(\=|\=\=)?\""
+syn match c3Base64 display "\v<b64`([ \f\n\t\v]?[A-Za-z0-9+/][ \f\n\t\vA-Za-z0-9+/]+)+(\=|\=\=)?`"
 
-syntax match c3Include "\v(^\s*import\s+)@<=_*[a-z][a-z0-9_]*(::_*[a-z][a-z0-9_]*)+>"
+syn match c3String display "\v\"(\\.|[^\\\"])*\""
+syn match c3String display "\v`(``|.)*`"
 
-syntax match c3Number "\v<0[Xx][0-9A-Fa-f](_*[0-9A-Fa-f])*>"
-syntax match c3Number "\v<0[Oo][0-7](_*[0-7])*>"
-syntax match c3Number "\v<0[Bb][01](_*[01])*>"
-syntax match c3Number "\v<[0-9](_*[0-9])*([iu](8|16|32|64|128)|([Uu][Ll]?|[Ll]))?>"
+syn region c3Comment display start="\v/\*"   end="\v\*/" contains=c3Comment,c3Todo
+syn region c3Comment display start="\v//"    end="\v$"   contains=c3Todo
+syn region c3Comment display start="\v/\*\*" end="\v\*/" contains=c3Contract,c3Todo
 
-syntax match c3Float "\v<[0-9](_*[0-9])*[Ee][+-]?[0-9]+(f(8|16|32|64|128))?>"
-syntax match c3Float "\v<0[Xx][0-9A-Fa-f](_*[0-9A-Fa-f])*[Pp][+-]?[0-9]+(f(8|16|32|64|128))?>"
-syntax match c3Float "\v<[0-9](_*[0-9])*\.[0-9](_*[0-9])*([Ee][+-]?[0-9]+)?(f(8|16|32|64|128))?>"
-syntax match c3Float "\v<0[Xx][0-9A-Fa-f](_*[0-9A-Fa-f])*\.[0-9A-Fa-f](_*[0-9A-Fa-f])*([Pp][+-]?[0-9]+)?(f(8|16|32|64|128))?>"
+syn match c3Contract contained "\v<\@require>"
+syn match c3Contract contained "\v<\@ensure>"
+syn match c3Contract contained "\v<\@param\s+\[(in|out|inout)\]"
+syn match c3Contract contained "\v<\@pure>"
 
-syntax match c3HexBytes "\v<x'([ \f\n\t\v]?[0-9A-Fa-f][ \f\n\t\v0-9A-Fa-f]+)+'"
-syntax match c3HexBytes "\v<x\"([ \f\n\t\v]?[0-9A-Fa-f][ \f\n\t\v0-9A-Fa-f]+)+\""
-syntax match c3HexBytes "\v<x`([ \f\n\t\v]?[0-9A-Fa-f][ \f\n\t\v0-9A-Fa-f]+)+`"
+syn keyword c3Todo todo Todo TODO contained
 
-syntax match c3Base64 "\v<b64'([ \f\n\t\v]?[A-Za-z0-9+/][ \f\n\t\vA-Za-z0-9+/]+)+(\=|\=\=)?'"
-syntax match c3Base64 "\v<b64\"([ \f\n\t\v]?[A-Za-z0-9+/][ \f\n\t\vA-Za-z0-9+/]+)+(\=|\=\=)?\""
-syntax match c3Base64 "\v<b64`([ \f\n\t\v]?[A-Za-z0-9+/][ \f\n\t\vA-Za-z0-9+/]+)+(\=|\=\=)?`"
+" TODO: Comment nesting
 
-syntax match c3String "\v\"(\\.|[^\\\"])*\""
-syntax match c3String "\v`(``|.)*`"
+syn keyword c3Keyword
+      \ if else
+      \ try catch
+      \ defer return
+      \ switch case nextcase default
+      \ cast asm
+      \ def fn enum macro fault struct bitstruct
+      \ module import
 
-syntax match c3Character "\v'(\\.|[^\\'])*'"
+syn keyword c3Repeat
+      \ do while while 
+      \ for foreach foreach_r
+      \ continue break
 
-syntax keyword c3Keyword
-	\ any anyfault asm assert break const continue defer distinct extern
-	\ fault finalize import initialize inline macro module nextcase null protocol
-	\ return static tlocal typeid var void
+syn keyword c3Specifier extern inline static tlocal
+syn keyword c3Specifier var const
 
-syntax keyword c3Boolean false true
+syn match c3ComptimeKw "\$and"
+syn match c3ComptimeKw "\$assert"
+syn match c3ComptimeKw "\$case"
+syn match c3ComptimeKw "\$default"
+syn match c3ComptimeKw "\$echo"
+syn match c3ComptimeKw "\$else"
+syn match c3ComptimeKw "\$error"
+syn match c3ComptimeKw "\$endfor"
+syn match c3ComptimeKw "\$endforeach"
+syn match c3ComptimeKw "\$endif"
+syn match c3ComptimeKw "\$endswitch"
+syn match c3ComptimeKw "\$for"
+syn match c3ComptimeKw "\$foreach"
+syn match c3ComptimeKw "\$if"
+syn match c3ComptimeKw "\$switch"
+syn match c3ComptimeKw "\$typef"
+syn match c3ComptimeKw "\$vaarg"
+syn match c3ComptimeKw "\$vaconst"
+syn match c3ComptimeKw "\$vacount"
+syn match c3ComptimeKw "\$varef"
+syn match c3ComptimeKw "\$vatype"
 
-syntax keyword c3Conditional case default else if switch
 
-syntax keyword c3Exception try catch
+syn keyword c3BuiltinType typeid errtype void any anyfault
+syn keyword c3BuiltinType bool char short int long int128 isz
+syn keyword c3BuiltinType char short int long int128 usz isz
+syn keyword c3BuiltinType float16 float double float128
 
-syntax keyword c3Function fn
+syn keyword c3Null null
+syn keyword c3Boolean true false
 
-syntax keyword c3Repeat do for foreach foreach_r while
+syn match c3BuiltinAttr "\v\@align"
+syn match c3BuiltinAttr "\v\@benchmark"
+syn match c3BuiltinAttr "\v\@bigendian"
+syn match c3BuiltinAttr "\v\@builtin"
+syn match c3BuiltinAttr "\v\@callconv"
+syn match c3BuiltinAttr "\v\@deprecated"
+syn match c3BuiltinAttr "\v\@dynamic"
+syn match c3BuiltinAttr "\v\@export"
+syn match c3BuiltinAttr "\v\@extern"
+syn match c3BuiltinAttr "\v\@if"
+syn match c3BuiltinAttr "\v\@inline"
+syn match c3BuiltinAttr "\v\@interface"
+syn match c3BuiltinAttr "\v\@littleendian"
+syn match c3BuiltinAttr "\v\@local"
+syn match c3BuiltinAttr "\v\@maydiscard"
+syn match c3BuiltinAttr "\v\@naked"
+syn match c3BuiltinAttr "\v\@nodiscard"
+syn match c3BuiltinAttr "\v\@noinit"
+syn match c3BuiltinAttr "\v\@noreturn"
+syn match c3BuiltinAttr "\v\@nostrip"
+syn match c3BuiltinAttr "\v\@obfuscate"
+syn match c3BuiltinAttr "\v\@operator"
+syn match c3BuiltinAttr "\v\@overlap"
+syn match c3BuiltinAttr "\v\@priority"
+syn match c3BuiltinAttr "\v\@private"
+syn match c3BuiltinAttr "\v\@public"
+syn match c3BuiltinAttr "\v\@pure"
+syn match c3BuiltinAttr "\v\@reflect"
+syn match c3BuiltinAttr "\v\@section"
+syn match c3BuiltinAttr "\v\@test"
+syn match c3BuiltinAttr "\v\@used"
+syn match c3BuiltinAttr "\v\@unused"
 
-syntax keyword c3StorageClass bitstruct enum struct union
-
-syntax keyword c3Type
-	\ bfloat16 bool char double float float16 float128 ichar int in128 iptr isz
-	\ long short uint uint128 ulong uptr ushort usz
-
-syntax keyword c3Typedef def
-
-syntax match c3Attribute "\v\@align>"
-syntax match c3Attribute "\v\@benchmark>"
-syntax match c3Attribute "\v\@bigendian>"
-syntax match c3Attribute "\v\@builtin>"
-syntax match c3Attribute "\v\@callc>"
-syntax match c3Attribute "\v\@deprecated>"
-syntax match c3Attribute "\v\@export>"
-syntax match c3Attribute "\v\@extern>"
-syntax match c3Attribute "\v\@finalizer>"
-syntax match c3Attribute "\v\@if>"
-syntax match c3Attribute "\v\@init>"
-syntax match c3Attribute "\v\@inline>"
-syntax match c3Attribute "\v\@littleendian>"
-syntax match c3Attribute "\v\@local>"
-syntax match c3Attribute "\v\@maydiscard>"
-syntax match c3Attribute "\v\@naked>"
-syntax match c3Attribute "\v\@nodiscard>"
-syntax match c3Attribute "\v\@noinit>"
-syntax match c3Attribute "\v\@noinline>"
-syntax match c3Attribute "\v\@noreturn>"
-syntax match c3Attribute "\v\@nostrip>"
-syntax match c3Attribute "\v\@obfuscate>"
-syntax match c3Attribute "\v\@operator>"
-syntax match c3Attribute "\v\@overlap>"
-syntax match c3Attribute "\v\@packed>"
-syntax match c3Attribute "\v\@private>"
-syntax match c3Attribute "\v\@pure>"
-syntax match c3Attribute "\v\@reflect>"
-syntax match c3Attribute "\v\@section>"
-syntax match c3Attribute "\v\@test>"
-syntax match c3Attribute "\v\@unused>"
-syntax match c3Attribute "\v\@used>"
-syntax match c3Attribute "\v\@weak>"
-
-syntax region c3Comment start="\v/\*"   end="\v\*/" contains=c3Comment,c3Todo
-syntax region c3Comment start="\v//"    end="\v$"   contains=c3Todo
-syntax region c3Comment start="\v/\*\*" end="\v\*/" contains=c3Contract,c3Todo
-
-syntax match c3Contract "\v<\@require>"                   contained
-syntax match c3Contract "\v<\@ensure>"                    contained
-syntax match c3Contract "\v<\@param\s+\[(in|out|inout)\]" contained
-syntax match c3Contract "\v<\@pure>"                      contained
-
-syntax keyword c3Todo todo Todo TODO contained
-
-highlight default link c3Attribute   Tag
-highlight default link c3Base64      Constant
-highlight default link c3Boolean     Boolean
-highlight default link c3Character   Character
-highlight default link c3Comment     Comment
-highlight default link c3Conditional Conditional
-highlight default link c3Constant    Constant
-highlight default link c3Contract    SpecialComment
-highlight default link c3Exception   Exception
-highlight default link c3Float       Float
-highlight default link c3Function    Function
-highlight default link c3HexBytes    Constant
-highlight default link c3Identifier  Identifier
-highlight default link c3Include     Include
-highlight default link c3Keyword     Keyword
-highlight default link c3Label       Label
-highlight default link c3Macro       Macro
-highlight default link c3Number      Number
-highlight default link c3Operator    Operator
-highlight default link c3PreProc     PreProc
-highlight default link c3Repeat      Repeat
-highlight default link c3String      String
-highlight default link c3Todo        c3Todo
-highlight default link c3Type        Type
-highlight default link c3Typedef     Typedef
+hi def link c3Number       Number
+hi def link c3Float        Number
+hi def link c3Identifier   Identifier
+hi def link c3ComptimeId   Identifier
+hi def link c3UserAttr     Tag
+hi def link c3BuiltinAttr  Tag
+hi def link c3Function     Function
+hi def link c3Function     Macro
+hi def link c3BuiltinType  Type
+hi def link c3Label        Label
+hi def link c3UserType     Type
+hi def link c3Keyword      Keyword
+hi def link c3ComptimeKw   Keyword
+hi def link c3Specifier    StorageClass
+hi def link c3Repeat       Repeat
+hi def link c3Boolean      Boolean
+hi def link c3Null         Boolean
+hi def link c3GlobalConst  Constant
+hi def link c3String       String
+hi def link c3HexBytes     String
+hi def link c3Base64       String
+hi def link c3Operator     Operator
+hi def link c3Delimiter    Delimiter
+hi def link c3Comment      Comment
+hi def link c3Contract     Comment
 
 let b:current_syntax = "c3"
+
