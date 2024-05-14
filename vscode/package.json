@@ -20,6 +20,25 @@
             "language": "c3",
             "scopeName": "source.c3",
             "path": "./syntaxes/c3.tmLanguage.json"
-        }]
+        }],
+        "configuration": {
+            "title": "Language Server",
+            "properties": {
+                "c3.lsp.path" : {
+                    "type": "string",
+                    "default": "c3-lsp",
+                    "markdownDescription": "The path to **c3-lsp** binary"
+                },
+                "c3.lsp.debug": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Enables debug information logging"
+                }
+            }
+        }
+    },
+    "main": "./extension.js",
+    "dependencies": {
+        "vscode-languageclient": "^9.0.1"
     }
 }
