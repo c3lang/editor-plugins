@@ -24,6 +24,11 @@
         "configuration": {
             "title": "Language Server",
             "properties": {
+                "c3.lsp.enable": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enables the language server"
+                },
                 "c3.lsp.path" : {
                     "type": "string",
                     "default": "c3-lsp",
