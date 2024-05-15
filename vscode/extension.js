@@ -3,10 +3,14 @@ const { window, workspace, commands, ExtensionContext, Uri } = require('vscode')
 const { LanguageClient } = require('vscode-languageclient');
 
 let client = null;
+const config = workspace.getConfiguration('c3.lsp');
 
 module.exports = {
   activate: function (context) {
-    const config = workspace.getConfiguration('c3.lsp');
+    const enabled = config.get('enable');
+    if (!enabled) {
+        return;
+    }
     const executablePath = config.get('path');
 
     const serverOptions = {
@@ -36,6 +40,9 @@ module.exports = {
   },
 
   deactivate: function () {
-    return client.stop();
+    const enabled = config.get('enable');
+    if (enabled) {
+        return client.stop();
+    }
   }
 }
