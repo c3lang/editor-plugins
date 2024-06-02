@@ -38,7 +38,12 @@
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "Enables debug information logging"
-                }
+                },
+                "c3.lsp.sendCrashReports": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Sends crash reports to server to help fixing bugs."
+                  }
             }
         }
     },
