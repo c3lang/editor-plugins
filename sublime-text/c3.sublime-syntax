@@ -1,0 +1,38 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/syntax.html
+file_extensions:
+  - c3
+  - c3t
+scope: source.c3
+contexts:
+  main:
+    - match: '"'
+      scope: punctuation.definition.string.begin.c3
+      push: double_quoted_string
+
+    - match: '\b(asm|assert|attribute|break|bitstruct|case|catch|const|continue|default|def|defer|define|do|else|enum|extern|fault|false|for|foreach|foreach_r|fn|if|import|macro|module|nextcase|null|return|static|struct|switch|true|try|typedef|union|while|var)\b'
+      scope: keyword.control.c3
+
+    - match: '\b(anyfault|void|bool|float128|float16|double|float|long|ulong|int|uint|short|ushort|ichar|char|isz|usz|iptr|uptr|int128|uint128|any|typeid)\b'
+      scope: entity.name.type.c3
+
+    - match: '\b(assert|echo|error|sizeof|typeof|case|default|else|endif|endswitch|endfor|endforeach|for|foreach|if|switch)\b'
+      scope: keyword.other.c3
+
+    - match: '@[A-Za-z_]+\b'
+      scope: keyword.context.c3
+
+    - match: '\b(-)?[0-9.]+\b'
+      scope: constant.numeric.c3
+
+    - match: '//.*'
+      scope: comment.line.c3
+
+  double_quoted_string:
+    - meta_scope: string.quoted.double.c3
+    - match: '\\.'
+      scope: constant.character.escape.c3
+    - match: '"'
+      scope: punctuation.definition.string.end.c3
+      pop: true
