@@ -26,8 +26,33 @@ contexts:
     - match: '\b(-)?[0-9.]+\b'
       scope: constant.numeric.c3
 
-    - match: '//.*'
+    - match: "//.*"
       scope: comment.line.c3
+
+    - match: "/\\*\\*"
+      scope: comment.block.begin.c3
+      push: doc_comment
+
+    - match: "/\\*"
+      scope: comment.block.begin.c3
+      push: block_comment
+
+  block_comment:
+    - meta_scope: comment.block.c3
+
+    - match: "\\*/"
+      scope: comment.block.end.c3
+      pop: true
+
+  doc_comment:
+    - meta_scope: comment.block.c3
+
+    - match: '@(param(\s*\[&?(in|out|inout)\])?|return!?|require|fails|deprecated|ensure|pure)\s'
+      scope: keyword.context.c3
+
+    - match: "\\*/"
+      scope: comment.block.end.c3
+      pop: true
 
   double_quoted_string:
     - meta_scope: string.quoted.double.c3
