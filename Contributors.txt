@@ -4,3 +4,4 @@ dte: data-man
 Nano: André, data-man
 Kakoune: Hanna
 VsCode: Pyxel, Thsm
+Sublime Text: everlyy
