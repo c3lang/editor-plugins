@@ -2,13 +2,14 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "C3",
 	"patterns": [
-		{ "include": "#keywords"  },
-		{ "include": "#comments"  },
-		{ "include": "#strings"   },
-		{ "include": "#numbers"   },
-		{ "include": "#types"     },
-		{ "include": "#support"   },
-		{ "include": "#operators" }
+		{ "include": "#keywords"    },
+		{ "include": "#comments"    },
+		{ "include": "#strings"     },
+		{ "include": "#numbers"     },
+		{ "include": "#types"       },
+		{ "include": "#support"     },
+		{ "include": "#operators"   },
+		{ "include": "#identifiers" }
 	],
 	"repository": {
 		"keywords": {
@@ -148,6 +149,14 @@
 		"operators": {
 			"name": "keyword.operator",
 			"match": "(\\+|-|\\.|%|&|\\|(?!})|=|<|>|!|\\^|\\*|/|::)=?"
+		},
+		"identifiers": {
+			"patterns": [
+				{
+					"name": "entity.name.type.c3",
+					"match": "[_A-Z][_a-zA-Z0-9]*"
+				}
+			]
 		}
 	},
 	"scopeName": "source.c3"
