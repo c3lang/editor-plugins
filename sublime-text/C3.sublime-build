@@ -1,0 +1,46 @@
+{
+    "selector": "source.c3",
+    "cmd": [
+        "c3c",
+        "build"
+    ],
+    "working_dir": "$folder",
+    "file_regex": "^\\((.*.[cC]3t?):(\\d+):(\\d+)\\)",
+    "variants": [
+        {
+            "name": "C3 build",
+            "cmd": [
+                "c3c",
+                "build",
+            ]
+        },
+        {
+            "name": "C3 clean",
+            "cmd": [
+                "c3c",
+                "clean",
+            ]
+        },
+        {
+            "name": "C3 test",
+            "cmd": [
+                "c3c",
+                "test",
+            ]
+        },
+        {
+            "name": "C3 benchmark",
+            "cmd": [
+                "c3c",
+                "benchmark",
+            ]
+        },
+        {
+            "name": "C3 Run",
+            "cmd": [
+                "c3c",
+                "run",
+            ]
+        },
+    ]
+}
