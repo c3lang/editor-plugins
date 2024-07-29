@@ -3,61 +3,272 @@
 # See http://www.sublimetext.com/docs/syntax.html
 file_extensions:
   - c3
+  - c3i
   - c3t
+
 scope: source.c3
+
+variables:
+  B64: '[ \t\v\n\f]?[A-Za-z0-9+/][ \t\v\n\fA-Za-z0-9+/=]+'
+  HEX: '[ \t\v\n\f]?[A-Fa-f0-9][ \t\v\n\fA-Fa-f0-9]+'
+  INT: '[0-9](_?[0-9])*'
+  HINT: '[a-fA-F0-9](_?[a-fA-F0-9])*'
+  OINT: '[0-7](_?[0-7])*'
+  BINT: '[0-1](_?[0-1])*'
+  INTTYPE: '([ui](8|16|32|64|128)|[Uu][Ll]?|[Ll])'
+  REALTYPE: '([f](8|16|32|64|128)?)'
+  E: '[Ee][+-]?[0-9]+'
+  P: '[Pp][+-]?[0-9]+'
+  CONST: '(_*[A-Z][_A-Z0-9]*)'
+  TYPE:  '(_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*)'
+  IDENT: '(_*[a-z][_a-zA-Z0-9]*)'
+  keyword: 'assert|asm|catch|const|def|distinct|extern|tlocal|inline|import|module|interface|static|try|var'
+  control_keyword: 'break|case|continue|default|defer|do|else|for|foreach|foreach_r|if|nextcase|return|switch|while'
+  ct_keyword: 'alignof|and|append|assert|assignable|case|concat|default|defined|echo|else|embed|endfor|endforeach|endif|endswitch|eval|evaltype|error|exec|extnameof|feature|for|foreach|if|include|is_const|nameof|offsetof|or|qnameof|sizeof|stringify|switch|typefrom|typeof|vacount|vatype|vaconst|varef|vaarg|vaexpr|vasplat'
+  base_type: 'void|bool|char|double|float|float16|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|anyfault|typeid'
+  attribute: 'align|benchmark|bigendian|builtin|callconv|compact|deprecated|dynamic|export|extern|finalizer|if|inline|init|link|littleendian|local|maydiscard|naked|nodiscard|noinit|noinline|nopadding|noreturn|nosanitize|nostrip|obfuscate|operator|optional|overlap|packed|private|public|pure|reflect|safemacro|section|test|unused|used|wasm|weak|winmain'
+
 contexts:
   main:
+    - include: main_no_tl
+    - include: top_level
+
+  main_no_tl:
+    - include: comments
+    - include: literals
+    - include: builtin
+    - include: attribute
+    - include: generic_params
+    - include: constants
+    - include: keywords    
+    - include: type
+    - include: operators
+    - include: punctuation
+    - include: function
+
+  builtin:
+    - match: '\$\$({{CONST}}|{{IDENT}})\b'
+      scope: keyword.builtin.c3
+
+  keywords:
+    - match: '\b({{keyword}})\b'
+      scope: keyword.other.c3
+    - match: '\b({{control_keyword}})\b'
+      scope: keyword.control.c3
+    - match: '\$({{ct_keyword}})\b'
+      scope: keyword.other.c3
+  
+  punctuation:
+    - match: ';'
+      scope: punctuation.terminator.c3
+    - match: ','
+      scope: punctuation.separator.c3
+
+
+  constants:
+    - match: '\b(true|false|null)'
+      scope: constant.language.c3
+    - match: '\b{{CONST}}*\b'
+      scope: constant.other.c3
+
+  top_level:
+    # Struct/bitstruct
+    - match: '\b(struct|bitstruct)\b'
+      scope: keyword.declaration.struct.c3
+
+    # Union
+    - match: '\bunion\b'
+      scope: keyword.declaration.union.c3
+
+    # Enum/fault
+    - match: '\b(enum|fault)\b'
+      scope: keyword.declaration.enum.c3
+      set: enum_definition
+
+    # Interface
+    - match: '\binterface\b'
+      scope: keyword.declaration.interface.c3
+      set: interface_declaration
+
+    - include: function
+
+  function:
+    - match: '\b(fn|macro)\b'
+      scope: keyword.declaration.function.c3
+      set: func_header
+
+  # Taken from C.sublime-syntax
+  operators:
+    - match: (?:\+\+|--)
+      scope: keyword.operator.arithmetic.c3
+    - match: \+\=|-\=|\*\=|/\=|%\=|&\=|\|\=|\^\=|>>\=|<<\=
+      scope: keyword.operator.assignment.augmented.c3
+    - match: <<|>>|&&|\|\|
+      scope: keyword.operator.arithmetic.c3
+    - match: <\=|>\=|\=\=|<|>|\!\=
+      scope: keyword.operator.comparison.c3
+    - match: \+|\-|/|%|\||\^|~|!
+      scope: keyword.operator.arithmetic.c3
+    # These two operator can be both arithmetic and pointer/address related
+    - match: \*|&
+      scope: keyword.operator.c3
+    - match: \=
+      scope: keyword.operator.assignment.c3
+
+    - match: '\?|:(?!:)'
+      scope: keyword.operator.c3
+    - match: '::'
+      scope: punctuation.accessor.c3
+    - match: '\.\.(?!\.)'
+      scope: keyword.operator.range.c3
+    - match: '\.\.\.'
+      scope: keyword.operator.variadic.c3
+
+  literals:
+    - include: string_literal
+    - include: char_literal
+    - include: raw_string_literal
+    - include: real_literal
+    - include: integer_literal
+
+  char_literal:
+    - match: "'"
+      scope: punctuation.definition.string.begin.c3
+      push:
+      - meta_scope: string.quoted.single.c3
+      - match: '\\.'
+        scope: constant.character.escape.c3
+      - match: "'"
+        scope: punctuation.definition.string.end.c3
+        pop: true
+
+  string_literal:
     - match: '"'
       scope: punctuation.definition.string.begin.c3
-      push: double_quoted_string
+      push:
+      - meta_scope: string.quoted.double.c3
+      - match: '\\([0abefnrtv''"\\]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})'
+        scope: constant.character.escape.c3
+      - match: '"'
+        scope: punctuation.definition.string.end.c3
+        pop: true
 
-    - match: '\b(asm|assert|attribute|break|bitstruct|case|catch|const|continue|default|def|defer|define|do|else|enum|extern|fault|false|for|foreach|foreach_r|fn|if|import|macro|module|nextcase|null|return|static|struct|switch|true|try|typedef|union|while|var)\b'
-      scope: keyword.control.c3
+  raw_string_literal:
+    - match: '`'
+      scope: punctuation.definition.string.begin.c3
+      push:
+      - meta_scope: string.quoted.other.c3
+      - match: '``'
+        scope: constant.character.escape.c3
+      - match: '`'
+        scope: punctuation.definition.string.end.c3
+        pop: true
 
-    - match: '\b(anyfault|void|bool|float128|float16|double|float|long|ulong|int|uint|short|ushort|ichar|char|isz|usz|iptr|uptr|int128|uint128|any|typeid)\b'
-      scope: entity.name.type.c3
+  real_literal:
+    - match: '\b{{INT}}{{REALTYPE}}\b'
+      scope: constant.numeric.float.c3
+    - match: '\b(?:{{INT}}{{E}}|{{INT}}\.{{INT}}({{E}})?)(?:{{REALTYPE}})?\b'
+      scope: constant.numeric.float.c3
+    - match: '\b(?:0[xX]{{HINT}}{{P}}|0[xX]{{HINT}}\.{{HINT}}{{P}}){{REALTYPE}}?\b'
+      scope: constant.numeric.float.c3
 
-    - match: '\b(assert|echo|error|sizeof|typeof|case|default|else|endif|endswitch|endfor|endforeach|for|foreach|if|switch)\b'
-      scope: keyword.other.c3
+  integer_literal:
+    - match: '\b(?:{{INT}}|0[xX]{{HINT}}|0[oO]{{OINT}}|0[bB]{{BINT}}){{INTTYPE}}?\b'
+      scope: constant.numeric.integer.c3
 
-    - match: '@[A-Za-z_]+\b'
-      scope: keyword.context.c3
+  comments:
+    - include: line_comment
+    - include: block_comment
+    - include: doc_comment
 
-    - match: '\b(-)?[0-9.]+\b'
-      scope: constant.numeric.c3
+  line_comment:
+    - match: '//'
+      scope: punctuation.definition.comment.c3
+      push: line_comment_body
 
-    - match: "//.*"
-      scope: comment.line.c3
-
-    - match: "/\\*\\*"
-      scope: comment.block.begin.c3
-      push: doc_comment
-
-    - match: "/\\*"
-      scope: comment.block.begin.c3
-      push: block_comment
+  line_comment_body:
+    - meta_scope: comment.line.double-slash.c3
+    - match: $
+      pop: true
 
   block_comment:
-    - meta_scope: comment.block.c3
+    - match: '/\*(?!\*)'
+      scope: punctuation.definition.comment.c3
+      push: block_comment_body
 
-    - match: "\\*/"
-      scope: comment.block.end.c3
+  block_comment_body:
+    - meta_scope: comment.block
+    - match: '/\*'
+      scope: punctuation.definition.comment.c3
+      push: block_comment_body
+    - match: '\*/'
+      scope: punctuation.definition.comment.c3
       pop: true
 
   doc_comment:
-    - meta_scope: comment.block.c3
+    - match: '/\*\*'
+      scope: punctuation.definition.comment.c3
+      push: doc_comment_body
 
+  doc_comment_body:
+    - meta_scope: comment.block.documentation.c3
+    - match: '/\*'
+      scope: punctuation.definition.comment.c3
+      push: block_comment_body
     - match: '@(param(\s*\[&?(in|out|inout)\])?|return!?|require|fails|deprecated|ensure|pure)\s'
       scope: keyword.context.c3
-
-    - match: "\\*/"
-      scope: comment.block.end.c3
+    - match: '\*/'
+      scope: punctuation.definition.comment.c3
       pop: true
 
-  double_quoted_string:
-    - meta_scope: string.quoted.double.c3
-    - match: '\\.'
-      scope: constant.character.escape.c3
-    - match: '"'
-      scope: punctuation.definition.string.end.c3
+  type:
+    - match: '\b({{base_type}}|{{TYPE}})\b'
+      scope: storage.type.c3
+    # CT type
+    - match: '\${{TYPE}}\b'
+      scope: storage.type.c3
+
+  generic_params:
+    - match: '\(<'
+      scope: punctuation.definition.generic.begin.c3
+      push:
+        - meta_scope: meta.generic.c3
+        - include: type
+        - include: comments
+        - include: constants
+        - match: '>\)'
+          scope: punctuation.definition.generic.end.c3
+          pop: true
+
+  attribute:
+    - match: '@({{attribute}}|{{TYPE}})'
+      scope: keyword.annotation.c3
+
+  enum_definition:
+    - meta_scope: meta.enum.c3
+    - match: '\b{{CONST}}\b'
+      scope: entity.name.enum.c3
+    - match: '(?=})'
       pop: true
+    - include: main_no_tl
+    
+  interface_declaration:
+    - meta_scope: meta.interface.c3
+    - match: '(?=})'
+      pop: true
+    - include: main_no_tl
+
+  func_header:
+    - match: '(?=\()'
+      pop: true
+    - match: '(?=\{)'
+      pop: true
+    - match: '=>'
+      pop: true
+    - match: ';'
+      scope: punctuation.terminator.c3;
+      pop: true
+    - include: comments
+    - include: type
+    - match: '{{IDENT}}'
+      scope: entity.name.function.c3
