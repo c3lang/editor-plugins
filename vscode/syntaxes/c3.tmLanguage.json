@@ -2,13 +2,14 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "C3",
 	"patterns": [
-		{ "include": "#keywords"  },
-		{ "include": "#comments"  },
-		{ "include": "#strings"   },
-		{ "include": "#numbers"   },
-		{ "include": "#types"     },
-		{ "include": "#support"   },
-		{ "include": "#operators" }
+		{ "include": "#keywords"    },
+		{ "include": "#comments"    },
+		{ "include": "#strings"     },
+		{ "include": "#numbers"     },
+		{ "include": "#types"       },
+		{ "include": "#support"     },
+		{ "include": "#operators"   },
+		{ "include": "#identifiers" }
 	],
 	"repository": {
 		"keywords": {
@@ -130,8 +131,16 @@
 			]
 		},
 		"types": {
-			"name": "storage.type",
-			"match": "\\b(any|anyfault|bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128|typeid|void)\\b"
+			"patterns": [
+				{
+					"name": "support.type.stdint.c3",
+					"match": "\\b(bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128)\\b"
+				},
+				{
+					"name": "storage.type",
+					"match": "\\b(any|anyfault|typeid|void)\\b"
+				}
+			]
 		},
 		"support": {
 			"patterns": [
@@ -148,6 +157,14 @@
 		"operators": {
 			"name": "keyword.operator",
 			"match": "(\\+|-|\\.|%|&|\\|(?!})|=|<|>|!|\\^|\\*|/|::)=?"
+		},
+		"identifiers": {
+			"patterns": [
+				{
+					"name": "entity.name.type.c3",
+					"match": "[_A-Z][_a-zA-Z0-9]*"
+				}
+			]
 		}
 	},
 	"scopeName": "source.c3"
