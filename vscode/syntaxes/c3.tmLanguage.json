@@ -131,8 +131,16 @@
 			]
 		},
 		"types": {
-			"name": "storage.type",
-			"match": "\\b(any|anyfault|bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128|typeid|void)\\b"
+			"patterns": [
+				{
+					"name": "support.type.stdint.c3",
+					"match": "\\b(bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128)\\b"
+				},
+				{
+					"name": "storage.type",
+					"match": "\\b(any|anyfault|typeid|void)\\b"
+				}
+			]
 		},
 		"support": {
 			"patterns": [
