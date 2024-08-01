@@ -3,7 +3,10 @@ This repository contains editor plugins for syntax colouring in various
 editors.
 
 Currently available are:
-- VSCode
+- VS Code
+- [Emacs 29+](https://github.com/c3lang/c3-ts-mode)
+- Emacs <= 28 (emacs-legacy)
+- Sublime Text
 - Nano
 - Kakoune
 
