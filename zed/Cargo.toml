@@ -1,0 +1,11 @@
+[package]
+name = "c3"
+version = "0.0.1"
+edition = "2021"
+
+[lib]
+path = "src/c3.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+zed_extension_api = "0.0.6"
