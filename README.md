@@ -9,6 +9,7 @@ Currently available are:
 - Sublime Text
 - Nano
 - Kakoune
+- [Zed](https://github.com/AineeJames/c3-zed)
 
 Please note that since the language is still undergoing revisions, these may or may not be completely
 current.
