@@ -2,25 +2,36 @@
     "name": "c3-vscode",
     "displayName": "c3-vscode",
     "description": "C3 Language Support for VSCode",
+    "publisher": "carl",
     "version": "0.0.2",
     "engines": {
-        "vscode": "^1.63.0"
+        "vscode": "^1.70.0"
     },
     "categories": [
         "Programming Languages"
     ],
     "contributes": {
-        "languages": [{
-            "id": "c3",
-            "aliases": ["C3", "c3"],
-            "extensions": ["c3", "c3i"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "c3",
-            "scopeName": "source.c3",
-            "path": "./syntaxes/c3.tmLanguage.json"
-        }],
+        "languages": [
+            {
+                "id": "c3",
+                "aliases": [
+                    "C3",
+                    "c3"
+                ],
+                "extensions": [
+                    "c3",
+                    "c3i"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "c3",
+                "scopeName": "source.c3",
+                "path": "./syntaxes/c3.tmLanguage.json"
+            }
+        ],
         "configuration": {
             "title": "Language Server",
             "properties": {
@@ -29,7 +40,7 @@
                     "default": false,
                     "description": "Enables the language server"
                 },
-                "c3.lsp.path" : {
+                "c3.lsp.path": {
                     "type": "string",
                     "default": "c3-lsp",
                     "markdownDescription": "The path to **c3-lsp** binary"
@@ -43,7 +54,7 @@
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Sends crash reports to server to help fixing bugs."
-                  }
+                }
             }
         }
     },

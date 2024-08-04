@@ -1,0 +1,324 @@
+{
+    "if statement": {
+        "prefix": ["if"],
+        "body": [
+            "if ${1:expr} then",
+                "\t${0}",
+            "end if"
+        ]
+    },
+    "elsif statement": {
+        "prefix": ["elsif"],
+        "body": [
+            "elsif ${1:expr} then",
+                "\t${0}"
+        ]
+    },
+    "else statement": {
+        "prefix": ["else"],
+        "body": [
+            "else",
+                "\t${0}"
+        ]
+    },
+    "switch statement": {
+        "prefix": ["switch"],
+        "body": [
+            "switch ${1:expr} do",
+                "\t${0}",
+            "end switch"
+        ]
+    },
+    "switch with fallthru statement": {
+        "prefix": ["switch-with-fallthru"],
+        "body": [
+            "switch ${1:expr} with fallthru do",
+                "\t${0}",
+            "end switch"
+        ]
+    },
+    "case statement": {
+        "prefix": ["case"],
+        "body": [
+            "case ${1:value} then",
+                "\t${2}",
+                "\tbreak",
+            "${0}"
+        ]
+    },
+    "case else statement": {
+        "prefix": ["case-else"],
+        "body": [
+            "case else",
+                "\t${0}"
+        ]
+    },
+    "ifdef statement": {
+        "prefix": ["ifdef"],
+        "body": [
+            "ifdef ${1:expr} then",
+                "\t${0}",
+            "end ifdef"
+        ]
+    },
+    "elsifdef statement": {
+        "prefix": ["elsifdef"],
+        "body": [
+            "elsifdef ${1:expr} then",
+                "\t${0}"
+        ]
+    },
+    "elsedef statement": {
+        "prefix": ["elsedef"],
+        "body": [
+            "elsedef",
+                "\t${0}"
+        ]
+    },
+    "for loop": {
+        "prefix": ["for"],
+        "body": [
+            "for ${1:loopvar} = ${2:startexpr} to ${3:endexpr} do",
+                "\t${0}",
+            "end for"
+        ]
+    },
+    "for loop with by": {
+        "prefix": ["for-by"],
+        "body": [
+            "for ${1:loopvar} = ${2:startexpr} to ${3:endexpr} by ${4:delta} do",
+                "\t${0}",
+            "end for"
+        ]
+    },
+    "while loop": {
+        "prefix": ["while"],
+        "body": [
+            "while ${1:expr} do",
+                "\t${0}",
+            "end while"
+        ]
+    },
+    "while loop with entry": {
+        "prefix": ["while-with-entry"],
+        "body": [
+            "while ${1:expr} with entry do",
+                "\t${0}",
+            "entry",
+                "\t${2}",
+            "end while"
+        ]
+    },
+    "loop until": {
+        "prefix": ["loop"],
+        "body": [
+            "loop do",
+                "\t${0}",
+                "\tuntil ${1:expr}",
+            "end loop"
+        ]
+    },
+    "loop until with entry": {
+        "prefix": ["loop-with-entry"],
+        "body": [
+            "loop with entry do",
+                "\t${0}",
+                "entry",
+                "\t${2}",
+                "\tuntil ${1:expr}",
+            "end loop"
+        ]
+    },
+    "procedure": {
+        "prefix": ["procedure"],
+        "body": [
+            "procedure ${1}(${2})",
+                "\t${0}",
+            "end procedure"
+        ]
+    },
+    "public procedure": {
+        "prefix": ["public-procedure"],
+        "body": [
+            "public procedure ${1}(${2})",
+                "\t${0}",
+            "end procedure"
+        ]
+    },
+    "export procedure": {
+        "prefix": ["export-procedure"],
+        "body": [
+            "export procedure ${1}(${2})",
+                "\t${0}",
+            "end procedure"
+        ]
+    },
+    "global procedure": {
+        "prefix": ["global-procedure"],
+        "body": [
+            "global procedure ${1}(${2})",
+                "\t${0}",
+            "end procedure"
+        ]
+    },
+    "function": {
+        "prefix": ["function"],
+        "body": [
+            "function ${1}(${2})",
+                "\t${0}",
+            "end function"
+        ]
+    },
+    "public function": {
+        "prefix": ["public-function"],
+        "body": [
+            "public function ${1}(${2})",
+                "\t${0}",
+            "end function"
+        ]
+    },
+    "export function": {
+        "prefix": ["export-function"],
+        "body": [
+            "export function ${1}(${2})",
+                "\t${0}",
+            "end function"
+        ]
+    },
+    "global function": {
+        "prefix": ["global-function"],
+        "body": [
+            "global function ${1}(${2})",
+                "\t${0}",
+            "end function"
+        ]
+    },
+    "type": {
+        "prefix": ["type"],
+        "body": [
+            "type ${1}(${2})",
+                "\t${0}",
+            "end type"
+        ]
+    },
+    "public type": {
+        "prefix": ["public-type"],
+        "body": [
+            "public type ${1}(${2})",
+                "\t${0}",
+            "end type"
+        ]
+    },
+    "export type": {
+        "prefix": ["export-type"],
+        "body": [
+            "export type ${1}(${2})",
+                "\t${0}",
+            "end type"
+        ]
+    },
+    "global type": {
+        "prefix": ["global-type"],
+        "body": [
+            "global type ${1}(${2})",
+                "\t${0}",
+            "end type"
+        ]
+    },
+    "constant": {
+        "prefix": ["constant"],
+        "body": [
+            "constant",
+                "\t${0},",
+            "$"
+        ]
+    },
+    "public constant": {
+        "prefix": ["public-constant"],
+        "body": [
+            "public constant",
+                "\t${0},",
+            "$"
+        ]
+    },
+    "export constant": {
+        "prefix": ["export-constant"],
+        "body": [
+            "export constant",
+                "\t${0},",
+            "$"
+        ]
+    },
+    "global constant": {
+        "prefix": ["global-constant"],
+        "body": [
+            "global constant",
+                "\t${0},",
+            "$"
+        ]
+    },
+    "enum": {
+        "prefix": ["enum"],
+        "body": [
+            "enum",
+                "\t${0},",
+            "$"
+        ]
+    },
+    "public enum": {
+        "prefix": ["public-enum"],
+        "body": [
+            "public enum",
+                "\t${0},",
+            "$"
+        ]
+    },
+    "export enum": {
+        "prefix": ["export-enum"],
+        "body": [
+            "export enum",
+                "\t${0},",
+            "$"
+        ]
+    },
+    "global enum": {
+        "prefix": ["global-enum"],
+        "body": [
+            "global enum",
+                "\t${0},",
+            "$"
+        ]
+    },
+    "enum type": {
+        "prefix": ["enum-type"],
+        "body": [
+            "enum type ${1}",
+                "\t${0}",
+            "end type"
+        ]
+    },
+    "public enum type": {
+        "prefix": ["public-enum-type"],
+        "body": [
+            "public enum type ${1}",
+                "\t${0}",
+            "end type"
+        ]
+    },
+    "export enum type": {
+        "prefix": ["export-enum-type"],
+        "body": [
+            "export enum type ${1}",
+                "\t${0}",
+            "end type"
+        ]
+    },
+    "global enum type": {
+        "prefix": ["global-enum-type"],
+        "body": [
+            "global enum type ${1}",
+                "\t${0}",
+            "end type"
+        ]
+    }
+}
