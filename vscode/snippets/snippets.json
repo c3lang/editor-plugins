@@ -52,8 +52,8 @@
             "${1:type} ${2:name} @noinit;"
         ]
     },
-    "typedef": {
-        "prefix": ["typedef"],
+    "def": {
+        "prefix": ["def"],
         "body": [
             "def ${1:name} = ${2:name};"
         ]
@@ -137,28 +137,6 @@
         "prefix": ["case-else"],
         "body": [
             "case else",
-                "\t${0}"
-        ]
-    },
-    "ifdef statement": {
-        "prefix": ["ifdef"],
-        "body": [
-            "ifdef ${1:expr} then",
-                "\t${0}",
-            "end ifdef"
-        ]
-    },
-    "elsifdef statement": {
-        "prefix": ["elsifdef"],
-        "body": [
-            "elsifdef ${1:expr} then",
-                "\t${0}"
-        ]
-    },
-    "elsedef statement": {
-        "prefix": ["elsedef"],
-        "body": [
-            "elsedef",
                 "\t${0}"
         ]
     },

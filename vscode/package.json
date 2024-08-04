@@ -3,10 +3,11 @@
     "displayName": "C3",
     "description": "C3 Language Support for VSCode (Syntax Highlighting and LSP)",
     "publisher": "carl",
-    "version": "0.0.1",
+    "repository": "https://github.com/c3lang/editor-plugins.git",
+    "version": "0.0.3",
     "author": {
-        "name": "Carlos Eduardo Veras Neves",
-        "email": "carlos.vneves@gmail.com"
+        "name": "C3 community",
+        "email": ""
     },
     "engines": {
         "vscode": "^1.70.0"
