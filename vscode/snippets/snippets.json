@@ -1,32 +1,119 @@
+
 {
+    "struct definition": {
+        "prefix": ["struct"],
+        "body": [
+            "struct ${1:name}{",
+                "\t${0}",
+            "}"
+        ]
+    },
+    "arrays declaration": {
+        "prefix": ["array"],
+        "body": [
+            "${1:type}[] ${2:name} = {${3:elements}};"
+        ]
+    },
+    "function": {
+        "prefix": ["function"],
+        "body": [
+            "fn ${1:type} ${2:name}(${3:args}) {",
+                "\t${0}",
+            "}"
+        ]
+    },
+    "call external c function":{
+        "prefix": ["cfunction"],
+        "body": [
+            "extern fn ${1:type} _${2:c3_name}(${3:args}) @extern(\"${3:c_name}\") {",
+                "\t${0}",
+            "}"
+        ]
+
+    },
+    "identifiers":{
+
+    },
+    "variable declaration": {
+        "prefix": ["var"],
+        "body": [
+            "${1:type} ${2:name};"
+        ]
+    },
+    "variable declaration with assignment": { 
+        "prefix": ["vassign"],
+        "body": [
+            "${1:type} ${2:name} = ${3:value};"
+        ]
+    },
+    "variable declaration non-init": { 
+        "prefix": ["vnoinit"],
+        "body": [
+            "${1:type} ${2:name} @noinit;"
+        ]
+    },
+    "typedef": {
+        "prefix": ["typedef"],
+        "body": [
+            "def ${1:name} = ${2:name};"
+        ]
+    },
+    "module definition": {
+        "prefix": ["module"],
+        "body": [
+            "module ${1:name}::${2:filename};"
+        ]
+    },
+    "switch statement":{
+        "prefix": ["switch"],
+        "body": [
+            "switch (${1:expr}) {",
+                "case ${1:value}:",
+                    "\t${0}",
+                "default:",
+                    "\t${0}",
+
+            "}"
+        ] 
+
+    },
+    "expression blocks":{
+        "prefix": ["{|"],
+        "body": [
+            "\t${0}",
+            "|}"
+        ]
+    },
+    "do":{
+        "prefix": ["do"],
+        "body": [
+            "do {",
+                "\t${0}",
+            "}"
+        ]
+    },
     "if statement": {
         "prefix": ["if"],
         "body": [
-            "if ${1:expr} then",
+            "if (${1:expr}) {",
                 "\t${0}",
-            "end if"
+            "}"
         ]
     },
-    "elsif statement": {
+    "else if statement": {
         "prefix": ["elsif"],
         "body": [
-            "elsif ${1:expr} then",
-                "\t${0}"
+            "else if (${1:expr}) {",
+                "\t${0}",
+            "}"
         ]
     },
     "else statement": {
         "prefix": ["else"],
         "body": [
-            "else",
-                "\t${0}"
-        ]
-    },
-    "switch statement": {
-        "prefix": ["switch"],
-        "body": [
-            "switch ${1:expr} do",
+            "else {",
                 "\t${0}",
-            "end switch"
+            "}"
         ]
     },
     "switch with fallthru statement": {
@@ -159,14 +246,6 @@
             "global procedure ${1}(${2})",
                 "\t${0}",
             "end procedure"
-        ]
-    },
-    "function": {
-        "prefix": ["function"],
-        "body": [
-            "function ${1}(${2})",
-                "\t${0}",
-            "end function"
         ]
     },
     "public function": {

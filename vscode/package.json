@@ -1,15 +1,22 @@
 {
-    "name": "c3-vscode",
-    "displayName": "c3-vscode",
-    "description": "C3 Language Support for VSCode",
+    "name": "vscode-c3",
+    "displayName": "C3",
+    "description": "C3 Language Support for VSCode (Syntax Highlighting and LSP)",
     "publisher": "carl",
-    "version": "0.0.2",
+    "version": "0.0.1",
+    "author": {
+        "name": "Carlos Eduardo Veras Neves",
+        "email": "carlos.vneves@gmail.com"
+    },
     "engines": {
         "vscode": "^1.70.0"
     },
     "categories": [
-        "Programming Languages"
+        "Programming Languages",
+        "Snippets"
     ],
+    "icon": "images/icon.png",
+    "license": "None",
     "contributes": {
         "languages": [
             {
@@ -30,6 +37,12 @@
                 "language": "c3",
                 "scopeName": "source.c3",
                 "path": "./syntaxes/c3.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "c3",
+                "path": "./snippets/snippets.json"
             }
         ],
         "configuration": {
@@ -58,7 +71,10 @@
             }
         }
     },
-    "main": "./extension.js",
+    "main": "./src/extension.js",
+    "activationEvents": [
+        "onLanguage:c3"
+    ],
     "dependencies": {
         "vscode-languageclient": "^9.0.1"
     }

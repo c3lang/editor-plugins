@@ -1,4 +1,4 @@
-# vscode-euphoria
+# vscode-c3
 
 ## Snippets
 

@@ -1,0 +1,101 @@
+{
+    "name": "vscode-euphoria",
+    "displayName": "Euphoria",
+    "version": "1.3.2",
+    "publisher": "openeuphoria",
+    "description": "Euphoria language support and debugging for Visual Studio Code",
+    "author": {
+        "name": "Greg Haberek",
+        "email": "ghaberek@gmail.com"
+    },
+    "categories": [
+        "Programming Languages",
+        "Snippets"
+    ],
+    "icon": "images/icon.png",
+    "license": "MIT",
+    "engines": {
+        "vscode": "^1.51.0"
+    },
+    "main": "./out/extension.js",
+    "activationEvents": [
+        "onLanguage:euphoria"
+    ],
+    "bugs": {
+        "url": "https://github.com/OpenEuphoria/vscode-euphoria/issues",
+        "email": "github@openeuphoria.org"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/OpenEuphoria/vscode-euphoria.git"
+    },
+    "homepage": "https://github.com/OpenEuphoria/vscode-euphoria/blob/master/README.md",
+    "contributes": {
+        "languages": [
+            {
+                "id": "euphoria",
+                "aliases": [
+                    "Euphoria",
+                    "euphoria"
+                ],
+                "extensions": [
+                    ".e",
+                    ".esp",
+                    ".eu",
+                    ".ew",
+                    ".ex",
+                    ".exu",
+                    ".exw"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "configuration": {
+            "title": "Euphoria",
+            "properties": {
+                "euphoria.diagnostics.enableDiagnostics": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Enables or disables diagnostics *(This will overwrite your local `ex.err` file frequently.)*"
+                }
+            }
+        },
+        "grammars": [
+            {
+                "language": "euphoria",
+                "scopeName": "source.euphoria",
+                "path": "./syntaxes/euphoria.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "euphoria",
+                "path": "./snippets/snippets.json"
+            }
+        ]
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "lint": "eslint src --ext ts",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.1.3",
+        "@types/mocha": "^7.0.2",
+        "@types/node": "^13.13.33",
+        "@types/vscode": "^1.51.0",
+        "@typescript-eslint/eslint-plugin": "^2.30.0",
+        "@typescript-eslint/parser": "^2.30.0",
+        "bootstrap-amd": "^1.0.3",
+        "bootstrap-fork": "^3.3.6",
+        "child_process": "^1.0.2",
+        "eslint": "^6.8.0",
+        "glob": "^7.1.6",
+        "mocha": "^7.2.0",
+        "typescript": "^3.9.7",
+        "vscode-test": "^1.4.1"
+    },
+    "dependencies": {}
+}
