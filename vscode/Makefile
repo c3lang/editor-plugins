@@ -1,5 +1,6 @@
 clean:
-	rm .\vscode-c3-0.0.3.vsix
+	echo "Cleaning..."
+	rm "vscode-c3-0.0.3.vsix"
 build:
 	vsce package -o vscode-c3-0.0.3.vsix
 install:

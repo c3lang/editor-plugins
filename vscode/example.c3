@@ -6,11 +6,15 @@ import std::mem;
 
 struct Stack
 {
-    usize capacity;
-    usize size;
-    Type* elems;
+    usz capacity;
+    usz size;
+    Type *e;
 }
 
+
+fn void Stack.pull(Stack* this){
+
+}
 
 // The type methods offers dot syntax calls,
 // so this function can either be called 
@@ -27,6 +31,8 @@ fn void Stack.push(Stack* this, Type element)
     
     
 }
+
+
 
 fn Type Stack.pop(Stack* this)
 {
@@ -49,8 +55,9 @@ import std::math;
 import std::core::builtin;
 
 
-struct Value{
-	double data;
+struct Value
+{
+	double data; 
 	double grad;
 	String label;
 	String op;
@@ -58,9 +65,13 @@ struct Value{
 
 }
 
+fn Value add(Value v, Value d)
+{
 
+}
 
-fn Value Value.add(Value *v, Value *w){
+// chamar a função sobre a Struct (ajustar a chamada de função)
+fn Value Value.add(Value* v, Value* w){
 	
 	Value z; 
 	  
@@ -72,7 +83,7 @@ fn Value Value.add(Value *v, Value *w){
 	return z;
 }
 
-fn Value Value.mul(Value *v, Value *w){
+fn Value Value.mul(Value* v, Value* w){
 	
 	Value z; 
 	z.data = v.data * w.data;
@@ -83,7 +94,8 @@ fn Value Value.mul(Value *v, Value *w){
 	return z;
 }
 
-fn Value Value.pow(Value *v, double n){
+// o primeiro parâmetro da função chamada sobre uma Struct não consegue ser identificado como parâmetro de função
+fn Value Value.pow(Value* v, double n){
 	
 	Value z; 
 	// z.data = pow(v.data, n);
@@ -98,7 +110,7 @@ fn type name(args) {
     
 }
 
-fn void Value.print_prev(Value *v){
+fn void Value.print_prev(Value* v){
 	if (!v.prev.is_empty()){
 
 		io::print("The previous nodes are: ");
@@ -113,10 +125,22 @@ fn void Value.print_prev(Value *v){
 	}
 
 }
+def Callback = fn void(int value);
+Callback callback = &test;
 
-fn void Value.display(Value *v){
+enum State : int (String state_desc, bool active)
+{
+    PENDING = { "pending start", false },
+    RUNNING = { "running", true },
+    TERMINATED = { "ended", false }
+}
 
+
+
+
+fn void Value.display(Value* v){
 	String output = "(data: )";
+    def Vector2 = float[<2>];
 	
     if (!v.prev.is_empty()){
 
