@@ -1,0 +1,52 @@
+filetype: c3
+
+detect:
+    filename: "(\\.(c3)$)"
+
+rules:
+    - identifier: "\\b[A-Z_][0-9A-Z_]+\\b"
+    - type: "\\b[A-Z][A-Za-z_]+\\b"
+    - identifier.constant: "\\b[A-Z_]+\\b"
+    - identifer: "\\$[A-Za-z_][0-9A-Za-z_]+"
+    - type: "\\b(void|bool|char|double|float|float16|bfloat|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|anyfault|String)\\b"
+    - type: "\\b(CChar|CShort|CUShort|CInt|CUInt|CLong|CULong|CLongLong|CULongLong|CLongDouble)\\b"
+    - statement: "\\b(typeid|assert|asm|bitstruct|break|case|catch|const|continue|def|default|defer|distinct|do|else|enum|extern|fault|for|foreach|foreach_r|fn|tlocal|if|inline|import|macro|module|nextcase|null|interface|return|static|struct|switch|try|union|var|while)\\b"
+    - statement: "(\\$\\$abs|\\$\\$any_make|\\$\\$atomic_load|\\$\\$atomic_store|\\$\\$atomic_fetch_exchange|\\$\\$atomic_fetch_add|\\$\\$atomic_fetch_sub|\\$\\$atomic_fetch_and|\\$\\$atomic_fetch_nand|\\$\\$atomic_fetch_or|\\$\\$atomic_fetch_xor|\\$\\$atomic_fetch_max|\\$\\$atomic_fetch_min|\\$\\$atomic_fetch_inc_wrap|\\$\\$atomic_fetch_dec_wrap|\\$\\$bitreverse|\\$\\$breakpoint|\\$\\$bswap|\\$\\$ceil|\\$\\$compare_exchange|\\$\\$copysign|\\$\\$cos|\\$\\$clz|\\$\\$ctz|\\$\\$add|\\$\\$div|\\$\\$mod|\\$\\$mul|\\$\\$neg|\\$\\$sub|\\$\\$exp|\\$\\$exp2|\\$\\$expect|\\$\\$expect_with_probability|\\$\\$floor|\\$\\$fma|\\$\\$fmuladd|\\$\\$frameaddress|\\$\\$fshl|\\$\\$fshr|\\$\\$gather|\\$\\$get_rounding_mode|\\$\\$log|\\$\\$log10|\\$\\$log2|\\$\\$masked_load|\\$\\$masked_store|\\$\\$max|\\$\\$memcpy|\\$\\$memcpy_inline|\\$\\$memmove|\\$\\$memset|\\$\\$memset_inline|\\$\\$min|\\$\\$nearbyint|\\$\\$overflow_add|\\$\\$overflow_mul|\\$\\$overflow_sub|\\$\\$popcount|\\$\\$pow|\\$\\$pow_int|\\$\\$prefetch|\\$\\$reduce_add|\\$\\$reduce_and|\\$\\$reduce_fadd|\\$\\$reduce_fmul|\\$\\$reduce_max|\\$\\$reduce_min|\\$\\$reduce_mul|\\$\\$reduce_or|\\$\\$reduce_xor|\\$\\$reverse|\\$\\$returnaddress|\\$\\$rint|\\$\\$round|\\$\\$roundeven|\\$\\$sat_add|\\$\\$sat_shl|\\$\\$sat_sub|\\$\\$scatter|\\$\\$select|\\$\\$set_rounding_mode|\\$\\$str_hash|\\$\\$str_upper|\\$\\$str_lower|\\$\\$str_find|\\$\\$swizzle|\\$\\$swizzle2|\\$\\$sin|\\$\\$sqrt|\\$\\$syscall|\\$\\$sysclock|\\$\\$trap|\\$\\$trunc|\\$\\$unaligned_load|\\$\\$unaligned_store|\\$\\$unreachable|\\$\\$veccomplt|\\$\\$veccomple|\\$\\$veccompgt|\\$\\$veccompge|\\$\\$veccompeq|\\$\\$veccompne|\\$\\$volatile_load|\\$\\$volatile_store|\\$\\$wasm_memory_size|\\$\\$wasm_memory_grow|\\$\\$DATE|\\$\\$FILE|\\$\\$FILEPATH|\\$\\$FUNC|\\$\\$FUNCTION|\\$\\$LINE|\\$\\$LINE_RAW|\\$\\$MODULE|\\$\\$BENCHMARK_NAMES|\\$\\$BENCHMARK_FNS|\\$\\$TEST_NAMES|\\$\\$TEST_FNS|\\$\\$TIME)"
+    - preproc: "(\\$alignof|\\$and|\\$append|\\$assert|\\$assignable|\\$case|\\$concat|\\$default|\\$defined|\\$echo|\\$else|\\$embed|\\$endfor|\\$endforeach|\\$endif|\\$endswitch|\\$eval|\\$evaltype|\\$error|\\$exec|\\$extnameof|\\$feature|\\$for|\\$foreach|\\$if|\\$include|\\$is_const|\\$nameof|\\$offsetof|\\$or|\\$qnameof|\\$sizeof|\\$stringify|\\$switch|\\$typefrom|\\$typeof|\\$vacount|\\$vatype|\\$vaconst|\\$varef|\\$vaarg|\\$vaexpr|\\$vasplat)"
+    - preproc: "(@align|@benchmark|@bigendian|@builtin|@callconv|@compact|@const|@deprecated|@dynamic|@export|@extern|@finalizer|@if|@inline|@init|@link|@littleendian|@local|@maydiscard|@naked|@noalias|@nodiscard|@noinit|@noinline|@nopadding|@noreturn|@nostrip|@obfuscate|@operator|@optional|@overlap|@packed|@private|@public|@pure|@reflect|@safemacro|@section|@test|@unused|@used|@wasm|@weak|@winmain)"
+    - symbol.operator: "[-+*/%=<>.:;,~&|^!?]|\\b(offsetof|sizeof)\\b"
+    - symbol.brackets: "[(){}]|\\[|\\]"
+
+      # Integer Constants
+    - constant.number: "(\\b([0-9_]+|0x[0-9A-Fa-f_]+|0b[01_]+)\\b)"
+      # Decimal Floating Constants
+    - constant.number: "(\\b([0-9_]+.[0-9]+)\\b)"
+
+    - constant.bool: "(\\b(true|false|null)\\b)"
+
+    - constant.string:
+        start: "\""
+        end: "\""
+        skip: "\\\\."
+        rules:
+            - constant.specialChar: "\\\\([\"'abfnrtv\\\\]|[0-3]?[0-7]{1,2}|x[0-9A-Fa-f]{1,2}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})"
+
+    - constant.string:
+        start: "'"
+        end: "'"
+        skip: "\\\\."
+        rules:
+            - error: "..+"
+            - constant.specialChar: "\\\\([\"'abfnrtv\\\\]|[0-3]?[0-7]{1,2}|x[0-9A-Fa-f]{1,2}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})"
+
+    - comment:
+        start: "//"
+        end: "$"
+        rules:
+            - todo: "(TODO|XXX|FIXME):?"
+
+    - comment:
+        start: "/\\*"
+        end: "\\*/"
+        rules:
+            - todo: "(TODO|XXX|FIXME):?"
