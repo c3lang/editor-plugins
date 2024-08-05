@@ -1,3 +1,5 @@
+module foo::bar;
+
 module stack <Type>;
 // Above: the parameterized type is applied to the entire module.
 import std::mem;
