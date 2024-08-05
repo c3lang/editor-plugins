@@ -8,6 +8,7 @@
 		"c3t"
 	],
 	"patterns": [
+		{ "include": "#function_declaration" },
 		{ "include": "#keywords"    },
 		{ "include": "#comments"    },
 		{ "include": "#strings"     },
@@ -18,10 +19,35 @@
 		{ "include": "#identifiers" }
 	],
 	"repository": {
+		"function_declaration": {
+			"match": "\\b(fn|macro|inline)\\s+((?:inline\\s+)?)([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s+([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s*\\(([^)]*)\\)",
+			"captures": {
+				"1": { "name": "keyword.declaration.function.c3" },
+				"2": { "name": "keyword.declaration.function.modifier.c3" },
+				"3": { "name": "storage.type.c3" },
+				"4": { "name": "entity.name.function.c3" },
+				"5": { "patterns": [{ "include": "#function_parameters" }] }
+			}
+		},
+		"function_parameters": {
+			"patterns": [
+				{
+					"match": "\\s*([a-zA-Z_][a-zA-Z0-9_*]*)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*",
+					"captures": {
+						"1": { "name": "storage.type.c3" },
+						"2": { "name": "variable.parameter.c3" }
+					}
+				},
+				{
+					"match": ",",
+					"name": "punctuation.separator.parameter.c3"
+				}
+			]
+		},
 		"keywords": {
 			"patterns": [
 				{
-					"match": "\\b(assert|asm|catch|const|def|distinct|extern|tlocal|inline|import|module|interface|static|try|var)\\b",
+					"match": "\\b(fn|assert|asm|catch|const|def|distinct|extern|tlocal|inline|import|module|interface|static|try|var|macro)\\b",
 					"name": "keyword.other.c3"
 				},
 				{

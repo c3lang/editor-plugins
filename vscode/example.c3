@@ -56,6 +56,8 @@ struct Value{
 
 }
 
+
+
 fn Value Value.add(Value *v, Value *w){
 	
 	Value z; 
@@ -88,6 +90,10 @@ fn Value Value.pow(Value *v, double n){
 	// z.prev.push(*v);
 	
 	return z;
+}
+
+fn type name(args) {
+    
 }
 
 fn void Value.print_prev(Value *v){
@@ -124,3 +130,6 @@ fn void Value.display(Value *v){
 	}
 
 }
+
+
+

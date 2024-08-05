@@ -15,7 +15,7 @@
         ]
     },
     "function": {
-        "prefix": ["function"],
+        "prefix": ["fn"],
         "body": [
             "fn ${1:type} ${2:name}(${3:args}) {",
                 "\t${0}",
