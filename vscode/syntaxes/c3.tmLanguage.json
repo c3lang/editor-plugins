@@ -313,12 +313,12 @@
         "types": {
             "patterns": [
                 {
-                    "name": "support.type.stdint.c3",
-                    "match": "\\b(bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128)\\b"
+                    "match": "\\b(bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128|any|anyfault|typeid|void)\\b",
+                    "name": "storage.type.c3"
                 },
                 {
-                    "name": "storage.type.c3",
-                    "match": "\\b(any|anyfault|typeid|void)\\b"
+                    "match": "\\b[A-Z][a-zA-Z0-9_]*\\b",
+                    "name": "storage.type.c3"
                 }
             ]
         },
@@ -341,8 +341,8 @@
         "identifiers": {
             "patterns": [
                 {
-                    "name": "entity.name.type.c3",
-                    "match": "[_A-Z][_a-zA-Z0-9]*"
+                    "match": "\\b[a-z_][a-zA-Z0-9_]*\\b",
+                    "name": "variable.other.c3"
                 }
             ]
         }
