@@ -2,13 +2,9 @@
     "name": "vscode-c3",
     "displayName": "C3",
     "description": "C3 Language Support for VSCode (Syntax Highlighting and LSP)",
-    "publisher": "carl",
+    "publisher": "C3Community",
     "repository": "https://github.com/c3lang/editor-plugins.git",
     "version": "0.0.3",
-    "author": {
-        "name": "C3 community",
-        "email": ""
-    },
     "engines": {
         "vscode": "^1.75.0"
     },
@@ -17,7 +13,7 @@
         "Snippets"
     ],
     "icon": "images/icon.png",
-    "license": "None",
+    "license": "MIT",
     "contributes": {
         "languages": [
             {
@@ -47,30 +43,40 @@
             }
         ],
         "configuration": {
-            "title": "Language Server",
-            "properties": {
-                "c3.lsp.enable": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Enables the language server"
-                },
-                "c3.lsp.path": {
-                    "type": "string",
-                    "default": "c3-lsp",
-                    "markdownDescription": "The path to **c3-lsp** binary"
-                },
-                "c3.lsp.debug": {
-                    "type": "boolean",
-                    "default": true,
-                    "markdownDescription": "Enables debug information logging"
-                },
-                "c3.lsp.sendCrashReports": {
-                    "type": "boolean",
-                    "default": false,
-                    "markdownDescription": "Sends crash reports to server to help fixing bugs."
-                }
+        "title": "Language Server",
+        "properties": {
+            "c3lspclient.lsp.enable": {
+            "type": "boolean",
+            "default": true,
+            "description": "Enables the language server"
+            },
+            "c3lspclient.lsp.path": {
+            "type": "string",
+            "default": null,
+            "markdownDescription": "The path to **c3-lsp** binary"
+            },
+            "c3lspclient.lsp.debug": {
+            "type": "boolean",
+            "default": true,
+            "markdownDescription": "Enables debug information logging"
+            },
+            "c3lspclient.lsp.log.path": {
+            "type": "string",
+            "default": "",
+            "description": "Saves log to specified file"
+            },
+            "c3lspclient.lsp.sendCrashReports": {
+            "type": "boolean",
+            "default": false,
+            "markdownDescription": "Sends crash reports to server to help fixing bugs."
+            },
+            "c3lspclient.lsp.c3.version": {
+            "type": "string",
+            "default": null,
+            "markdownDescription": "Specify C3 language version. If omited, LSP will use the last version it supports."
             }
         }
+      }
     },
     "main": "./src/extension.js",
     "dependencies": {

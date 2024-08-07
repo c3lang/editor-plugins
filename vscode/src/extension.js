@@ -5,7 +5,7 @@ const path = require('path');
 const os = require('os');
 
 let client = null;
-const config = workspace.getConfiguration('c3.lsp');
+const config = workspace.getConfiguration('c3lspclient.lsp');
 
 module.exports = {
   activate: function (context) {
@@ -16,13 +16,13 @@ module.exports = {
 
     let executablePath = config.get('path');
     
-    if (executablePath == "") {
+    /*if (executablePath == "") {
         switch(os.platform()) {
           // case "win32": binary_path = "c3-lsp-win"
-          case "darwin": executablePath = path.join(context.extensionPath, "c3-lsp-macos")
-          case "linux": executablePath = path.join(context.extensionPath, "c3-lsp-linux")
+          case "darwin": executablePath = path.join(context.extensionPath, "c3-lsp")
+          case "linux": executablePath = path.join(context.extensionPath, "c3-lsp")
         }
-    }
+    }*/
     
     let args = [];
     if (config.get('sendCrashReports')) {
