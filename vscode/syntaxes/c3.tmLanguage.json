@@ -9,6 +9,18 @@
     ],
     "patterns": [
         {
+            "include": "#import_statement"
+        },
+        {
+            "include": "#function_call"
+        },
+        {
+            "include": "#module_function_call"
+        },
+        {
+            "include": "#struct_field_access"
+        },
+        {
             "include": "#method_declaration"
         },
         {
@@ -46,6 +58,53 @@
         }
     ],
     "repository": {
+        "import_statement": {
+            "match": "\\b(import)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:::([a-zA-Z_][a-zA-Z0-9_]*)(?:::([a-zA-Z_][a-zA-Z0-9_]*))?)?\\s*;",
+            "captures": {
+                "1": {
+                    "name": "keyword.control.import.c3"
+                },
+                "2": {
+                    "name": "entity.name.namespace.c3"
+                },
+                "3": {
+                    "name": "entity.name.namespace.submodule.c3"
+                },
+                "4": {
+                    "name": "entity.name.namespace.submodule.c3"
+                }
+            }
+        },
+        "function_call": {
+            "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(",
+            "captures": {
+                "1": {
+                    "name": "entity.name.function.c3"
+                }
+            }
+        },
+        "module_function_call": {
+            "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*::\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(",
+            "captures": {
+                "1": {
+                    "name": "entity.name.namespace.c3"
+                },
+                "2": {
+                    "name": "entity.name.function.c3"
+                }
+            }
+        },
+        "struct_field_access": {
+            "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\.\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\b(?!\\s*\\()",
+            "captures": {
+                "1": {
+                    "name": "variable.other.c3"
+                },
+                "2": {
+                    "name": "variable.other.property.c3"
+                }
+            }
+        },
         "method_declaration": {
             "match": "\\b(fn)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\.([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(([^)]*)\\)",
             "captures": {

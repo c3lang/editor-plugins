@@ -2,7 +2,7 @@
     "name": "vscode-c3",
     "displayName": "C3",
     "description": "C3 Language Support for VSCode (Syntax Highlighting and LSP)",
-    "publisher": "C3Community",
+    "publisher": "C3Language",
     "repository": "https://github.com/c3lang/editor-plugins.git",
     "version": "0.0.3",
     "engines": {
