@@ -14,6 +14,8 @@ module.exports = {
         return;
     }
 
+    console.log('C3 LSP Client extension is now active!');
+
     let executablePath = config.get('path');
     
     /*if (executablePath == "") {
