@@ -238,7 +238,7 @@
             "patterns": [
                 {
                     "name": "constant.numeric.float.c3",
-                    "match": "\\b[0-9]+\\.[0-9]+([eE][+-]?[0-9]+)?\\b"
+                    "match": "\\b[0-9]+\\.[0-9]+f?\\b"
                 },
                 {
                     "name": "constant.numeric.integer.decimal.c3",
