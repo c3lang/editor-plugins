@@ -1,158 +1,211 @@
-
 {
-"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-"name": "C3",
-"scopeName": "source.c3",
-"fileTypes": [
-    "c3",
-    "c3i",
-    "c3t"
-],
-"patterns": [
-    { "include": "#module_declaration" },
-    { "include": "#function_declaration" },
-    { "include": "#keywords"    },
-    { "include": "#comments"    },
-    { "include": "#strings"     },
-    { "include": "#numbers"     },
-    { "include": "#types"       },
-    { "include": "#support"     },
-    { "include": "#operators"   },
-    { "include": "#identifiers" }
-],
-"repository": {
-    "module_declaration": {
-        "match": "\\b(module)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:::([a-zA-Z_][a-zA-Z0-9_]*))?\\s*;",
-        "captures": {
-            "1": { "name": "keyword.declaration.module.c3" },
-            "2": { "name": "entity.name.module.c3" },
-            "3": { "name": "entity.name.module.sub.c3" }
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "C3",
+    "scopeName": "source.c3",
+    "fileTypes": [
+        "c3",
+        "c3i",
+        "c3t"
+    ],
+    "patterns": [
+        {
+            "include": "#module_declaration"
+        },
+        {
+            "include": "#function_declaration"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#annotations"
+        },
+        {
+            "include": "#constants"
+        },
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#types"
+        },
+        {
+            "include": "#support"
+        },
+        {
+            "include": "#operators"
+        },
+        {
+            "include": "#identifiers"
         }
-    },
-    "function_declaration": {
-        "match": "\\b(fn|macro|inline)\\s+((?:inline\\s+)?)([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s+([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s*\\(([^)]*)\\)",
-        "captures": {
-            "1": { "name": "keyword.declaration.function.c3" },
-            "2": { "name": "keyword.declaration.function.modifier.c3" },
-            "3": { "name": "storage.type.c3" },
-            "4": { "name": "entity.name.function.c3" },
-            "5": { "patterns": [{ "include": "#function_parameters" }] }
-        }
-    },
-    "function_parameters": {
-        "patterns": [
-            {
-                "match": "\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*",
-                "captures": {
-                    "1": { "name": "storage.type.c3" },
-                    "2": { "name": "variable.parameter.c3" }
+    ],
+    "repository": {
+        "module_declaration": {
+            "match": "\\b(module)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:::([a-zA-Z_][a-zA-Z0-9_]*))?\\s*;",
+            "captures": {
+                "1": {
+                    "name": "keyword.declaration.module.c3"
+                },
+                "2": {
+                    "name": "entity.name.module.c3"
+                },
+                "3": {
+                    "name": "entity.name.module.sub.c3"
                 }
-            },
-            {
-                "match": ",",
-                "name": "punctuation.separator.parameter.c3"
             }
-        ]
-    },
-    "keywords": {
-        "patterns": [
-            {
-                "match": "\\b(fn|assert|asm|catch|const|def|distinct|extern|tlocal|inline|import|module|interface|static|try|var|macro)\\b",
-                "name": "keyword.other.c3"
-            },
-            {
-                "match": "\\b(break|case|continue|default|defer|do|else|for|foreach|foreach_r|if|nextcase|return|switch|while)\\b",
-                "name": "keyword.control.c3"
-            },
-            {
-                "match": "\\$(alignof|and|append|assert|assignable|case|concat|default|defined|echo|else|embed|endfor|endforeach|endif|endswitch|eval|evaltype|error|exec|extnameof|feature|for|foreach|if|include|is_const|nameof|offsetof|or|qnameof|sizeof|stringify|switch|typefrom|typeof|vacount|vatype|vaconst|varef|vaarg|vaexpr|vasplat)\\b",
-                "name": "keyword.other.c3"
+        },
+        "function_declaration": {
+            "match": "\\b(fn|macro|inline)\\s+((?:inline\\s+)?)([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s+([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s*\\(([^)]*)\\)",
+            "captures": {
+                "1": {
+                    "name": "keyword.declaration.function.c3"
+                },
+                "2": {
+                    "name": "keyword.declaration.function.modifier.c3"
+                },
+                "3": {
+                    "name": "storage.type.c3"
+                },
+                "4": {
+                    "name": "entity.name.function.c3"
+                },
+                "5": {
+                    "patterns": [
+                        {
+                            "include": "#function_parameters"
+                        }
+                    ]
+                }
             }
-        ]
-    },
-    "types": {
-        "patterns": [
-            {
-                "match": "\\b(bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128|any|anyfault|typeid|void)\\b",
-                "name": "storage.type.c3"
-            },
-            {
-                "match": "\\b[A-Z][a-zA-Z0-9_]*\\b",
-                "name": "storage.type.c3"
-            }
-        ]
-    },
-    "support": {
-        "patterns": [
-            {
-                "match": "\\$[_a-zA-Z][_a-zA-Z0-9]*",
-                "name": "support.function.builtin.c3"
-            },
-            {
-                "match": "@[_a-zA-Z][_a-zA-Z0-9]*",
-                "name": "support.function.macro.c3"
-            }
-        ]
-    },
-    "operators": {
-        "name": "keyword.operator.c3",
-        "match": "(\\+|-|\\.|%|&|\\|(?!})|=|<|>|!|\\^|\\*|/|::)=?"
-    },
-    "identifiers": {
-        "patterns": [
-            {
-                "match": "\\b[a-z_][a-zA-Z0-9_]*\\b",
-                "name": "variable.other.c3"
-            }
-        ]
-    },
-    "numbers": {
-        "patterns": [
-            {
-                "name": "constant.numeric.float.c3",
-                "match": "\\b[0-9]+\\.[0-9]+([eE][+-]?[0-9]+)?\\b"
-            },
-            {
-                "name": "constant.numeric.integer.decimal.c3",
-                "match": "\\b[0-9]+\\b"
-            },
-            {
-                "name": "constant.numeric.integer.hexadecimal.c3",
-                "match": "\\b0x[a-fA-F0-9]+\\b"
-            },
-            {
-                "name": "constant.numeric.integer.octal.c3",
-                "match": "\\b0o[0-7]+\\b"
-            },
-            {
-                "name": "constant.numeric.integer.binary.c3",
-                "match": "\\b0b[01]+\\b"
-            }
-        ]
-    },
-    "strings": {
-        "name": "string.quoted.double.c3",
-        "begin": "\"",
-        "end": "\"",
-        "patterns": [
-            {
-                "name": "constant.character.escape.c3",
-                "match": "\\\\."
-            }
-        ]
-    },
-    "comments": {
-        "patterns": [
-            {
-                "name": "comment.line.double-slash.c3",
-                "match": "//.*$"
-            },
-            {
-                "name": "comment.block.c3",
-                "begin": "/\\*",
-                "end": "\\*/"
-            }
-        ]
+        },
+        "function_parameters": {
+            "patterns": [
+                {
+                    "match": "\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s+([a-zA-Z_][a-zA-Z0-9_]*)\\s*",
+                    "captures": {
+                        "1": {
+                            "name": "storage.type.c3"
+                        },
+                        "2": {
+                            "name": "variable.parameter.c3"
+                        }
+                    }
+                },
+                {
+                    "match": ",",
+                    "name": "punctuation.separator.parameter.c3"
+                }
+            ]
+        },
+        "keywords": {
+            "patterns": [
+                {
+                    "match": "\\b(void|bool|char|double|float|float16|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|anyfault|typeid|assert|asm|bitstruct|break|case|catch|const|continue|def|default|defer|distinct|do|else|enum|extern|false|fault|for|foreach|foreach_r|fn|tlocal|if|inline|import|macro|module|nextcase|null|return|static|struct|switch|true|try|union|var|while)\\b",
+                    "name": "keyword.other.c3"
+                },
+                {
+                    "match": "\\$(alignof|assert|case|default|defined|echo|embed|exec|else|endfor|endforeach|endif|endswitch|eval|evaltype|error|extnameof|for|foreach|if|include|nameof|offsetof|qnameof|sizeof|stringify|switch|typefrom|typeof|vacount|vatype|vaconst|varef|vaarg|vaexpr|vasplat)\\b",
+                    "name": "keyword.other.builtin.c3"
+                }
+            ]
+        },
+        "annotations": {
+            "match": "@(align|benchmark|bigendian|builtin|cdecl|deprecated|dynamic|export|extern|extname|inline|interface|littleendian|local|maydiscard|naked|nodiscard|noinit|noinline|noreturn|nostrip|obfuscate|operator|overlap|packed|priority|private|public|pure|reflect|section|stdcall|test|unused|used|veccall|wasm|weak|winmain)\\b",
+            "name": "storage.modifier.c3"
+        },
+        "constants": {
+            "match": "\\b(\\$\\$BENCHMARK_FNS|\\$\\$BENCHMARK_NAMES|\\$\\$DATE|\\$\\$FILE|\\$\\$FILEPATH|\\$\\$FUNC|\\$\\$FUNCTION|\\$\\$LINE|\\$\\$LINE_RAW|\\$\\$MODULE|\\$\\$TEST_FNS|\\$\\$TEST_NAMES|\\$\\$TIME)\\b",
+            "name": "constant.language.c3"
+        },
+        "types": {
+            "patterns": [
+                {
+                    "match": "\\b(bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128|any|anyfault|typeid|void)\\b",
+                    "name": "storage.type.c3"
+                },
+                {
+                    "match": "\\b[A-Z][a-zA-Z0-9_]*\\b",
+                    "name": "storage.type.c3"
+                }
+            ]
+        },
+        "support": {
+            "patterns": [
+                {
+                    "match": "\\$[_a-zA-Z][_a-zA-Z0-9]*",
+                    "name": "support.function.builtin.c3"
+                },
+                {
+                    "match": "@[_a-zA-Z][_a-zA-Z0-9]*",
+                    "name": "support.function.macro.c3"
+                }
+            ]
+        },
+        "operators": {
+            "name": "keyword.operator.c3",
+            "match": "(\\+|-|\\.|%|&|\\|(?!})|=|<|>|!|\\^|\\*|/|::)=?"
+        },
+        "identifiers": {
+            "patterns": [
+                {
+                    "match": "\\b[a-z_][a-zA-Z0-9_]*\\b",
+                    "name": "variable.other.c3"
+                }
+            ]
+        },
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.float.c3",
+                    "match": "\\b[0-9]+\\.[0-9]+([eE][+-]?[0-9]+)?\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.decimal.c3",
+                    "match": "\\b[0-9]+\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.hexadecimal.c3",
+                    "match": "\\b0x[a-fA-F0-9]+\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.octal.c3",
+                    "match": "\\b0o[0-7]+\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.binary.c3",
+                    "match": "\\b0b[01]+\\b"
+                }
+            ]
+        },
+        "strings": {
+            "name": "string.quoted.double.c3",
+            "begin": "\"",
+            "end": "\"",
+            "patterns": [
+                {
+                    "name": "constant.character.escape.c3",
+                    "match": "\\\\."
+                }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.line.double-slash.c3",
+                    "match": "//.*$"
+                },
+                {
+                    "name": "comment.block.c3",
+                    "begin": "/\\*",
+                    "end": "\\*/"
+                }
+            ]
+        }
     }
-}
 }
