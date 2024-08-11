@@ -28,7 +28,7 @@ https://github.com/pherrymason/c3-lsp/wiki/Integration-with-editors
 
 ## Known Issues
 
-Despite the configurations, the integration with the LSP is not working.
+Despite the configurations, the integration with the LSP depends on the installation described in https://github.com/pherrymason/c3-lsp/wiki/Integration-with-editors.
 
 ## Release Notes
 
@@ -36,6 +36,10 @@ Despite the configurations, the integration with the LSP is not working.
 ### 0.0.1
 
 Initial release.
+
+### 0.0.2
+
+Improvements.
 
 ### 0.0.3
 
