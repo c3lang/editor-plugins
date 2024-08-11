@@ -15,6 +15,9 @@
             "include": "#function_declaration"
         },
         {
+            "include": "#inline_function_declaration"
+        },
+        {
             "include": "#keywords"
         },
         {
@@ -76,6 +79,33 @@
                     "name": "entity.name.function.c3"
                 },
                 "5": {
+                    "patterns": [
+                        {
+                            "include": "#function_parameters"
+                        }
+                    ]
+                }
+            }
+        },
+        "inline_function_declaration": {
+            "match": "\\b(inline)\\s+(fn)\\s+((?:inline\\s+)?)(?:([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s+)?([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s*\\(([^)]*)\\)",
+            "captures": {
+                "1": {
+                    "name": "storage.modifier.c3"
+                },
+                "2": {
+                    "name": "keyword.declaration.function.c3"
+                },
+                "3": {
+                    "name": "storage.modifier.c3"
+                },
+                "4": {
+                    "name": "storage.type.c3"
+                },
+                "5": {
+                    "name": "entity.name.function.c3"
+                },
+                "6": {
                     "patterns": [
                         {
                             "include": "#function_parameters"
