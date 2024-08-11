@@ -1,16 +1,70 @@
 {
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "C3",
+	"fileTypes": [
+        "c3",
+        "c3i",
+        "c3t"
+    ],
 	"patterns": [
-		{ "include": "#keywords"    },
-		{ "include": "#comments"    },
-		{ "include": "#strings"     },
-		{ "include": "#numbers"     },
-		{ "include": "#types"       },
-		{ "include": "#support"     },
-		{ "include": "#operators"   },
-		{ "include": "#identifiers" }
-	],
+        {
+            "include": "#module_declaration"
+        },
+        {
+            "include": "#function_declaration"
+        },
+        {
+            "include": "#inline_function_declaration"
+        },
+        {
+            "include": "#interface_declaration"
+        },
+        {
+            "include": "#constant_declaration"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#annotations"
+        },
+        {
+            "include": "#constants"
+        },
+        {
+            "include": "#contract_comments"
+        },
+        {
+            "include": "#comments"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#types"
+        },
+        {
+            "include": "#support"
+        },
+        {
+            "include": "#operators"
+        },
+        {
+            "include": "#method_call"
+        },
+        {
+            "include": "#function_call"
+        },
+        {
+            "include": "#struct_member_access"
+        },
+        {
+            "include": "#identifiers"
+        }
+    ],
 	"repository": {
 		"keywords": {
 			"patterns": [
@@ -37,23 +91,288 @@
 				{
 					"name": "keyword",
 					"match": "\\b(%switch|$default|$case|$if|$typeof|$else|$sizeof|$for|$case)\\b"
-				}
-			]
-		},
-		"comments": {
-			"patterns": [
-				{
-					"name": "comment.line",
-					"begin": "//",
-					"end": "$"
 				},
 				{
-					"name": "comment.block",
-					"begin": "/\\*",
-					"end": "\\*/"
+					"name": "keyword",
+					"match": "\\b(asm|assert|bitstruct|break|case|catch|const|continue)\\b"
+				},
+				{
+					"name": "keyword",
+					"match": "\\b(def|default|defer|distinct|do|else|enum|extern)\\b"
+				},
+				{
+					"name": "keyword",
+					"match": "\\b(truefalse|fault|for|foreach|foreach_r|fn|tlocal|if)\\b"
+				},
+				{
+					"name": "keyword",
+					"match": "\\b(inline|import|macro|module|nextcase|null|return|static)\\b"
+				},
+				{
+					"name": "keyword",
+					"match": "\\b(struct|switch|true|try|union|var|while)\\b"
+				},
+				{
+					"name": "keyword",
+					"match": "\\b(%switch|$default|$case|$if|$typeof|$else|$sizeof|$for|$case)\\b"
+				},
+				{
+					"name": "keyword",
+					"match": "\\b(typeid|interface|tlocal|typefrom|vacount|vatype|vaconst|varef|vaarg|vaexpr|vasplat|alignof|defined|echo|embed|exec|endfor|endforeach|endif|endswitch|eval|evaltype|error|extnameof|include|nameof|offsetof|qnameof|stringify)\\b"
+				},
+				{
+					"name": "keyword",
+					"match": "\\$(alignof|assert|case|default|defined|echo|embed|exec|else|endfor|endforeach|endif|endswitch|eval|evaltype|error|extnameof|for|foreach|if|include|nameof|offsetof|qnameof|sizeof|stringify|switch|typefrom|typeof|vacount|vatype|vaconst|varef|vaarg|vaexpr|vasplat)\\b"
 				}
 			]
 		},
+		"interface_declaration": {
+            "match": "\\b(interface)\\s+([A-Z][a-zA-Z0-9_]*)\\s*\\{",
+            "captures": {
+                "1": {
+                    "name": "keyword.declaration.interface.c3"
+                },
+                "2": {
+                    "name": "entity.name.interface.c3"
+                }
+            }
+        },
+        "module_declaration": {
+            "match": "\\b(module)\\s+([a-zA-Z_][a-zA-Z0-9_]*)(?:::([a-zA-Z_][a-zA-Z0-9_]*))?\\s*;",
+            "captures": {
+                "1": {
+                    "name": "keyword.declaration.module.c3"
+                },
+                "2": {
+                    "name": "entity.name.module.c3"
+                },
+                "3": {
+                    "name": "entity.name.module.sub.c3"
+                }
+            }
+        },
+        "function_declaration": {
+            "match": "\\b(fn)\\s+((?:inline\\s+)?)(?:([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)*))\\s+(?:([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)*)\\.)?([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(([^)]*)\\)",
+            "captures": {
+                "1": {
+                    "name": "keyword.declaration.function.c3"
+                },
+                "2": {
+                    "name": "storage.modifier.c3"
+                },
+                "3": {
+                    "name": "storage.type.c3"
+                },
+                "4": {
+                    "name": "entity.name.type.c3"
+                },
+                "5": {
+                    "name": "entity.name.function.c3"
+                },
+                "6": {
+                    "patterns": [
+                        {
+                            "include": "#function_parameters"
+                        }
+                    ]
+                }
+            }
+        },
+        "inline_function_declaration": {
+            "match": "\\b(inline)\\s+(fn)\\s+((?:inline\\s+)?)(?:([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s+)?([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s*\\(([^)]*)\\)",
+            "captures": {
+                "1": {
+                    "name": "storage.modifier.c3"
+                },
+                "2": {
+                    "name": "keyword.declaration.function.c3"
+                },
+                "3": {
+                    "name": "storage.modifier.c3"
+                },
+                "4": {
+                    "name": "storage.type.c3"
+                },
+                "5": {
+                    "name": "entity.name.function.c3"
+                },
+                "6": {
+                    "patterns": [
+                        {
+                            "include": "#function_parameters"
+                        }
+                    ]
+                }
+            }
+        },
+        "function_parameters": {
+            "patterns": [
+                {
+                    "match": "(&)?\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*",
+                    "captures": {
+                        "1": {
+                            "name": "keyword.operator.reference.c3"
+                        },
+                        "2": {
+                            "name": "variable.parameter.c3"
+                        }
+                    }
+                },
+                {
+                    "match": "\\s*([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)*)\\s*(\\*+)?\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*",
+                    "captures": {
+                        "1": {
+                            "name": "storage.type.c3"
+                        },
+                        "2": {
+                            "name": "keyword.operator.pointer.c3"
+                        },
+                        "3": {
+                            "name": "variable.parameter.c3"
+                        }
+                    }
+                },
+                {
+                    "match": ",",
+                    "name": "punctuation.separator.parameter.c3"
+                }
+            ]
+        },
+        "struct_member_access": {
+            "match": "(?<=\\.)([a-zA-Z_][a-zA-Z0-9_]*)\\b(?!\\s*\\()",
+            "name": "variable.other.property.c3"
+        },
+        "method_call": {
+            "match": "(?<=\\.)([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
+            "name": "entity.name.function.method.c3"
+        },
+        "function_call": {
+            "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
+            "name": "entity.name.function.c3"
+        },
+        "constant_declaration": {
+            "match": "\\b(const)\\s+([A-Z][A-Z0-9_]*)\\s*(=)",
+            "captures": {
+                "1": {
+                    "name": "storage.modifier.c3"
+                },
+                "2": {
+                    "name": "variable.other.constant.c3"
+                },
+                "3": {
+                    "name": "keyword.operator.assignment.c3"
+                }
+            }
+        },
+       
+        "annotations": {
+            "match": "@(align|benchmark|bigendian|builtin|cdecl|deprecated|dynamic|export|extern|extname|inline|interface|littleendian|local|maydiscard|naked|nodiscard|noinit|noinline|noreturn|nostrip|obfuscate|operator|overlap|packed|priority|private|public|pure|reflect|section|stdcall|test|unused|used|veccall|wasm|weak|winmain)\\b",
+            "name": "storage.modifier.c3"
+        },
+        "constants": {
+            "match": "\\b(\\$\\$BENCHMARK_FNS|\\$\\$BENCHMARK_NAMES|\\$\\$DATE|\\$\\$FILE|\\$\\$FILEPATH|\\$\\$FUNC|\\$\\$FUNCTION|\\$\\$LINE|\\$\\$LINE_RAW|\\$\\$MODULE|\\$\\$TEST_FNS|\\$\\$TEST_NAMES|\\$\\$TIME)\\b",
+            "name": "constant.language.c3"
+        },
+        "types": {
+            "patterns": [
+                {
+                    "match": "\\b(bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128|any|anyfault|typeid|void)\\b",
+                    "name": "storage.type.c3"
+                },
+                {
+                    "match": "\\b[A-Z][a-zA-Z0-9_]*\\b",
+                    "name": "storage.type.c3"
+                }
+            ]
+        },
+        "support": {
+            "patterns": [
+                {
+                    "match": "\\$[_a-zA-Z][_a-zA-Z0-9]*",
+                    "name": "support.function.builtin.c3"
+                },
+                {
+                    "match": "@[_a-zA-Z][_a-zA-Z0-9]*",
+                    "name": "support.function.macro.c3"
+                }
+            ]
+        },
+        "operators": {
+            "name": "keyword.operator.c3",
+            "match": "(\\+|-|\\.|%|&|\\|(?!})|=|<|>|!|\\^|\\*|/|::)=?"
+        },
+        "identifiers": {
+            "patterns": [
+                {
+                    "match": "\\b(?!(fn|struct|enum|interface|module)\\s)([a-zA-Z_][a-zA-Z0-9_]*)\\b(?!\\s*[(.])",
+                    "name": "variable.other.c3"
+                }
+            ]
+        },
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.float.c3",
+                    "match": "\\b[0-9]+\\.[0-9]+f?\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.decimal.c3",
+                    "match": "\\b[0-9]+\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.hexadecimal.c3",
+                    "match": "\\b0x[a-fA-F0-9]+\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.octal.c3",
+                    "match": "\\b0o[0-7]+\\b"
+                },
+                {
+                    "name": "constant.numeric.integer.binary.c3",
+                    "match": "\\b0b[01]+\\b"
+                }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.line.double-slash.c3",
+                    "match": "//.*$"
+                },
+                {
+                    "name": "comment.block.c3",
+                    "begin": "/\\*",
+                    "end": "\\*/"
+                }
+            ]
+        },
+        "contract_comments": {
+            "begin": "/\\*\\*",
+            "end": "\\*/",
+            "name": "comment.block.documentation.c3",
+            "patterns": [
+                {
+                    "match": "@(require|ensure|param)\\b",
+                    "name": "keyword.other.contract.c3"
+                },
+                {
+                    "match": "\\[(in|out|inout|&in|&out|&inout)\\]",
+                    "name": "storage.modifier.contract.c3"
+                },
+                {
+                    "match": "\\$[a-zA-Z_][a-zA-Z0-9_]*\\b",
+                    "name": "support.function.contract.c3"
+                },
+                {
+                    "match": "\\b(return|nil)\\b",
+                    "name": "keyword.other.contract.c3"
+                },
+                {
+                    "match": "`[^`]*`",
+                    "name": "string.quoted.single.contract.c3"
+                }
+            ]
+        },
 		"strings": {
 			"patterns": [
 				{
@@ -105,67 +424,7 @@
 				"match": "\\\\."
 			  }
 			]
-		  },
-		"numbers": {
-			"patterns": [
-				{
-					"name": "constant.numeric",
-					"match": "\\b[0-9]\\.[0-9]+\\b"
-				},
-				{
-					"name": "constant.numeric",
-					"match": "\\b[0-9]+\\b"
-				},
-				{
-					"name": "constant.numeric",
-					"match": "\\b0x[a-fA-F0-9_]+\\b"
-				},
-				{
-					"name": "constant.numeric",
-					"match": "\\b0o[0-7_]+\\b"
-				},
-				{
-					"name": "constant.numeric",
-					"match": "\\b0b[01_]+\\b"
-				}
-			]
-		},
-		"types": {
-			"patterns": [
-				{
-					"name": "support.type.stdint.c3",
-					"match": "\\b(bool|char|ichar|short|ushort|int|uint|long|ulong|int128|uint128|isz|usz|iptr|uptr|float16|float|double|float128)\\b"
-				},
-				{
-					"name": "storage.type",
-					"match": "\\b(any|anyfault|typeid|void)\\b"
-				}
-			]
-		},
-		"support": {
-			"patterns": [
-				{
-					"name": "support.function.builtin",
-					"match": "\\$[_a-zA-Z][_a-zA-Z0-9]*"
-				},
-				{
-					"name": "support.function.macro",
-					"match": "@[_a-zA-Z][_a-zA-Z0-9]*"
-				}
-			]
-		},
-		"operators": {
-			"name": "keyword.operator",
-			"match": "(\\+|-|\\.|%|&|\\|(?!})|=|<|>|!|\\^|\\*|/|::)=?"
-		},
-		"identifiers": {
-			"patterns": [
-				{
-					"name": "entity.name.type.c3",
-					"match": "[_A-Z][_a-zA-Z0-9]*"
-				}
-			]
-		}
+		  }
 	},
 	"scopeName": "source.c3"
 }

@@ -1,0 +1,159 @@
+
+{
+    "struct definition": {
+        "prefix": ["struct"],
+        "body": [
+            "struct ${1:name}{",
+                "\t${0}",
+            "}"
+        ]
+    },
+    "arrays declaration": {
+        "prefix": ["array"],
+        "body": [
+            "${1:type}[] ${2:name} = {${3:elements}};"
+        ]
+    },
+    "function": {
+        "prefix": ["fn"],
+        "body": [
+            "fn ${1:type} ${2:name}(${3:args}) {",
+                "\t${0}",
+            "}"
+        ]
+    },
+    "call external c function":{
+        "prefix": ["cfunction"],
+        "body": [
+            "extern fn ${1:type} _${2:c3_name}(${3:args}) @extern(\"${3:c_name}\") {",
+                "\t${0}",
+            "}"
+        ]
+
+    },
+    "identifiers":{
+
+    },
+    "variable declaration": {
+        "prefix": ["var"],
+        "body": [
+            "${1:type} ${2:name};"
+        ]
+    },
+    "variable declaration with assignment": { 
+        "prefix": ["vassign"],
+        "body": [
+            "${1:type} ${2:name} = ${3:value};"
+        ]
+    },
+    "variable declaration non-init": { 
+        "prefix": ["vnoinit"],
+        "body": [
+            "${1:type} ${2:name} @noinit;"
+        ]
+    },
+    "def": {
+        "prefix": ["def"],
+        "body": [
+            "def ${1:name} = ${2:name};"
+        ]
+    },
+    "module definition": {
+        "prefix": ["module"],
+        "body": [
+            "module ${1:name}::${2:filename};"
+        ]
+    },
+    "switch statement":{
+        "prefix": ["switch"],
+        "body": [
+            "switch (${1:expr})", 
+            "{",
+                "case ${1:value}:",
+                    "\t${0}",
+                "default:",
+                    "\t${0}",
+
+            "}"
+        ] 
+
+    },
+    "expression blocks":{
+        "prefix": ["{|"],
+        "body": ["{|",
+            "\t${0}",
+            "|}"
+        ]
+    },
+    "do":{
+        "prefix": ["do"],
+        "body": [
+            "do",
+            "{",
+                "\t${0}",
+            "}"
+        ]
+    },
+    "if statement": {
+        "prefix": ["if"],
+        "body": [
+            "if (${1:expr})",
+            "{",
+                "\t${0}",
+            "}"
+        ]
+    },
+    "else if statement": {
+        "prefix": ["elsif"],
+        "body": [
+            "else if (${1:expr})",
+            "{",
+                "\t${0}",
+            "}"
+        ]
+    },
+    "else statement": {
+        "prefix": ["else"],
+        "body": [
+            "else", 
+            "{",
+                "\t${0}",
+            "}"
+        ]
+    },   
+    "case statement": {
+        "prefix": ["case"],
+        "body": [
+            "case ${1:value} then",
+                "\t${2}",
+                "\tbreak",
+            "${0}"
+        ]
+    },
+    "case else statement": {
+        "prefix": ["case-else"],
+        "body": [
+            "case else",
+                "\t${0}"
+        ]
+    },
+    "for loop": {
+        "prefix": ["for"],
+        "body": [
+            "for (${1:type} ${2:name} = ${2:startexpr}; ${2:name} < ${3:endexpr}; ${2:name} += ${4:delta})",
+            "{",
+                "\t${0}",
+            "}"
+        ]
+    },
+    "foreach": {
+        "prefix": ["foreach"],
+        "body": [
+            "foreach (${1:loopvar} : ${2:elements})",
+            "{",
+                "\t${0}",
+            "}"
+        ]
+    }
+}
+
