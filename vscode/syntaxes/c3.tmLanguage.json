@@ -61,13 +61,13 @@
             }
         },
         "function_declaration": {
-            "match": "\\b(fn|macro|inline)\\s+((?:inline\\s+)?)([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s+([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s*\\(([^)]*)\\)",
+            "match": "\\b(fn|macro)\\s+((?:inline\\s+)?)(?:([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s+)?([a-zA-Z_][a-zA-Z0-9_]*(?:\\.[a-zA-Z_][a-zA-Z0-9_]*)?)\\s*\\(([^)]*)\\)",
             "captures": {
                 "1": {
                     "name": "keyword.declaration.function.c3"
                 },
                 "2": {
-                    "name": "keyword.declaration.function.modifier.c3"
+                    "name": "storage.modifier.c3"
                 },
                 "3": {
                     "name": "storage.type.c3"
