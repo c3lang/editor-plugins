@@ -21,6 +21,9 @@
             "include": "#interface_declaration"
         },
         {
+            "include": "#constant_declaration"
+        },
+        {
             "include": "#keywords"
         },
         {
@@ -49,6 +52,9 @@
         },
         {
             "include": "#method_call"
+        },
+        {
+            "include": "#function_call"
         },
         {
             "include": "#struct_member_access"
@@ -178,6 +184,24 @@
             "match": "(?<=\\.)([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
             "name": "entity.name.function.method.c3"
         },
+        "function_call": {
+            "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
+            "name": "entity.name.function.c3"
+        },
+        "constant_declaration": {
+            "match": "\\b(const)\\s+([A-Z][A-Z0-9_]*)\\s*(=)",
+            "captures": {
+                "1": {
+                    "name": "storage.modifier.c3"
+                },
+                "2": {
+                    "name": "variable.other.constant.c3"
+                },
+                "3": {
+                    "name": "keyword.operator.assignment.c3"
+                }
+            }
+        },
         "keywords": {
             "patterns": [
                 {
@@ -229,7 +253,7 @@
         "identifiers": {
             "patterns": [
                 {
-                    "match": "\\b(?!(fn|struct|enum|interface|module)\\s)([a-z_][a-zA-Z0-9_]*)\\b(?!\\s*[.(])",
+                    "match": "\\b(?!(fn|struct|enum|interface|module)\\s)([a-zA-Z_][a-zA-Z0-9_]*)\\b(?!\\s*[(.])",
                     "name": "variable.other.c3"
                 }
             ]

@@ -67,7 +67,8 @@
     "switch statement":{
         "prefix": ["switch"],
         "body": [
-            "switch (${1:expr}) {",
+            "switch (${1:expr})", 
+            "{",
                 "case ${1:value}:",
                     "\t${0}",
                 "default:",
@@ -114,7 +115,8 @@
     "else statement": {
         "prefix": ["else"],
         "body": [
-            "else {",
+            "else", 
+            "{",
                 "\t${0}",
             "}"
         ]
