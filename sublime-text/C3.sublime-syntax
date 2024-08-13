@@ -1,0 +1,748 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/syntax.html
+file_extensions:
+  - c3
+  - c3i
+  - c3t
+
+scope: source.c3
+
+variables:
+  B64: '[ \t\v\n\f]?[A-Za-z0-9+/][ \t\v\n\fA-Za-z0-9+/=]+'
+  HEX: '[ \t\v\n\f]?[A-Fa-f0-9][ \t\v\n\fA-Fa-f0-9]+'
+  INT: '[0-9](_?[0-9])*'
+  HINT: '[a-fA-F0-9](_?[a-fA-F0-9])*'
+  OINT: '[0-7](_?[0-7])*'
+  BINT: '[0-1](_?[0-1])*'
+  INTTYPE: '(?:[ui](8|16|32|64|128)|[Uu][Ll]?|[Ll])'
+  REALTYPE: '(?:[f](8|16|32|64|128)?)'
+  E: '[Ee][+-]?[0-9]+'
+  P: '[Pp][+-]?[0-9]+'
+  CONST: '(?:_*[A-Z][_A-Z0-9]*)'
+  TYPE:  '(?:_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*)'
+  IDENT: '(?:_*[a-z][_a-zA-Z0-9]*)'
+  keyword: 'assert|asm|catch|const|def|distinct|extern|tlocal|inline|import|module|interface|static|try|var'
+  control_keyword: 'break|case|continue|default|defer|do|else|for|foreach|foreach_r|if|nextcase|return|switch|while'
+  ct_keyword: 'alignof|and|append|assert|assignable|case|concat|default|defined|echo|else|embed|endfor|endforeach|endif|endswitch|eval|error|exec|extnameof|feature|for|foreach|if|include|is_const|nameof|offsetof|or|qnameof|sizeof|stringify|switch|vacount|vaconst|varef|vaarg|vaexpr|vasplat'
+  base_type: 'void|bool|char|double|float|float16|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|anyfault|typeid'
+  attribute: 'align|benchmark|bigendian|builtin|callconv|compact|deprecated|dynamic|export|extern|finalizer|if|inline|init|link|littleendian|local|maydiscard|naked|nodiscard|noinit|noinline|nopadding|noreturn|nosanitize|nostrip|obfuscate|operator|optional|overlap|packed|private|public|pure|reflect|safemacro|section|test|unused|used|wasm|weak|winmain'
+
+contexts:
+  main:
+    - include: top_level
+
+  pop_on_semicolon:
+    - match: ';'
+      scope: punctuation.terminator.c3
+      pop: true
+
+  top_level:
+    - include: comments
+
+    # Modifier
+    - include: modifier_keywords
+
+    # Compile Time Statements
+    - match: '\$(?:assert|include|echo|exec)\b'
+      scope: keyword.other.c3
+      push:
+        - include: comments
+        - include: pop_on_semicolon
+        - include: expression
+
+    # Module
+    - match: '\bmodule\b'
+      scope: keyword.declaration.module.c3
+      push:
+        - include: comments
+        - include: pop_on_semicolon
+        - include: attribute
+        - include: path
+        - match: '{{IDENT}}'
+          scope: meta.path.c3
+        - include: generic_params
+
+    # Import
+    - match: '\bimport\b'
+      scope: keyword.control.import.c3
+      push:
+        - include: comments
+        - include: pop_on_semicolon
+        - include: attribute
+        - include: path
+        - match: '{{IDENT}}'
+          scope: meta.path.c3
+
+    # Function/Macro
+    - match: '\b(?:fn|macro)\b'
+      scope: keyword.declaration.function.c3
+      push:
+        - meta_scope: meta.function.c3
+        - include: function
+
+    # Define/Distinct
+    - match: '\b(?:def|distinct)\b'
+      scope: keyword.declaration.type.c3
+      push:
+        - include: comments
+        - include: pop_on_semicolon
+        # Custom Attribute
+        - match: '@{{TYPE}}'
+          scope: keyword.annotation.c3
+          set:
+            - include: comments
+            - include: pop_on_semicolon
+            - include: parens
+            - match: '\='
+              scope: keyword.operator.assignment.c3
+              set:
+                - include: comments
+                - include: pop_on_semicolon
+                - include: attribute  
+                - match: '\}'
+                  scope: meta.block.c3 punctuation.section.block.end.c3
+                - match: '\{'
+                  scope: punctuation.section.block.begin.c3
+                  push:
+                    - meta_scope: meta.block.c3
+                    - match: '(?=\})'
+                      pop: true
+                    - include: attribute
+                    - include: punctuation
+        # Type/variable/constant def
+        - match: '\b(?:({{TYPE}})|({{IDENT}})|({{CONST}}))\b'
+          captures: 
+            1: storage.type.c3
+            2: variable.global.c3
+            3: entity.name.constant.c3
+          set:
+            - include: comments
+            - include: pop_on_semicolon
+            - include: attribute
+            - match: '\='
+              scope: keyword.operator.assignment.c3
+              set:
+                - include: comments
+                - include: pop_on_semicolon
+                - include: attribute
+                - include: expression
+
+    # Struct/Bitstruct/Union (structlikes)
+    - include: structlike
+              
+    # Enum/Fault
+    - match: '\b(?:enum|fault)\b'
+      scope: keyword.declaration.enum.c3
+      push:
+        - meta_scope: meta.enum.c3
+        - include: comments
+        - match: '\b{{TYPE}}\b'
+          scope: entity.name.enum.c3
+        - include: attribute
+        - match: ':'
+          scope: punctuation.separator.c3
+          push:
+            - include: comments
+            - match: '(?=\{)'
+              pop: true
+            - include: type
+            # Enum parameters
+            - match: '\('
+              scope: punctuation.section.group.begin.c3
+              push:
+                - meta_scope: meta.group.c3
+                - include: comments
+                - include: type
+                - include: punctuation
+                - match: '\)'
+                  scope: punctuation.section.group.end.c3
+                  pop: true
+                - match: '{{IDENT}}'
+                  scope: variable.parameter.c3
+            - include: attribute
+        # Enum body
+        - match: '(?=\{)'
+          set:
+            - match: '\{'
+              scope: punctuation.section.block.begin.c3
+              set:
+                - meta_scope: meta.enum.body.c3 meta.block.c3
+                - include: comments
+                - match: '\}'
+                  scope: punctuation.section.block.end.c3
+                  pop: true
+                - match: '\='
+                  scope: keyword.operator.assignment.c3
+                  push:
+                    - match: '(?=,)'
+                      pop: true
+                    - include: expression
+                - include: attribute
+                - match: '\b{{CONST}}\b'
+                  scope: entity.name.constant.c3
+                - match: ','
+                  scope: punctuation.separator.c3
+
+    # Interface
+    - match: '\binterface\b'
+      scope: keyword.declaration.interface.c3
+      push:
+        - meta_scope: meta.interface.c3
+        - include: comments
+        - match: '\b{{TYPE}}\b'
+          scope: entity.name.interface.c3
+        - include: attribute
+        - match: '(?=\{)'
+          set:
+            - match: '\{'
+              scope: punctuation.section.block.begin.c3
+              set:
+                - meta_scope: meta.interface.body.c3 meta.block.c3
+                - match: '\}'
+                  scope: punctuation.section.block.end.c3
+                  pop: true
+                - match: ';'
+                  scope: punctuation.terminator.c3
+                - match: '\bfn\b'
+                  scope: keyword.declaration.function.c3
+                  push:
+                    - meta_scope: meta.function.c3
+                    - include: function
+
+    # Untyped constant
+    - match: '\b{{CONST}}\b'
+      scope: entity.name.constant.c3
+      push:
+        - include: comments
+        - include: pop_on_semicolon
+        - match: '\='
+          scope: keyword.operator.assignment.c3
+          set:
+          - include: comments
+          - include: pop_on_semicolon
+          - include: expression
+
+    # Global
+    - include: declaration
+
+  function_header:
+    - include: type
+    - match: '\.'
+      scope: punctuation.accessor.c3
+    - match: '\@?{{IDENT}}'
+      scope: entity.name.function.c3
+
+  function:
+    - include: comments
+    - include: function_header
+
+    - match: '(?=\()'
+      set:
+        - match: '\('
+          scope: meta.function.parameters.c3 meta.group.c3 punctuation.section.group.begin.c3
+          set:
+            - meta_content_scope: meta.function.parameters.c3 meta.group.c3
+            - include: comments
+            - match: '\)'
+              scope: punctuation.section.group.end.c3
+              # After parameters
+              set:
+                - meta_content_scope: meta.function.c3
+                - include: comments
+                - include: attribute
+                # Signature only
+                - match: '(?=;)'
+                  pop: true
+                - match: '(?=\{)'
+                  # Function body
+                  set:
+                    - meta_scope: meta.function.c3
+                    - include: compound_stmt
+                - match: '\=>'
+                  #scope: keyword.operator.c3
+                  scope: keyword.declaration.function.arrow.c3
+                  # Lambda function body
+                  set:
+                    - meta_scope: meta.function.c3
+                    - match: '(?=[;,)])'
+                      pop: true
+                    - include: expression
+            # Parameters
+            - include: type
+            - include: punctuation
+            - match: '&'
+              scope: keyword.operator.c3
+            - match: '\.\.\.'
+              scope: keyword.operator.variadic.c3
+            - match: '([$#@]?{{IDENT}})'
+              scope: variable.parameter.c3
+              push:
+                - include: comments
+                - match: '(?=[,)])'
+                  pop: true
+                - include: attribute
+                - match: '\.\.\.'
+                  scope: keyword.operator.variadic.c3
+                # Parameter with default value
+                - match: '\='
+                  scope: keyword.operator.assignment.c3
+                  set:
+                    - match: '(?=[,)])'
+                      pop: true
+                    - include: expression
+
+  structlike:
+    - match: '\b(?:(struct|bitstruct)|(union))\b'
+      captures: 
+        1: keyword.declaration.struct.c3
+        2: keyword.declaration.union.c3
+      push:
+        - meta_scope: meta.struct.c3
+        - include: comments
+        - match: '{{TYPE}}'
+          scope: entity.name.struct.c3
+        - match: '{{IDENT}}'
+          scope: variable.other.member.c3
+        - include: attribute
+        - match: ':'
+          scope: punctuation.separator.c3
+          push:
+            - include: comments
+            - match: '(?=\{)'
+              pop: true
+            - include: type
+            - include: attribute
+        # Interface implementation
+        - match: '\('
+          scope: punctuation.section.group.begin.c3
+          push:
+            - meta_scope: meta.group.c3
+            - include: comments
+            - match: '\)'
+              scope: punctuation.section.group.end.c3
+              pop: true
+            - include: path
+            - include: type
+            - include: punctuation
+        # Struct body
+        - match: '(?=\{)'
+          set:
+            - match: '\{'
+              scope: punctuation.section.block.begin.c3
+              set:
+                - meta_scope: meta.struct.body.c3 meta.block.c3
+                - include: comments
+                - match: '\}'
+                  scope: punctuation.section.block.end.c3
+                  pop: true
+                - include: structlike
+                - include: modifier_keywords
+                - include: type
+                - match: '{{IDENT}}'
+                  scope: variable.other.member.c3
+                - include: attribute
+                - match: ';'
+                  scope: punctuation.terminator.c3
+                # Bitstruct
+                - match: ':'
+                  scope: punctuation.separator.c3
+                  push:
+                    - match: '(?=;)'
+                      pop: true
+                    - include: expression
+
+
+  builtin:
+    - match: '\$\$({{CONST}}|{{IDENT}})\b'
+      scope: keyword.builtin.c3
+
+  keywords:
+    - match: '\b({{keyword}})\b'
+      scope: keyword.other.c3
+    - match: '\b({{control_keyword}})\b'
+      scope: keyword.control.c3
+    - match: '\$({{ct_keyword}})\b'
+      scope: keyword.other.c3
+
+  modifier_keywords:
+    - match: '\b(?:const|extern|static|tlocal|inline)\b'
+      scope: storage.modifier.c3
+  
+  punctuation:
+    # No semicolon here because we always match it separately
+    - match: ','
+      scope: punctuation.separator.c3
+    - match: ':'
+      scope: punctuation.separator.c3
+    - match: ':(?!:)'
+      scope: punctuation.separator.c3
+    - match: '::|\.(?!\.\.)'
+      scope: punctuation.accessor.c3
+
+  constants:
+    - match: '\b(true|false|null)\b'
+      scope: constant.language.c3
+    - match: '\b{{CONST}}\b'
+      scope: entity.name.constant.c3
+
+  operators:
+    - match: '!|\?[?:]?|\*|&|:'
+      scope: keyword.operator.c3
+    - match: '\.\.(?!\.)'
+      scope: keyword.operator.range.c3
+    - match: '\.\.\.'
+      scope: keyword.operator.variadic.c3
+    - match: '\+\+|--'
+      scope: keyword.operator.arithmetic.c3
+    - match: '\+\=|-\=|\*\=|/\=|%\=|&\=|\|\=|\^\=|>>\=|<<\='
+      scope: keyword.operator.assignment.augmented.c3
+    - match: '<<|>>|&&|\|\|'
+      scope: keyword.operator.arithmetic.c3
+    - match: '<\=|>\=|\=\=|<|>|\!\='
+      scope: keyword.operator.comparison.c3
+    - match: '\+|\-|/|%|\||\^|~|!'
+      scope: keyword.operator.arithmetic.c3
+    - match: '\='
+      scope: keyword.operator.assignment.c3
+
+  path:
+    - match: '({{IDENT}})(::)'
+      captures: 
+        1: meta.path.c3
+        2: meta.path.c3 punctuation.accessor.c3
+
+  literals:
+    - include: string_literal
+    - include: char_literal
+    - include: raw_string_literal
+    - include: real_literal
+    - include: integer_literal
+
+  char_literal:
+    - match: "'"
+      scope: punctuation.definition.string.begin.c3
+      push:
+      - meta_scope: string.quoted.single.c3
+      - match: '\\.'
+        scope: constant.character.escape.c3
+      - match: "'"
+        scope: punctuation.definition.string.end.c3
+        pop: true
+
+  string_literal:
+    - match: '"'
+      scope: punctuation.definition.string.begin.c3
+      push:
+      - meta_scope: string.quoted.double.c3
+      - match: '\\([0abefnrtv''"\\]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})'
+        scope: constant.character.escape.c3
+      - match: '"'
+        scope: punctuation.definition.string.end.c3
+        pop: true
+
+  raw_string_literal:
+    - match: '`'
+      scope: punctuation.definition.string.begin.c3
+      push:
+      - meta_scope: string.quoted.other.c3
+      - match: '``'
+        scope: constant.character.escape.c3
+      - match: '`'
+        scope: punctuation.definition.string.end.c3
+        pop: true
+
+  real_literal:
+    - match: '\b{{INT}}{{REALTYPE}}\b'
+      scope: constant.numeric.float.c3
+    - match: '\b(?:{{INT}}{{E}}|{{INT}}\.{{INT}}({{E}})?)(?:{{REALTYPE}})?\b'
+      scope: constant.numeric.float.c3
+    - match: '\b(?:0[xX]{{HINT}}{{P}}|0[xX]{{HINT}}\.{{HINT}}{{P}}){{REALTYPE}}?\b'
+      scope: constant.numeric.float.c3
+
+  integer_literal:
+    - match: '\b(?:{{INT}}|0[xX]{{HINT}}|0[oO]{{OINT}}|0[bB]{{BINT}}){{INTTYPE}}?\b'
+      scope: constant.numeric.integer.c3
+
+  comments:
+    - include: line_comment
+    - include: block_comment
+    - include: doc_comment
+
+  line_comment:
+    - match: '//'
+      scope: punctuation.definition.comment.c3
+      push: line_comment_body
+
+  line_comment_body:
+    - meta_scope: comment.line.double-slash.c3
+    - match: $
+      pop: true
+
+  block_comment:
+    - match: '/\*(?!\*)'
+      scope: punctuation.definition.comment.c3
+      push: block_comment_body
+
+  block_comment_body:
+    - meta_scope: comment.block
+    - match: '/\*'
+      scope: punctuation.definition.comment.c3
+      push: block_comment_body
+    - match: '\*/'
+      scope: punctuation.definition.comment.c3
+      pop: true
+
+  doc_comment:
+    - match: '/\*\*'
+      scope: punctuation.definition.comment.c3
+      push: doc_comment_body
+
+  doc_comment_body:
+    - meta_scope: comment.block.documentation.c3
+    - match: '/\*'
+      scope: punctuation.definition.comment.c3
+      push: block_comment_body
+    - match: '@(param(\s*\[&?(in|out|inout)\])?|return!?|require|fails|deprecated|ensure|pure)\s'
+      scope: markup.bold
+    - match: '\*/'
+      scope: punctuation.definition.comment.c3
+      pop: true
+
+  type:
+    - match: '\b(?:{{base_type}}|{{TYPE}})\b'
+      scope: storage.type.c3
+      push: type_suffix
+    - include: generic_params
+    - match: '\$(typeof|typefrom|vatype|evaltype)\b'
+      scope: storage.type.c3
+      push:
+        - match: '\('
+          scope: punctuation.section.group.begin.c3
+          set:
+            - meta_scope: meta.group.c3
+            - match: '\)'
+              scope: punctuation.section.group.end.c3
+              set: type_suffix
+            - include: expression
+    # CT type
+    - match: '\${{TYPE}}'
+      scope: storage.type.c3
+      push: type_suffix
+
+  type_suffix:
+    - meta_content_scope: meta.type_suffix.c3 # non-standard scope
+    - include: comments
+    - match: '(?=[^\s*!\[])'
+      pop: true
+    - match: '\*'
+      scope: keyword.operator.c3
+    - match: '\!'
+      scope: keyword.operator.c3
+    - include: brackets
+
+  attribute:
+    - match: '(@(?:{{attribute}}|{{TYPE}}))\s*(\()'
+      captures: 
+        1: keyword.annotation.c3
+        2: meta.group.c3 punctuation.section.group.begin.c3
+      push:
+        - meta_scope: meta.annotation.c3
+        - meta_content_scope: meta.group.c3
+        - match: '\)'
+          scope: punctuation.section.group.end.c3
+          pop: true
+        - include: expression
+    - match: '@(?:{{attribute}}|{{TYPE}})'
+      scope: meta.annotation.c3 keyword.annotation.c3
+
+  declaration:
+    - match: '\bvar\b'
+      scope: storage.type.c3
+      push: declaration_after_type
+
+    - match: '\b(?:{{base_type}}|{{TYPE}})\b'
+      scope: storage.type.c3
+      push: [declaration_after_type, type_suffix]
+
+    - match: '\$(typeof|typefrom|vatype|evaltype)\b'
+      scope: storage.type.c3
+      push:
+        - include: comments
+        - match: '\('
+          scope: punctuation.section.group.begin.c3
+          set:
+            - meta_scope: meta.group.c3
+            - include: comment
+            - match: '\)'
+              scope: punctuation.section.group.end.c3
+              set: [declaration_after_type, type_suffix]
+            - include: expression
+
+  declaration_after_type:
+    - include: comments
+    - include: pop_on_semicolon
+    - include: generic_params
+    - match: '\$?{{IDENT}}'
+      scope: variable.other.c3
+    - match: '\b{{CONST}}\b'
+      scope: entity.name.constant.c3
+    - include: attribute
+    - match: '\='
+      scope: keyword.operator.assignment.c3
+      set:
+        - include: comments
+        - include: pop_on_semicolon
+        - include: expression
+    # Expect a name
+    - match: '(?=\$?[^A-Za-z_\s]+)'
+      pop: true
+
+  statements:
+    - include: comments
+    - include: modifier_keywords
+    - match: ';'
+      scope: punctuation.terminator.c3
+    - match: '\$?\bfor\b'
+      scope: keyword.control.c3
+      push:
+        - include: comments
+        - match: '\('
+          scope: punctuation.section.group.begin.c3
+          set:
+            - meta_scope: meta.group.c3
+            - match: '\)'
+              scope: punctuation.section.group.end.c3
+              pop: true
+            - include: statements
+    - match: '(?:\$?\b(?:case|default)\b)|\$if\b'
+      scope: keyword.control.c3
+      push:
+        - match: ':'
+          scope: punctuation.separator.c3 # Override the : operaetor
+          pop: true
+        - include: expression
+    - match: '(?=\{(?!\|))'
+      push: compound_stmt
+    - include: declaration
+    - include: expression
+
+  expression:
+    - include: comments
+    
+    - match: '\bfn\b'
+      scope: keyword.declaration.function.c3
+      push:
+        - meta_scope: meta.function.c3
+        - include: function
+
+    - include: constants
+    - include: builtin
+    - include: literals
+    - include: operators
+    - include: keywords
+    - include: type
+    - include: generic_params
+    - include: path
+    - include: function_call
+
+    - match: '\$?{{IDENT}}'
+      scope: variable.other.c3
+
+    - include: parens
+    - include: brackets
+    - include: expression_block
+    - include: initializer_list
+
+    - include: punctuation
+
+  function_call:
+    - match: '(?=[@#]?{{IDENT}}\s*\((?!<))'
+      push:
+        - meta_content_scope: meta.function-call.c3
+        - match: '[@#]?{{IDENT}}'
+          scope: variable.function.c3
+        - match: '\('
+          scope: meta.group.c3 punctuation.section.group.begin.c3
+          set:
+            - meta_content_scope: meta.function-call.c3 meta.group.c3
+            - include: comments
+            - match: '\)'
+              scope: meta.function-call.c3 meta.group.c3 punctuation.section.group.end.c3
+              # Optional attribute
+              set:
+                - include: comments
+                - match: '(?=[^\s@])'
+                  pop: true
+                - include: attribute
+            # Named argument
+            - match: '(?<=[\s,])(\.)([$#]?{{IDENT}})'
+              captures:
+                1: punctuation.separator.c3
+                2: variable.parameter.c3
+            - include: expression
+            - include: punctuation
+            - match: ';'
+              scope: punctuation.separator.c3
+
+  compound_stmt:
+    - match: '\}'
+      scope: meta.block.c3 punctuation.section.block.end.c3
+      pop: true
+    - match: '\{'
+      scope: punctuation.section.block.begin.c3
+      push:
+        - meta_scope: meta.block.c3
+        - match: '(?=\})'
+          pop: true
+        - include: statements
+
+  parens:
+    - match: '\('
+      scope: punctuation.section.group.begin.c3
+      push:
+        - meta_scope: meta.group.c3
+        - match: '\)'
+          scope: punctuation.section.group.end.c3
+          pop: true
+        - include: expression
+
+  brackets:
+    - match: '\[<?'
+      scope: punctuation.section.brackets.begin.c3
+      push:
+        - meta_scope: meta.brackets.c3
+        - match: '>?\]'
+          scope: punctuation.section.brackets.end.c3
+          pop: true
+        - include: expression
+
+  generic_params:
+    - match: '\(<'
+      scope: punctuation.definition.generic.begin.c3
+      push:
+        - meta_scope: meta.generic.c3
+        - match: '>\)'
+          scope: punctuation.definition.generic.end.c3
+          pop: true
+        - include: expression
+
+  expression_block:
+    - match: '\{\|'
+      scope: punctuation.section.block.begin.c3
+      push:
+        - meta_scope: meta.block.c3
+        - match: '\|\}'
+          scope: meta.block.c3 punctuation.section.block.end.c3
+          pop: true
+        - include: statements
+
+  initializer_list:
+    - match: '\{'
+      scope: punctuation.section.block.begin.c3
+      push:
+        - meta_scope: meta.block.c3
+        - match: '\}'
+          scope: meta.block.c3 punctuation.section.block.end.c3
+          pop: true
+        - include: expression
