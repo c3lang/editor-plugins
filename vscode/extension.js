@@ -23,15 +23,15 @@ export function activate(context) {
   if (executablePath == "") {
     switch (platform()) {
       case "win32": {
-        executablePath = join(context.extensionPath, "c3-lsp-win.exe");
+        executablePath = join(context.extensionPath, "c3-lsp.exe");
         break;
       }
       case "darwin": {
-        executablePath = join(context.extensionPath, "c3-lsp-macos");
+        executablePath = join(context.extensionPath, "c3-lsp");
         break;
       }
       case "linux": {
-        executablePath = join(context.extensionPath, "c3-lsp-linux");
+        executablePath = join(context.extensionPath, "c3-lsp");
         break;
       }
     }

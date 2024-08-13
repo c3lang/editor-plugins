@@ -21,9 +21,9 @@ https://github.com/pherrymason/c3-lsp/wiki/Integration-with-editors
 ## Known Issues
 
 The LSP support **must be enabled by the user**. The extension will look for the LSP binaries in the extension folder, e.g: 
-- MacOS: "/.vscode/extensions/c3language/c3-lsp-macos".
-- Linux: "˜/.vscode/extensions/c3language/c3-lsp-linux".
-- Windows: "%USERPROFILE%\.vscode\extensions\c3language\c3-lsp-win.exe".
+- MacOS: "/.vscode/extensions/c3language/c3-lsp".
+- Linux: "˜/.vscode/extensions/c3language/c3-lsp".
+- Windows: "%USERPROFILE%\.vscode\extensions\c3language\c3-lsp.exe".
 
 If the binary is not present, you will get an error. So, remember to copy the LSP binary to the extension folder or
 set the `c3.lsp.path`.
