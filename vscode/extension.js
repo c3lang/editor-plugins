@@ -1,65 +1,78 @@
-const { Trace } = require('vscode-jsonrpc');
-const { window, workspace, commands, ExtensionContext, Uri } = require('vscode');
-const { LanguageClient } = require('vscode-languageclient');
-const path = require('path');
-const os = require('os');
+import { Trace } from "vscode-jsonrpc";
+import { workspace } from "vscode";
+import { LanguageClient } from "vscode-languageclient";
+import { join } from "path";
+import { platform } from "os";
 
 let client = null;
-const config = workspace.getConfiguration('c3.lsp');
+const config = workspace.getConfiguration("c3.lsp");
 
 module.exports = {
-  activate: function (context) {
-    const enabled = config.get('enable');
-    if (!enabled) {
-        return;
-    }
+  activate: activate,
+  deactivate: deactivate
+}
 
-    let executablePath = config.get('path');
-    
-    if (executablePath == "") {
-        switch(os.platform()) {
-          // case "win32": binary_path = "c3-lsp-win"
-          case "darwin": executablePath = path.join(context.extensionPath, "c3-lsp-macos")
-          case "linux": executablePath = path.join(context.extensionPath, "c3-lsp-linux")
-        }
-    }
-    
-    let args = [];
-    if (config.get('sendCrashReports')) {
-      args.push('--send-crash-reports');
-    }
-    const serverOptions = {
-      run: {
-        command: executablePath,
-        args: args,
-      },
-      debug: {
-        command: executablePath,
-        args: args,
-        options: { execArgv: ['--nolazy', '--inspect=6009'] }
+export function activate(context) {
+  const enabled = config.get("enable");
+  if (!enabled) {
+    return;
+  }
+
+  let executablePath = config.get("path");
+
+  if (executablePath == "") {
+    switch (platform()) {
+      case "win32": {
+        executablePath = join(context.extensionPath, "c3-lsp-win.exe");
+        break;
       }
-    }
-
-    const clientOptions = {
-      documentSelector: [{ scheme: 'file', language:'c3'}],
-      synchronize: {
-        fileEvents: workspace.createFileSystemWatcher('**/*.c3')
+      case "darwin": {
+        executablePath = join(context.extensionPath, "c3-lsp-macos");
+        break;
       }
-    }
-
-    client = new LanguageClient(
-      'C3LSP',
-      serverOptions,
-      clientOptions
-    );
-    client.setTrace(Trace.Verbose);
-    client.start();
-  },
-
-  deactivate: function () {
-    const enabled = config.get('enable');
-    if (enabled) {
-        return client.stop();
+      case "linux": {
+        executablePath = join(context.extensionPath, "c3-lsp-linux");
+        break;
+      }
     }
   }
+
+  let args = [];
+  if (config.get("sendCrashReports")) {
+    args.push("--send-crash-reports");
+  }
+  if (config.get("log.path") != "") {
+    args.push("--log-path " + config.get("log.path"));
+  }
+  if (config.get("version") != "") {
+    args.push("--lang-version " + config.get("version"));
+  }
+  const serverOptions = {
+    run: {
+      command: executablePath,
+      args: args,
+    },
+    debug: {
+      command: executablePath,
+      args: args,
+      options: { execArgv: ["--nolazy", "--inspect=6009"] },
+    },
+  };
+
+  const clientOptions = {
+    documentSelector: [{ scheme: "file", language: "c3" }],
+    synchronize: {
+      fileEvents: workspace.createFileSystemWatcher("**/*.c3"),
+    },
+  };
+
+  client = new LanguageClient("C3LSP", serverOptions, clientOptions);
+  if (config.get("debug")) {
+    client.setTrace(Trace.Verbose);
+  }
+  client.start();
+}
+export function deactivate() {
+  return client.stop();
+  
 }

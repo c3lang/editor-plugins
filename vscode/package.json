@@ -72,14 +72,23 @@
                 },
                 "c3.lsp.version": {
                     "type": "string",
-                    "default": null,
+                    "default": "",
                     "markdownDescription": "Specify C3 language version. If omited, LSP will use the last version it supports."
                 }
             }
         }
     },
-    "main": "./extension.js",
+    "main": "./dist/extension.js",
     "dependencies": {
+        "vscode-jsonrpc": "^8.2.1",
         "vscode-languageclient": "^9.0.1"
-    }
+    },
+    "devDependencies": {
+        "esbuild": "0.23.0"
+    },
+    "scripts": {
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./extension.js --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap"
+  }
 }

@@ -3,4 +3,5 @@
 .gitignore
 vsc-extension-quickstart.md
 node_modules/**
+example.c3
 Makefile

@@ -2,9 +2,7 @@
 
 This is the VSCode extension from the 'Editor Plugins' repo of C3 Programming Language focused on syntax highlighting and code snippets.  
 
-There is another [extension](https://marketplace.visualstudio.com/items?itemName=tonios2.c3-vscode) on the VSCode marketplace which gives the support to the [Language Server for C3 Language](https://github.com/pherrymason/c3-lsp.git). 
-
-For now, you need to install both extensions to get the syntax highlighting and the LSP.
+This extension also supports the [Language Server for C3 Language](https://github.com/pherrymason/c3-lsp.git). 
 
 ## Features
 
@@ -12,6 +10,7 @@ Features:
 
 - Syntax highlighting
 - Code snippets
+- Supports the C3 Language LSP
 
 ## Requirements
 
@@ -19,6 +18,17 @@ If you want to install the LSP, follow the instructions on:
 
 https://github.com/pherrymason/c3-lsp/wiki/Integration-with-editors
 
+## Known Issues
+
+The LSP support **must be enabled by the user**. The extension will look for the LSP binaries in the extension folder, e.g: 
+- MacOS: "/.vscode/extensions/c3language/c3-lsp-macos".
+- Linux: "˜/.vscode/extensions/c3language/c3-lsp-linux".
+- Windows: "%USERPROFILE%\.vscode\extensions\c3language\c3-lsp-win.exe".
+
+If the binary is not present, you will get an error. So, remember to copy the LSP binary to the extension folder or
+set the `c3.lsp.path`.
+
+After configuring the LSP => disable the extension => restart extensions => enable it again.
 
 ## Extension Settings
 
@@ -28,12 +38,8 @@ https://github.com/pherrymason/c3-lsp/wiki/Integration-with-editors
 - *Log Path*: `c3.lsp.log.path` Saves log to specified file.
 - *C3 LSP Version*: `c3.lsp.version` Specify C3 language version. If omited, LSP will use the last version it supports.
 
-## Known Issues
-
-Despite the configurations, the integration with the LSP depends on the installation described in https://github.com/pherrymason/c3-lsp/wiki/Integration-with-editors.
 
 ## Release Notes
-
 
 ### 0.0.1
 
@@ -47,6 +53,7 @@ Despite the configurations, the integration with the LSP depends on the installa
 
 - Improved syntax highlighting.
 - Added some code snippets.
+- Added Support to LSP
 
 ---
 
