@@ -382,7 +382,9 @@ contexts:
       scope: entity.name.constant.c3
 
   operators:
-    - match: '!|\?[?:]?|\*|&|:'
+    - match: '&&&?|\|\|\|?'
+      scope: keyword.operator.logical.c3
+    - match: '!|\?[?:]?|\*|&|:|\+\+\+'
       scope: keyword.operator.c3
     - match: '\.\.(?!\.)'
       scope: keyword.operator.range.c3
@@ -392,7 +394,7 @@ contexts:
       scope: keyword.operator.arithmetic.c3
     - match: '\+\=|-\=|\*\=|/\=|%\=|&\=|\|\=|\^\=|>>\=|<<\='
       scope: keyword.operator.assignment.augmented.c3
-    - match: '<<|>>|&&|\|\|'
+    - match: '<<|>>'
       scope: keyword.operator.arithmetic.c3
     - match: '<\=|>\=|\=\=|<|>|\!\='
       scope: keyword.operator.comparison.c3
@@ -504,26 +506,65 @@ contexts:
       scope: punctuation.definition.comment.c3
       pop: true
 
+  type_parens:
+    - match: '\('
+      scope: punctuation.section.group.begin.c3
+      set:
+        - meta_scope: meta.group.c3
+        - match: '\)'
+          scope: punctuation.section.group.end.c3
+          set: type_suffix
+        - include: expression
+
+  type_brackets:
+    - match: '\['
+      scope: punctuation.section.brackets.begin.c3
+      set:
+        - meta_scope: meta.brackets.c3
+        - match: '\]'
+          scope: punctuation.section.brackets.end.c3
+          set: type_suffix
+        - include: expression
+
   type:
     - match: '\b(?:{{base_type}}|{{TYPE}})\b'
       scope: storage.type.c3
-      push: type_suffix
+      push: [type_suffix, maybe_generic_params]
     - include: generic_params
-    - match: '\$(typeof|typefrom|vatype|evaltype)\b'
+    - match: '\$(?:typeof|typefrom|evaltype)\b'
+      scope: storage.type.c3
+      push: type_parens
+    - match: '\$vatype\b'
       scope: storage.type.c3
       push:
-        - match: '\('
-          scope: punctuation.section.group.begin.c3
-          set:
-            - meta_scope: meta.group.c3
-            - match: '\)'
-              scope: punctuation.section.group.end.c3
-              set: type_suffix
-            - include: expression
+        # < 0.7.0, deprecated >= 0.6.2
+        - include: type_parens
+        # >= 0.6.2
+        - include: type_brackets
     # CT type
     - match: '\${{TYPE}}'
       scope: storage.type.c3
       push: type_suffix
+
+  expect_type:
+    - match: '\b(?:{{base_type}}|{{TYPE}})\b'
+      scope: storage.type.c3
+      set: [type_suffix, maybe_generic_params]
+    - include: generic_params
+    - match: '\$(?:typeof|typefrom|evaltype)\b'
+      scope: storage.type.c3
+      set: type_parens
+    - match: '\$vatype\b'
+      scope: storage.type.c3
+      set:
+        # < 0.7.0, deprecated >= 0.6.2
+        - include: type_parens
+        # >= 0.6.2
+        - include: type_brackets
+    # CT type
+    - match: '\${{TYPE}}'
+      scope: storage.type.c3
+      set: type_suffix
 
   type_suffix:
     - meta_content_scope: meta.type_suffix.c3 # non-standard scope
@@ -555,24 +596,11 @@ contexts:
     - match: '\bvar\b'
       scope: storage.type.c3
       push: declaration_after_type
-
-    - match: '\b(?:{{base_type}}|{{TYPE}})\b'
-      scope: storage.type.c3
-      push: [declaration_after_type, type_suffix]
-
-    - match: '\$(typeof|typefrom|vatype|evaltype)\b'
-      scope: storage.type.c3
-      push:
-        - include: comments
-        - match: '\('
-          scope: punctuation.section.group.begin.c3
-          set:
-            - meta_scope: meta.group.c3
-            - include: comment
-            - match: '\)'
-              scope: punctuation.section.group.end.c3
-              set: [declaration_after_type, type_suffix]
-            - include: expression
+    - include: path
+    - match: '(?=\b(?:{{base_type}}|{{TYPE}})\b)'
+      push: [declaration_after_type, expect_type]
+    - match: '(?=\$(typeof|typefrom|vatype|evaltype)\b)'
+      push: [declaration_after_type, expect_type]
 
   declaration_after_type:
     - include: comments
@@ -719,6 +747,18 @@ contexts:
           scope: punctuation.definition.generic.end.c3
           pop: true
         - include: expression
+
+  maybe_generic_params:
+    - match: '\(<'
+      scope: punctuation.definition.generic.begin.c3
+      set:
+        - meta_scope: meta.generic.c3
+        - match: '>\)'
+          scope: punctuation.definition.generic.end.c3
+          pop: true
+        - include: expression
+    - match: '(?=[^(])'
+      pop: true
 
   expression_block:
     - match: '\{\|'
