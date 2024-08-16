@@ -77,9 +77,7 @@ contexts:
     # Function/Macro
     - match: '\b(?:fn|macro)\b'
       scope: keyword.declaration.function.c3
-      push:
-        - meta_scope: meta.function.c3
-        - include: function
+      push: function
 
     # Define/Distinct
     - match: '\b(?:def|distinct)\b'
@@ -206,9 +204,7 @@ contexts:
                   scope: punctuation.terminator.c3
                 - match: '\bfn\b'
                   scope: keyword.declaration.function.c3
-                  push:
-                    - meta_scope: meta.function.c3
-                    - include: function
+                  push: function
 
     # Untyped constant
     - match: '\b{{CONST}}\b'
@@ -226,71 +222,71 @@ contexts:
     # Global
     - include: declaration
 
-  function_header:
+  function:
+    - meta_scope: meta.function.c3
+    - include: comments
     - include: type
     - match: '\.'
       scope: punctuation.accessor.c3
     - match: '\@?{{IDENT}}'
       scope: entity.name.function.c3
-
-  function:
-    - include: comments
-    - include: function_header
-
     - match: '(?=\()'
+      set: function_parameters
+
+  function_parameters:
+    - match: '\('
+      scope: meta.function.parameters.c3 meta.group.c3 punctuation.section.group.begin.c3
       set:
-        - match: '\('
-          scope: meta.function.parameters.c3 meta.group.c3 punctuation.section.group.begin.c3
-          set:
-            - meta_content_scope: meta.function.parameters.c3 meta.group.c3
+        - meta_content_scope: meta.function.parameters.c3 meta.group.c3
+        - include: comments
+        - match: '\)'
+          scope: punctuation.section.group.end.c3
+          set: function_after_parameters
+        # Parameters
+        - include: type
+        - include: punctuation
+        - match: '&'
+          scope: keyword.operator.c3
+        - match: '\.\.\.'
+          scope: keyword.operator.variadic.c3
+        - match: '([$#@]?{{IDENT}})'
+          scope: variable.parameter.c3
+          push:
             - include: comments
-            - match: '\)'
-              scope: punctuation.section.group.end.c3
-              # After parameters
-              set:
-                - meta_content_scope: meta.function.c3
-                - include: comments
-                - include: attribute
-                # Signature only
-                - match: '(?=;)'
-                  pop: true
-                - match: '(?=\{)'
-                  # Function body
-                  set:
-                    - meta_scope: meta.function.c3
-                    - include: compound_stmt
-                - match: '\=>'
-                  #scope: keyword.operator.c3
-                  scope: keyword.declaration.function.arrow.c3
-                  # Lambda function body
-                  set:
-                    - meta_scope: meta.function.c3
-                    - match: '(?=[;,)])'
-                      pop: true
-                    - include: expression
-            # Parameters
-            - include: type
-            - include: punctuation
-            - match: '&'
-              scope: keyword.operator.c3
+            - match: '(?=[,)])'
+              pop: true
+            - include: attribute
             - match: '\.\.\.'
               scope: keyword.operator.variadic.c3
-            - match: '([$#@]?{{IDENT}})'
-              scope: variable.parameter.c3
-              push:
-                - include: comments
+            # Parameter with default value
+            - match: '\='
+              scope: keyword.operator.assignment.c3
+              set:
                 - match: '(?=[,)])'
                   pop: true
-                - include: attribute
-                - match: '\.\.\.'
-                  scope: keyword.operator.variadic.c3
-                # Parameter with default value
-                - match: '\='
-                  scope: keyword.operator.assignment.c3
-                  set:
-                    - match: '(?=[,)])'
-                      pop: true
-                    - include: expression
+                - include: expression
+
+  function_after_parameters:
+    - meta_content_scope: meta.function.c3
+    - include: comments
+    - include: attribute
+    # Signature only
+    - match: '(?=;)'
+      pop: true
+    - match: '(?=\{)'
+      # Function body
+      set:
+        - meta_scope: meta.function.c3
+        - include: compound_stmt
+    - match: '\=>'
+      #scope: keyword.operator.c3
+      scope: keyword.declaration.function.arrow.c3
+      # Lambda function body
+      set:
+        - meta_scope: meta.function.c3
+        - match: '(?=[;,)])'
+          pop: true
+        - include: expression
 
   structlike:
     - match: '\b(?:(struct|bitstruct)|(union))\b'
@@ -351,7 +347,6 @@ contexts:
                     - match: '(?=;)'
                       pop: true
                     - include: expression
-
 
   builtin:
     - match: '\$\$({{CONST}}|{{IDENT}})\b'
@@ -632,9 +627,7 @@ contexts:
     
     - match: '\bfn\b'
       scope: keyword.declaration.function.c3
-      push:
-        - meta_scope: meta.function.c3
-        - include: function
+      push: function
 
     - include: constants
     - include: builtin
