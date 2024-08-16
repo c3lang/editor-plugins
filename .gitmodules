@@ -1,6 +1,8 @@
 [submodule "emacs"]
 	path = emacs
 	url = https://github.com/c3lang/c3-ts-mode
+	branch = main
 [submodule "zed"]
 	path = zed
 	url = https://github.com/AineeJames/c3-zed.git
+	branch = main
