@@ -26,7 +26,7 @@ variables:
   control_keyword: 'break|case|continue|default|defer|do|else|for|foreach|foreach_r|if|nextcase|return|switch|while'
   ct_keyword: 'alignof|and|append|assert|assignable|case|concat|default|defined|echo|else|embed|endfor|endforeach|endif|endswitch|eval|error|exec|extnameof|feature|for|foreach|if|include|is_const|nameof|offsetof|or|qnameof|sizeof|stringify|switch|vacount|vaconst|varef|vaarg|vaexpr|vasplat'
   base_type: 'void|bool|char|double|float|float16|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|anyfault|typeid'
-  attribute: 'align|benchmark|bigendian|builtin|callconv|compact|deprecated|dynamic|export|extern|finalizer|if|inline|init|link|littleendian|local|maydiscard|naked|nodiscard|noinit|noinline|nopadding|noreturn|nosanitize|nostrip|obfuscate|operator|optional|overlap|packed|private|public|pure|reflect|safemacro|section|test|unused|used|wasm|weak|winmain'
+  attribute: 'align|benchmark|bigendian|builtin|callconv|compact|const|deprecated|dynamic|export|extern|finalizer|if|inline|init|link|littleendian|local|maydiscard|naked|nodiscard|noinit|noinline|nopadding|norecurse|noreturn|nosanitize|nostrip|obfuscate|operator|optional|overlap|packed|private|public|pure|reflect|safemacro|section|tag|test|unused|used|wasm|weak|winmain'
 
 contexts:
   main:
@@ -696,8 +696,13 @@ contexts:
                 - match: '(?=[^\s@])'
                   pop: true
                 - include: attribute
-            # Named argument
-            - match: '(?<=[\s,])(\.)([$#]?{{IDENT}})'
+            # Named argument, new syntax >= 0.6.3
+            - match: '([$#]?{{IDENT}})(:)'
+              captures:
+                1: variable.parameter.c3
+                2: punctuation.separator.c3
+            # Named argument, old syntax, deprecated >= 0.6.3
+            - match: '(?<=[\s,(])(\.)([$#]?{{IDENT}})'
               captures:
                 1: punctuation.separator.c3
                 2: variable.parameter.c3
