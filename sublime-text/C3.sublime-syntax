@@ -491,7 +491,7 @@ contexts:
       pop: true
 
   doc_comment:
-    - match: '/\*\*'
+    - match: '/\*\*|<\*'
       scope: punctuation.definition.comment.c3
       push: doc_comment_body
 
@@ -502,7 +502,7 @@ contexts:
       push: block_comment_body
     - match: '@(param(\s*\[&?(in|out|inout)\])?|return!?|require|fails|deprecated|ensure|pure)\s'
       scope: markup.bold
-    - match: '\*/'
+    - match: '\*/|\*>'
       scope: punctuation.definition.comment.c3
       pop: true
 
@@ -696,20 +696,21 @@ contexts:
                 - match: '(?=[^\s@])'
                   pop: true
                 - include: attribute
-            # Named argument, new syntax >= 0.6.3
-            - match: '([$#]?{{IDENT}})(:)'
-              captures:
-                1: variable.parameter.c3
-                2: punctuation.separator.c3
-            # Named argument, old syntax, deprecated >= 0.6.3
-            - match: '(?<=[\s,(])(\.)([$#]?{{IDENT}})'
-              captures:
-                1: punctuation.separator.c3
-                2: variable.parameter.c3
-            - include: expression
             - include: punctuation
             - match: ';'
               scope: punctuation.separator.c3
+            - match: '\s+' # Eat whitespace
+            - match: '(?:([$#]?{{IDENT}})(:)(?!:))?'
+              captures:
+                1: variable.parameter.c3
+                2: punctuation.separator.c3
+              push:
+                - meta_scope: meta.argument.c3
+                - include: comments
+                - match: '(?=[,;)])'
+                  pop: true
+                - include: expression
+
 
   compound_stmt:
     - match: '\}'
