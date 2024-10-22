@@ -6,6 +6,7 @@ Currently available are:
 - [VS Code](https://github.com/c3lang/vscode-c3)
 - [Emacs 29+](https://github.com/c3lang/c3-ts-mode)
 - Emacs <= 28 (emacs-legacy)
+- [NeoVim](https://github.com/wstucco/c3.nvim)
 - Sublime Text
 - Nano
 - Kakoune

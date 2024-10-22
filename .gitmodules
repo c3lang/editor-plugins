@@ -6,3 +6,7 @@
 	path = zed
 	url = https://github.com/AineeJames/c3-zed.git
 	branch = main
+[submodule "neovim"]
+	path = neovim
+	url = https://github.com/wstucco/c3.nvim
+	branch = main
