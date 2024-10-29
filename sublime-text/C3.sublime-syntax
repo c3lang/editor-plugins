@@ -463,8 +463,8 @@ contexts:
 
   comments:
     - include: line_comment
-    - include: block_comment
     - include: doc_comment
+    - include: block_comment
 
   line_comment:
     - match: '//'
@@ -477,34 +477,47 @@ contexts:
       pop: true
 
   block_comment:
-    - match: '/\*(?!\*)'
-      scope: punctuation.definition.comment.c3
+    - match: '/\*'
+      scope: punctuation.definition.comment.begin.c3
       push: block_comment_body
 
   block_comment_body:
-    - meta_scope: comment.block
+    - meta_scope: comment.block.c3
     - match: '/\*'
-      scope: punctuation.definition.comment.c3
+      scope: punctuation.definition.comment.begin.c3
       push: block_comment_body
     - match: '\*/'
-      scope: punctuation.definition.comment.c3
+      scope: punctuation.definition.comment.end.c3
       pop: true
 
   doc_comment:
-    - match: '/\*\*|<\*'
-      scope: punctuation.definition.comment.c3
+    - match: '/\*\*(?!/)'
+      scope: punctuation.definition.comment.begin.c3
       push: doc_comment_body
+    - match: '<\*'
+      scope: punctuation.definition.comment.begin.c3
+      push: doc_comment2_body
 
   doc_comment_body:
     - meta_scope: comment.block.documentation.c3
+    - match: '\*/'
+      scope: punctuation.definition.comment.end.c3
+      pop: true
+    - include: doc_comment_content
+
+  doc_comment2_body:
+    - meta_scope: comment.block.documentation.c3
+    - match: '\*>'
+      scope: punctuation.definition.comment.end.c3
+      pop: true
+    - include: doc_comment_content
+
+  doc_comment_content:
     - match: '/\*'
-      scope: punctuation.definition.comment.c3
+      scope: punctuation.definition.comment.begin.c3
       push: block_comment_body
     - match: '@(param(\s*\[&?(in|out|inout)\])?|return!?|require|fails|deprecated|ensure|pure)\s'
       scope: markup.bold
-    - match: '\*/|\*>'
-      scope: punctuation.definition.comment.c3
-      pop: true
 
   type_parens:
     - match: '\('
