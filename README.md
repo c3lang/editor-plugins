@@ -11,6 +11,7 @@ Currently available are:
 - Nano
 - Kakoune
 - [Zed](https://github.com/AineeJames/c3-zed)
+- [Kate](https://kate-editor.org/get-it/)
 
 Please note that since the language is still undergoing revisions, these may or may not be completely
 current.
