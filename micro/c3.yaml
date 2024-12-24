@@ -51,3 +51,9 @@ rules:
         end: "\\*/"
         rules:
             - todo: "(TODO|XXX|FIXME):?"
+
+    - comment.block:
+        start: "<\\*"
+        end: "\\*>"
+        rules: 
+            - todo: "(TODO|XXX|FIXME):?"
