@@ -57,7 +57,7 @@ syn keyword c3Keyword
       \ defer return
       \ switch case nextcase default
       \ cast asm
-      \ def fn enum macro fault struct bitstruct interface
+      \ def alias fn enum macro fault struct bitstruct interface
       \ module import
 
 syn keyword c3Repeat
