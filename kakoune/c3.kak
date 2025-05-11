@@ -22,16 +22,14 @@ addhl shared/c3/double-string     region 'c?"' (?<!\\)(\\\\)*" fill string
 addhl shared/c3/single-string     region "'" (?<!\\)(\\\\)*' fill string
 addhl shared/c3/literal-string    region "`" (?<!\\)(\\\\)*` fill string
 
+addhl shared/c3/code/module-decl  regex '(module|import)\s*[a-z0-9_]+(?:::[a-z0-9_]+)*(?:(?:,\s*[a-z0-9_]+(?:::[a-z0-9_]+)*)+|\s*(\{(?:\s*_*[A-Z][A-z0-9_]*,?\s*)+\}))?(?=;)' 0:module 1:Default 2:Default
 addhl shared/c3/code/num          regex '\b[+-]?(?:0(?:[xX][0-9a-fA-F](?:_*[0-9a-fA-F])*|[oO][0-7](?:_*[0-7])*|[bB][10](?:_*[10])*)|[0-9](?:_*[0-9])*(?:_*[eE][+-]?[0-9]+)?)(?:i8|i16|i32|i64|i128|u8|u16|u32|u|u64|u128|f|f32|f64)?\b' 0:value
 addhl shared/c3/code/ident        regex '\$?\b_*[A-Z]\w*\b' 0:value
 addhl shared/c3/code/user-attr    regex '@[A-Z]\w*?[a-z]\w*\b' 0:attribute
 addhl shared/c3/code/func         regex '(?:@|#)?\b_*[a-z][a-zA-Z0-9_]*\s*(?=\()' 0:function
-addhl shared/c3/code/module       regex '([a-z0-9_]+)::' 1:module
-
-addhl shared/c3/module            region 'module|import' ';' regions
-addhl shared/c3/module/mod        default-region group
-addhl shared/c3/module/mod/mod    regex '[a-z0-9_]*' 0:module
-addhl shared/c3/module/mod/code   ref c3/code
+addhl shared/c3/code/module       regex '([a-z0-9_]+)(?=::)' 1:module
+# code/module-decl highlights '::' as modules, but they should not be highlighted
+addhl shared/c3/code/namespace    regex '::' 0:Default
 
 evaluate-commands %sh{
 	# generated using "c3c --list-{} | string join ' '" in fish
