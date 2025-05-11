@@ -26,10 +26,12 @@ addhl shared/c3/code/num          regex '\b[+-]?(?:0(?:[xX][0-9a-fA-F](?:_*[0-9a
 addhl shared/c3/code/ident        regex '\$?\b_*[A-Z]\w*\b' 0:value
 addhl shared/c3/code/user-attr    regex '@[A-Z]\w*?[a-z]\w*\b' 0:attribute
 addhl shared/c3/code/func         regex '(?:@|#)?\b_*[a-z][a-zA-Z0-9_]*\s*(?=\()' 0:function
+addhl shared/c3/code/module       regex '([a-z0-9_]+)::' 1:module
 
-addhl shared/c3/code/module-start regex '(?:module|import)\s*(\w+)' 0:keyword 1:module
-addhl shared/c3/code/module       regex '\w*?(?=::)' 0:module
-addhl shared/c3/code/module-end   regex '(?<=::)(\w*?)(?:(?:\{.*?\})?;)' 1:module
+addhl shared/c3/module            region 'module|import' ';' regions
+addhl shared/c3/module/mod        default-region group
+addhl shared/c3/module/mod/mod    regex '[a-z0-9_]*' 0:module
+addhl shared/c3/module/mod/code   ref c3/code
 
 evaluate-commands %sh{
 	# generated using "c3c --list-{} | string join ' '" in fish
