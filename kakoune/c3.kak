@@ -18,7 +18,7 @@ addhl shared/c3/code              default-region group
 addhl shared/c3/comment-line      region '//' '$' fill comment
 addhl shared/c3/comment-block     region -recurse '/\*' /\*  \*/ fill comment
 addhl shared/c3/comment-doc       region <\*(?!>) \*> fill comment
-addhl shared/c3/double-string     region 'c?"' (?<!\\)(\\\\)*" fill string
+addhl shared/c3/double-string     region '"' (?<!\\)(\\\\)*" fill string
 addhl shared/c3/single-string     region "'" (?<!\\)(\\\\)*' fill string
 addhl shared/c3/literal-string    region "`" (?<!\\)(\\\\)*` fill string
 
