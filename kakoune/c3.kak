@@ -23,7 +23,7 @@ addhl shared/c3/single-string     region "'" (?<!\\)(\\\\)*' fill string
 addhl shared/c3/literal-string    region "`" (?<!\\)(\\\\)*` fill string
 
 addhl shared/c3/code/module-decl  regex '(module|import)\s*[a-z0-9_]+(?:::[a-z0-9_]+)*(?:(?:,\s*[a-z0-9_]+(?:::[a-z0-9_]+)*)+|\s*(\{(?:\s*_*[A-Z][A-z0-9_]*,?\s*)+\}))?(?=;)' 0:module 1:Default 2:Default
-addhl shared/c3/code/num          regex '\b[+-]?(?:0(?:[xX][0-9a-fA-F](?:_*[0-9a-fA-F])*|[oO][0-7](?:_*[0-7])*|[bB][10](?:_*[10])*)|[0-9](?:_*[0-9])*(?:_*[eE][+-]?[0-9]+)?)(?:[iIuU](?:8|16|32|64|128)?|[fF](?:32|64)?)?\b' 0:value
+addhl shared/c3/code/num          regex '\b[+-]?(?:0(?:[xX][0-9a-fA-F](?:_*[0-9a-fA-F])*|[oO][0-7](?:_*[0-7])*|[bB][10](?:_*[10])*)|[0-9](?:_*[0-9])*(?:_*[eE][+-]?[0-9]+)?)(?:[iIuU](?:8|16|32|64|128)?|[fF](?:32|64)?|[uU][lL])?\b' 0:value
 addhl shared/c3/code/ident        regex '\$?\b_*[A-Z]\w*\b' 0:value
 addhl shared/c3/code/user-attr    regex '@[A-Z]\w*?[a-z]\w*\b' 0:attribute
 addhl shared/c3/code/func         regex '(?:[@#$])?\b_*[a-z][a-zA-Z0-9_]*\s*(?=\()' 0:function
