@@ -49,7 +49,7 @@ evaluate-commands %sh{
 	addhl shared/c3/code/comptime-keywords regex '[$](?:$(join '${comptime_keywords}' '|'))\\b' 0:keyword
 	addhl shared/c3/code/builtins          regex '(?:$(join '${builtins}' '|'))\\b' 0:keyword
 	addhl shared/c3/code/attributes        regex '(?:$(join '${attributes}' '|'))\\b' 0:attribute
-	addhl shared/c3/code/types             regex '\\b(?:$(join '${types}' '|'))\\b' 0:type
+	addhl shared/c3/code/types             regex '(?<![@#$])\\b(?:$(join '${types}' '|'))\\b' 0:type
 	"
 }
 
