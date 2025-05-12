@@ -45,7 +45,7 @@ evaluate-commands %sh{
 	join() { sep=$2; eval set -- $1; IFS="$sep"; echo "$*" | sed -e 's/\$/\\\$/g'; }
 
 	printf %s "
-	addhl shared/c3/code/keywords          regex '\b(?:$(join '${keywords}' '|'))\\b' 0:keyword
+	addhl shared/c3/code/keywords          regex '(?<![@#$])\b(?:$(join '${keywords}' '|'))\\b' 0:keyword
 	addhl shared/c3/code/comptime-keywords regex '[$](?:$(join '${comptime_keywords}' '|'))\\b' 0:keyword
 	addhl shared/c3/code/builtins          regex '(?:$(join '${builtins}' '|'))\\b' 0:keyword
 	addhl shared/c3/code/attributes        regex '(?:$(join '${attributes}' '|'))\\b' 0:attribute
