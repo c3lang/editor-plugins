@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>scope</key>
+	<string>source.c3 meta.struct.c3 entity.name.struct.c3, source.c3 meta.interface.c3 entity.name.interface.c3, source.c3 meta.declaration.c3 entity.name.constant.c3, source.c3 meta.alias.c3 entity.name.constant.c3, source.c3 meta.module.c3 entity.name.module.c3</string>
+	<key>settings</key>
+	<dict>
+		<key>showInSymbolList</key>
+		<integer>1</integer>
+	</dict>
+</dict>
+</plist>
