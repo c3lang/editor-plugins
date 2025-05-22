@@ -1,7 +1,5 @@
 %YAML 1.2
 ---
-# TODO prototype for comments https://www.sublimetext.com/docs/syntax.html#prototype-context
-
 # See http://www.sublimetext.com/docs/syntax.html
 file_extensions:
   - c3
@@ -34,6 +32,9 @@ contexts:
   main:
     - include: top_level
 
+  prototype:
+    - include: comments
+
   pop_on_semicolon:
     - match: ';'
       scope: punctuation.terminator.c3
@@ -53,13 +54,10 @@ contexts:
     - match: '='
       scope: keyword.operator.assignment.c3
       set:
-        - include: comments
         - include: pop_on_semicolon
         - include: expression
 
   top_level:
-    - include: comments
-
     # Modifier
     - include: modifier_keywords
 
@@ -70,7 +68,6 @@ contexts:
     - match: '\$(?:assert|include|echo|exec)\b'
       scope: keyword.other.c3
       push:
-        - include: comments
         - include: pop_on_semicolon
         - include: expression
 
@@ -79,7 +76,6 @@ contexts:
       scope: keyword.declaration.module.c3
       push:
         - meta_scope: meta.module.c3
-        - include: comments
         - include: pop_on_semicolon
         - include: attribute
         - include: path
@@ -92,7 +88,6 @@ contexts:
       scope: keyword.control.import.c3
       push:
         - meta_scope: meta.import.c3
-        - include: comments
         - include: pop_on_semicolon
         - include: punctuation
         - include: attribute
@@ -110,7 +105,6 @@ contexts:
       scope: keyword.declaration.alias.c3
       push:
         - meta_scope: meta.alias.c3
-        - include: comments
         - include: pop_on_semicolon
         # Variable/function/macro/method/constant alias
         - match: '\b(?:(@{{IDENT}})|({{IDENT}})|({{CONST}}))\b'
@@ -119,7 +113,6 @@ contexts:
             2: variable.global.c3
             3: entity.name.constant.c3
           set:
-            - include: comments
             - include: pop_on_semicolon
             - include: attribute
             - include: assign_right_expression
@@ -129,7 +122,6 @@ contexts:
           branch_point: 
           scope: entity.name.type.c3
           set:
-            - include: comments
             - include: pop_on_semicolon
             - include: attribute
             - include: assign_right_expression
@@ -139,13 +131,11 @@ contexts:
       scope: keyword.declaration.typedef.c3
       push:
         - meta_scope: meta.typedef.c3
-        - include: comments
         - include: pop_on_semicolon
         - match: '\b{{TYPE}}\b'
           #scope: storage.type.c3
           scope: entity.name.type.c3
           set:
-            - include: comments
             - include: pop_on_semicolon
             - include: attribute
             - include: assign_right_expression
@@ -155,7 +145,6 @@ contexts:
       scope: keyword.declaration.faultdef.c3
       push:
         - meta_scope: meta.faultdef.c3
-        - include: comments
         - include: pop_on_semicolon
         - include: attribute
         - match: '\b{{CONST}}\b'
@@ -168,18 +157,15 @@ contexts:
       scope: keyword.declaration.attrdef.c3
       push:
         - meta_scope: meta.attrdef.c3
-        - include: comments
         - include: pop_on_semicolon
         - match: '@{{TYPE}}'
           scope: keyword.annotation.c3
           set:
-            - include: comments
             - include: pop_on_semicolon
             - include: parameters
             - match: '='
               scope: keyword.operator.assignment.c3
               set:
-                - include: comments
                 - include: pop_on_semicolon
                 - include: attribute
                 - match: ','
@@ -193,14 +179,12 @@ contexts:
       scope: keyword.declaration.enum.c3
       push:
         - meta_scope: meta.enum.c3
-        - include: comments
         - match: '\b{{TYPE}}\b'
           scope: entity.name.enum.c3
         - include: attribute
         - match: ':'
           scope: punctuation.separator.c3
           push:
-            - include: comments
             - match: '(?=\{)'
               pop: true
             - match: '\binline\b'
@@ -212,11 +196,11 @@ contexts:
         # Enum body
         - match: '(?=\{)'
           set:
+            - meta_include_prototype: false
             - match: '\{'
               scope: punctuation.section.block.begin.c3
               set:
                 - meta_scope: meta.enum.body.c3 meta.block.c3
-                - include: comments
                 - include: pop_on_close_brace
                 - match: '='
                   scope: keyword.operator.assignment.c3
@@ -236,7 +220,6 @@ contexts:
       scope: keyword.declaration.interface.c3
       push:
         - meta_scope: meta.interface.c3
-        - include: comments
         - match: '\b{{TYPE}}\b'
           scope: entity.name.interface.c3
         - include: attribute
@@ -249,6 +232,7 @@ contexts:
             - include: type_no_generics
         - match: '(?=\{)'
           set:
+            - meta_include_prototype: false
             - match: '\{'
               scope: punctuation.section.block.begin.c3
               set:
@@ -265,7 +249,6 @@ contexts:
 
   function:
     - meta_scope: meta.function.c3
-    - include: comments
     - include: type
     - match: '\.'
       scope: punctuation.accessor.c3
@@ -279,7 +262,6 @@ contexts:
       scope: meta.function.parameters.c3 meta.group.c3 punctuation.section.group.begin.c3
       set:
         - meta_content_scope: meta.function.parameters.c3 meta.group.c3
-        - include: comments
         - match: '\)'
           scope: punctuation.section.group.end.c3
           set: function_after_parameters
@@ -291,7 +273,6 @@ contexts:
         - match: '([$#@&]?{{IDENT}})'
           scope: variable.parameter.c3
           push:
-            - include: comments
             - match: '(?=[,;)])'
               pop: true
             - include: attribute
@@ -306,7 +287,6 @@ contexts:
                 - include: expression
         - match: ';'
           push:
-            - include: comments
             - match: '(?=\))'
               pop: true
             - match: '@{{IDENT}}'
@@ -315,7 +295,6 @@ contexts:
 
   function_after_parameters:
     - meta_content_scope: meta.function.c3
-    - include: comments
     - include: attribute
     # Signature only
     - match: '(?=;)'
@@ -323,11 +302,13 @@ contexts:
     # Function body
     - match: '(?=\{)'
       set:
+        - meta_include_prototype: false
         - meta_scope: meta.function.c3
         - include: compound_stmt
     # Lambda body
     - match: '(?=\=>)'
       set:
+        - meta_include_prototype: false
         - meta_scope: meta.function.c3
         - match: '=>'
           scope: keyword.declaration.function.arrow.c3
@@ -369,7 +350,7 @@ contexts:
         - include: paren_func_macro_path_ident
         - include: func_macro_path_ident
     - match: '(?=\S)'
-      set: 
+      set:
         - include: func_macro_path_ident
         - match: '(?=\S)'
           pop: 1
@@ -390,7 +371,6 @@ contexts:
           scope: punctuation.section.block.end.c3
           set:
             - clear_scopes: 1
-            - include: comments
             # Expect a top level statement
             - match: '(?=[^\sa-zA-Z_$;])'
               fail: function_arrow
@@ -417,7 +397,6 @@ contexts:
         2: keyword.declaration.union.c3
       push:
         - meta_scope: meta.struct.c3
-        - include: comments
         - match: '{{TYPE}}'
           scope: entity.name.struct.c3
         - match: '{{IDENT}}'
@@ -426,31 +405,20 @@ contexts:
         - match: ':'
           scope: punctuation.separator.c3
           push:
-            - include: comments
             - match: '(?=\{)'
               pop: true
             - include: type_no_generics
             - include: attribute
         # Interface implementation
-        - match: '\('
-          scope: punctuation.section.group.begin.c3
-          push:
-            - meta_scope: meta.group.c3
-            - include: comments
-            - match: '\)'
-              scope: punctuation.section.group.end.c3
-              pop: true
-            - include: path
-            - include: type
-            - include: punctuation
+        - include: parens
         # Struct body
         - match: '(?=\{)'
           set:
+            - meta_include_prototype: false
             - match: '\{'
               scope: punctuation.section.block.begin.c3
               set:
                 - meta_scope: meta.struct.body.c3 meta.block.c3
-                - include: comments
                 - include: pop_on_close_brace
                 - include: structlike
                 - include: modifier_keywords
@@ -469,7 +437,7 @@ contexts:
                     - include: expression
 
   builtin:
-    - match: '\$\$({{CONST}}|{{IDENT}})\b'
+    - match: '\$\$(?:{{CONST}}|{{IDENT}})\b'
       scope: keyword.builtin.c3
 
   keywords:
@@ -544,6 +512,7 @@ contexts:
     - match: "'"
       scope: punctuation.definition.string.begin.c3
       push:
+      - meta_include_prototype: false
       - meta_scope: string.quoted.single.c3
       - match: '\\.'
         scope: constant.character.escape.c3
@@ -555,6 +524,7 @@ contexts:
     - match: '"'
       scope: punctuation.definition.string.begin.c3
       push:
+      - meta_include_prototype: false
       - meta_scope: string.quoted.double.c3
       - match: '\\([0abefnrtv''"\\]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})'
         scope: constant.character.escape.c3
@@ -566,6 +536,7 @@ contexts:
     - match: '`'
       scope: punctuation.definition.string.begin.c3
       push:
+      - meta_include_prototype: false
       - meta_scope: string.quoted.other.c3
       - match: '``'
         scope: constant.character.escape.c3
@@ -591,6 +562,7 @@ contexts:
         1: keyword.other.c3
         2: punctuation.definition.string.begin.c3
       push:
+        - meta_include_prototype: false
         - meta_scope: string.quoted.other.c3
         - match: "\\2"
           captures:
@@ -602,6 +574,7 @@ contexts:
       captures:
         1: keyword.other.c3
       push:
+        - meta_include_prototype: false
         - meta_scope: string.quoted.other.c3
         - match: "\\2"
           captures:
@@ -614,7 +587,6 @@ contexts:
     - include: line_comment
     - include: block_comment
     - include: doc_comment
-    - include: compound_stmt_comment
 
   line_comment:
     - match: '//'
@@ -622,6 +594,7 @@ contexts:
       push: line_comment_body
 
   line_comment_body:
+    - meta_include_prototype: false
     - meta_scope: comment.line.double-slash.c3
     - match: $
       pop: true
@@ -632,6 +605,7 @@ contexts:
       push: block_comment_body
 
   block_comment_body:
+    - meta_include_prototype: false
     - meta_scope: comment.block.c3
     - match: '/\*'
       scope: punctuation.definition.comment.begin.c3
@@ -646,6 +620,9 @@ contexts:
       push: doc_comment_body
 
   doc_comment_body:
+    - meta_include_prototype: false
+    - include: line_comment
+    - include: block_comment
     - meta_scope: comment.block.documentation.c3
     - match: '\*>'
       scope: punctuation.definition.comment.end.c3
@@ -653,9 +630,6 @@ contexts:
     - include: doc_comment_content
 
   doc_comment_content:
-    - match: '/\*'
-      scope: punctuation.definition.comment.begin.c3
-      push: block_comment_body
     - match: '@(param(\s*\[&?(in|out|inout)\])?|return\??|require|deprecated|ensure|pure)\s'
       scope: markup.bold
 
@@ -717,7 +691,6 @@ contexts:
 
   maybe_type_suffix:
     - meta_content_scope: meta.type_suffix.c3 # non-standard scope
-    - include: comments
     - match: '\*'
       scope: keyword.operator.c3
     - match: '\?'
@@ -757,7 +730,6 @@ contexts:
       scope: storage.type.c3
       push:
         - meta_scope: meta.declaration.c3
-        - include: comments
         - include: pop_on_semicolon
         - match: '\$?{{IDENT}}'
           scope: variable.other.c3
@@ -770,7 +742,6 @@ contexts:
 
   maybe_declaration_after_type:
     - meta_scope: meta.declaration.c3
-    - include: comments
     - include: pop_on_semicolon
     - match: '\$?{{IDENT}}'
       scope: variable.other.c3
@@ -805,7 +776,6 @@ contexts:
     - match: '\bfor\b'
       scope: keyword.control.c3
       push:
-        - include: comments
         - match: '\('
           scope: punctuation.section.group.begin.c3
           set:
@@ -828,7 +798,6 @@ contexts:
         - include: expression
 
   statements:
-    - include: comments
     - include: modifier_keywords
     - match: ';'
       scope: punctuation.terminator.c3
@@ -844,8 +813,6 @@ contexts:
       push: maybe_generic_params
 
   expression:
-    - include: comments
-    
     - match: '\bfn\b'
       scope: keyword.declaration.function.c3
       push: function
@@ -870,7 +837,6 @@ contexts:
 
   function_call_args:
     - meta_content_scope: meta.function-call.c3 meta.group.c3
-    - include: comments
     - match: '\)'
       scope: meta.function-call.c3 meta.group.c3 punctuation.section.group.end.c3
       set: maybe_attribute
@@ -884,7 +850,6 @@ contexts:
         2: punctuation.separator.c3
       push:
         - meta_scope: meta.argument.c3
-        - include: comments
         - match: '(?=[,;)])'
           pop: true
         - include: expression
@@ -983,7 +948,6 @@ contexts:
       scope: punctuation.section.group.begin.c3
       push:
         - meta_scope: meta.parameters.c3 meta.group.c3
-        - include: comments
         - match: '\)'
           scope: punctuation.section.group.end.c3
           pop: true
@@ -996,7 +960,6 @@ contexts:
         - match: '([$#@&]?{{IDENT}})'
           scope: variable.parameter.c3
           push:
-            - include: comments
             - match: '(?=[;,)])'
               pop: true
             - include: attribute
