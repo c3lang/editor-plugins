@@ -734,8 +734,10 @@ contexts:
       push:
         - meta_scope: meta.declaration.c3
         - include: pop_on_semicolon
-        - match: '\$?{{IDENT}}'
-          scope: variable.other.c3
+        - match: '(\$)?{{IDENT}}'
+          captures:
+            0: variable.other.c3
+            1: punctuation.definition.variable.c3
         - match: '\$?{{TYPE}}'
           scope: storage.type.c3
         - include: attribute
@@ -747,8 +749,10 @@ contexts:
     - include: pop_on_semicolon
     - match: ','
       scope: punctuation.separator.c3
-    - match: '\$?{{IDENT}}'
-      scope: variable.other.c3
+    - match: '(\$)?{{IDENT}}'
+      captures:
+        0: variable.other.c3
+        1: punctuation.definition.variable.c3
     - match: '{{CONST}}'
       scope: entity.name.constant.c3
     - include: attribute
@@ -766,8 +770,10 @@ contexts:
     - match: '\$foreach\b'
       scope: keyword.control.ct.c3
       push:
-        - match: '\${{IDENT}}'
-          scope: variable.other.c3
+        - match: '(\$){{IDENT}}'
+          captures:
+            0: variable.other.c3
+            1: punctuation.definition.variable.c3
         - match: ','
           scope: punctuation.separator.c3
         - match: ':'
@@ -811,8 +817,10 @@ contexts:
     - include: expression
 
   variable:
-    - match: '(?<!#)\$?{{IDENT}}'
-      scope: variable.other.c3
+    - match: '(?<!#)(\$)?{{IDENT}}'
+      captures:
+        0: variable.other.c3
+        1: punctuation.definition.variable.c3
       push: maybe_generic_params
 
   expression:
