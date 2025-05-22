@@ -17,16 +17,16 @@ variables:
   REALTYPE: '(?:[f](8|16|32|64|128)?)'
   E: '[Ee][+-]?[0-9]+'
   P: '[Pp][+-]?[0-9]+'
-  CONST: '(?:_*[A-Z][_A-Z0-9]*)'
-  TYPE:  '(?:_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*)'
-  IDENT: '(?:_*[a-z][_a-zA-Z0-9]*)'
+  CONST: '(?:\b_*[A-Z][_A-Z0-9]*\b)'
+  TYPE:  '(?:\b_*[A-Z][_A-Z0-9]*[a-z][_a-zA-Z0-9]*\b)'
+  IDENT: '(?:\b_*[a-z][_a-zA-Z0-9]*\b)'
   keyword: 'assert|asm|catch|inline|import|module|interface|try|var'
   control_keyword: 'break|case|continue|default|defer|do|else|for|foreach|foreach_r|if|nextcase|return|switch|while'
   ct_keyword: 'alignof|assert|assignable|default|defined|echo|embed|eval|error|exec|extnameof|feature|include|is_const|nameof|offsetof|qnameof|sizeof|stringify|vacount|vaconst|vaarg|vaexpr|vasplat'
   ct_control_keyword: 'case|else|endfor|endforeach|endif|endswitch|for|foreach|if|switch'
   base_type: 'void|bool|char|double|float|float16|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|anyfault|typeid'
   attribute: 'align|benchmark|bigendian|builtin|callconv|compact|const|deprecated|dynamic|export|extern|finalizer|format|if|inline|init|link|littleendian|local|maydiscard|naked|noalias|nodiscard|noinit|noinline|nopadding|norecurse|noreturn|nosanitize|nostrip|obfuscate|operator|operator_r|operator_s|optional|overlap|packed|private|public|pure|reflect|safemacro|section|tag|test|unused|used|wasm|weak|winmain'
-  TYPE_IDENT: '\b(?:{{base_type}})\b|\$?\b{{TYPE}}\b'
+  TYPE_IDENT: '\b(?:{{base_type}})\b|\$?{{TYPE}}'
 
 contexts:
   main:
@@ -34,6 +34,14 @@ contexts:
 
   prototype:
     - include: comments
+
+  else_pop:
+    - match: '(?=\S)'
+      pop: true
+
+  immediately_pop:
+    - match: ''
+      pop: true
 
   pop_on_semicolon:
     - match: ';'
@@ -97,7 +105,7 @@ contexts:
 
     # Function/Macro
     - match: '\b(?:fn|macro)\b'
-      scope: keyword.declaration.function.c3
+      scope: keyword.declaratioFn.function.c3
       push: function
 
     # Alias
@@ -107,10 +115,10 @@ contexts:
         - meta_scope: meta.alias.c3
         - include: pop_on_semicolon
         # Variable/function/macro/method/constant alias
-        - match: '\b(?:(@{{IDENT}})|({{IDENT}})|({{CONST}}))\b'
+        - match: '(@{{IDENT}})|({{IDENT}})|({{CONST}})'
           captures:
             1: entity.name.function.c3
-            2: variable.global.c3
+            2: variable.other.c3
             3: entity.name.constant.c3
           set:
             - include: pop_on_semicolon
@@ -118,7 +126,7 @@ contexts:
             - include: assign_right_expression
 
         # Type/function signature alias
-        - match: '\b{{TYPE}}\b'
+        - match: '{{TYPE}}'
           branch_point: 
           scope: entity.name.type.c3
           set:
@@ -132,7 +140,7 @@ contexts:
       push:
         - meta_scope: meta.typedef.c3
         - include: pop_on_semicolon
-        - match: '\b{{TYPE}}\b'
+        - match: '{{TYPE}}'
           #scope: storage.type.c3
           scope: entity.name.type.c3
           set:
@@ -147,7 +155,7 @@ contexts:
         - meta_scope: meta.faultdef.c3
         - include: pop_on_semicolon
         - include: attribute
-        - match: '\b{{CONST}}\b'
+        - match: '{{CONST}}'
           scope: entity.name.constant.c3
         - match: ','
           scope: punctuation.separator.c3
@@ -179,7 +187,7 @@ contexts:
       scope: keyword.declaration.enum.c3
       push:
         - meta_scope: meta.enum.c3
-        - match: '\b{{TYPE}}\b'
+        - match: '{{TYPE}}'
           scope: entity.name.enum.c3
         - include: attribute
         - match: ':'
@@ -209,7 +217,7 @@ contexts:
                       pop: true
                     - include: expression
                 - include: attribute
-                - match: '\b{{CONST}}\b'
+                - match: '{{CONST}}'
                   scope: entity.name.constant.c3
                 - match: ','
                   scope: punctuation.separator.c3
@@ -220,7 +228,7 @@ contexts:
       scope: keyword.declaration.interface.c3
       push:
         - meta_scope: meta.interface.c3
-        - match: '\b{{TYPE}}\b'
+        - match: '{{TYPE}}'
           scope: entity.name.interface.c3
         - include: attribute
         - match: ':'
@@ -252,46 +260,49 @@ contexts:
     - include: type
     - match: '\.'
       scope: punctuation.accessor.c3
-    - match: '\@?\b{{IDENT}}\b'
+    - match: '\@?{{IDENT}}'
       scope: entity.name.function.c3
-    - match: '(?=\()'
-      set: function_parameters
-
-  function_parameters:
     - match: '\('
       scope: meta.function.parameters.c3 meta.group.c3 punctuation.section.group.begin.c3
-      set:
-        - meta_content_scope: meta.function.parameters.c3 meta.group.c3
-        - match: '\)'
-          scope: punctuation.section.group.end.c3
-          set: function_after_parameters
-        # Parameters
-        - include: type
-        - include: punctuation
+      set: [function_after_parameters, function_parameters_inner]
+
+  function_parameters_inner:
+    - meta_content_scope: meta.function.parameters.c3 meta.group.c3
+    - match: '\)'
+      scope: punctuation.section.group.end.c3
+      pop: true
+    # Parameters
+    - include: type
+    - include: punctuation
+    - match: '\.\.\.'
+      scope: keyword.operator.variadic.c3
+    - match: '[$#@&]?{{IDENT}}'
+      scope: variable.parameter.c3
+      push:
+        - include: attribute
         - match: '\.\.\.'
           scope: keyword.operator.variadic.c3
-        - match: '([$#@&]?{{IDENT}})'
-          scope: variable.parameter.c3
-          push:
+        # Parameter with default value
+        - match: '='
+          scope: keyword.operator.assignment.c3
+          set:
             - match: '(?=[,;)])'
               pop: true
-            - include: attribute
-            - match: '\.\.\.'
-              scope: keyword.operator.variadic.c3
-            # Parameter with default value
-            - match: '='
-              scope: keyword.operator.assignment.c3
-              set:
-                - match: '(?=[,;)])'
-                  pop: true
-                - include: expression
-        - match: ';'
+            - include: expression
+        - include: else_pop
+    - match: ';'
+      scope: punctuation.separator.c3
+      push:
+        - match: '(?=\))'
+          pop: true
+        # Trailing block param
+        - match: '@{{IDENT}}'
+          scope: entity.name.function.c3
           push:
-            - match: '(?=\))'
-              pop: true
-            - match: '@{{IDENT}}'
-              scope: entity.name.function.c3
-            - include: parameters
+            - match: '\('
+              scope: meta.function.parameters.c3 meta.group.c3 punctuation.section.group.begin.c3
+              set: function_parameters_inner
+            - include: else_pop
 
   function_after_parameters:
     - meta_content_scope: meta.function.c3
@@ -300,15 +311,18 @@ contexts:
     - match: '(?=;)'
       pop: true
     # Function body
-    - match: '(?=\{)'
-      set:
-        - meta_include_prototype: false
-        - meta_scope: meta.function.c3
-        - include: compound_stmt
+    - match: '\{'
+      scope: punctuation.section.block.begin.c3
+      push:
+        - meta_scope: meta.block.c3
+        - match: '\}'
+          scope: punctuation.section.block.end.c3
+          pop: 2
+        - include: statements
+
     # Lambda body
     - match: '(?=\=>)'
       set:
-        - meta_include_prototype: false
         - meta_scope: meta.function.c3
         - match: '=>'
           scope: keyword.declaration.function.arrow.c3
@@ -322,20 +336,17 @@ contexts:
       scope: punctuation.accessor.c3
     - match: '\.'
       scope: punctuation.accessor.c3
-    - match: '@?\b{{IDENT}}\b'
+    - match: '@?{{IDENT}}'
       scope: variable.function.c3
       push: maybe_generic_params
-    - match: '\b{{TYPE}}\b'
+    - match: '{{TYPE}}'
       scope: storage.type.c3
 
   paren_func_macro_path_ident:
     - match: '\('
       push: 
         - match: '\)'
-          set:
-            - include: maybe_generic_params
-            - match: '(?=\S)'
-              pop: 1
+          set: maybe_generic_params
         - include: paren_func_macro_path_ident
         - include: func_macro_path_ident
   
@@ -343,22 +354,16 @@ contexts:
     - match: '\('
       set:
         - match: '\)'
-          set:
-            - include: maybe_generic_params
-            - match: '(?=\S)'
-              pop: 1
+          set: maybe_generic_params
         - include: paren_func_macro_path_ident
         - include: func_macro_path_ident
     - match: '(?=\S)'
       set:
         - include: func_macro_path_ident
-        - match: '(?=\S)'
-          pop: 1
+        - include: else_pop
 
   macro_call_args_or_fail:
-    - match: '\('
-      scope: meta.group.c3 punctuation.section.group.begin.c3
-      set: function_call_args
+    - include: function_call_args
     - match: '(?=\S)'
       fail: function_arrow
     
@@ -372,11 +377,10 @@ contexts:
           set:
             - clear_scopes: 1
             # Expect a top level statement
-            - match: '(?=[^\sa-zA-Z_$;])'
-              fail: function_arrow
             - match: '(?=[a-zA-Z_$;])'
               pop: 4
-            
+            - match: '(?=\S)'
+              fail: function_arrow
         - include: statements
     - match: '(?=\S)'
       fail: function_arrow
@@ -437,7 +441,7 @@ contexts:
                     - include: expression
 
   builtin:
-    - match: '\$\$(?:{{CONST}}|{{IDENT}})\b'
+    - match: '\$\$(?:{{CONST}}|{{IDENT}})'
       scope: keyword.builtin.c3
 
   keywords:
@@ -468,8 +472,9 @@ contexts:
   constants:
     - match: '\b(true|false|null)\b'
       scope: constant.language.c3
-    - match: '\b{{CONST}}\b'
-      scope: entity.name.constant.c3
+    - match: '{{CONST}}'
+      #scope: entity.name.constant.c3
+      scope: constant.other.c3
       push: maybe_generic_params
 
   operators:
@@ -696,8 +701,7 @@ contexts:
     - match: '\?'
       scope: keyword.operator.c3
     - include: brackets
-    - match: '(?=\S)'
-      pop: true
+    - include: else_pop
 
   attribute:
     - match: '@(?:{{attribute}}|{{TYPE}})'
@@ -712,15 +716,14 @@ contexts:
       set: 
         - meta_scope: meta.annotation.c3
         - include: maybe_parens
-    - match: '(?=\S)'
-      pop: true
+    - include: else_pop
 
   declaration:
     - match: '\bconst\b'
       scope: storage.modifier.c3
       push:
         - meta_scope: meta.declaration.c3
-        - match: '(?=\b{{CONST}}\b)'
+        - match: '(?={{CONST}})'
           set: [maybe_declaration_after_type]
         - match: '(?=\S)'
           set: [maybe_declaration_after_type, expect_type]
@@ -737,20 +740,20 @@ contexts:
           scope: storage.type.c3
         - include: attribute
         - include: assign_right_expression
-        - match: '(?=\S)'
-          pop: true
+        - include: else_pop
 
   maybe_declaration_after_type:
     - meta_scope: meta.declaration.c3
     - include: pop_on_semicolon
+    - match: ','
+      scope: punctuation.separator.c3
     - match: '\$?{{IDENT}}'
       scope: variable.other.c3
-    - match: '\b{{CONST}}\b'
+    - match: '{{CONST}}'
       scope: entity.name.constant.c3
     - include: attribute
     - include: assign_right_expression
-    - match: '(?=\S)'
-      pop: true
+    - include: else_pop
 
   control_statements:
     # CT for
@@ -808,7 +811,7 @@ contexts:
     - include: expression
 
   variable:
-    - match: '(?<!#)\$?{{IDENT}}\b'
+    - match: '(?<!#)\$?{{IDENT}}'
       scope: variable.other.c3
       push: maybe_generic_params
 
@@ -836,48 +839,32 @@ contexts:
     - include: punctuation
 
   function_call_args:
-    - meta_content_scope: meta.function-call.c3 meta.group.c3
-    - match: '\)'
-      scope: meta.function-call.c3 meta.group.c3 punctuation.section.group.end.c3
-      set: maybe_attribute
-    - match: ';'
-      scope: punctuation.separator.c3
-
-    # Named argument
-    - match: '([$#]?{{IDENT}}|\${{TYPE}})\s*(:(?!:))' # TODO using \s* doesn't match over multiple lines
-      captures:
-        1: variable.parameter.c3
-        2: punctuation.separator.c3
-      push:
-        - meta_scope: meta.argument.c3
-        - match: '(?=[,;)])'
-          pop: true
+    - match: '\('
+      scope: meta.group.c3 punctuation.section.group.begin.c3
+      set:
+        - meta_content_scope: meta.function-call.c3 meta.group.c3
+        - match: '\)'
+          scope: punctuation.section.group.end.c3
+          set: maybe_attribute
+        # Trailing macro body parameters
+        - match: ';'
+          scope: punctuation.separator.c3
+          set: [maybe_attribute, function_parameters_inner]
+        # Named argument
+        - match: '([$#]?{{IDENT}}|\${{TYPE}})\s*(:(?!:))' # TODO using \s* doesn't match over multiple lines
+          captures:
+            1: variable.parameter.c3
+            2: punctuation.separator.c3
         - include: expression
-    
-    - include: expression
 
   function_call:
-    - match: '([@#]?{{IDENT}}\b)(?=\s*(\{.*\})?\s*\()' # TODO using \s* doesn't match over multiple lines
+    - match: '([@#]?{{IDENT}})(?=\s*(\{.*\})?\s*\()' # TODO using \s* doesn't match over multiple lines
       captures:
         1: variable.function.c3
       push:
         - meta_scope: meta.function-call.c3
-        #- match: '[@#]?{{IDENT}}'
-        #  scope: variable.function.c3
         - include: generic_params
-        - match: '\('
-          scope: meta.group.c3 punctuation.section.group.begin.c3
-          set: function_call_args
-            
-  compound_stmt:
-    - match: '\{'
-      scope: punctuation.section.block.begin.c3
-      push:
-        - meta_scope: meta.block.c3
-        - match: '\}'
-          scope: punctuation.section.block.end.c3
-          pop: 2
-        - include: statements
+        - include: function_call_args
 
   block:
     - match: '\{'
@@ -908,8 +895,7 @@ contexts:
           scope: punctuation.section.group.end.c3
           pop: 2
         - include: expression
-    - match: '(?=\S)'
-      pop: true
+    - include: else_pop
 
   brackets:
     - match: '\[<?'
@@ -940,8 +926,7 @@ contexts:
           scope: punctuation.definition.generic.end.c3
           pop: 2
         - include: expression
-    - match: '(?=\S)'
-      pop: true
+    - include: else_pop
 
   parameters:
     - match: '\('
@@ -955,16 +940,12 @@ contexts:
         # Parameters
         - include: type
         - include: punctuation
-        - match: '\.\.\.'
-          scope: keyword.operator.variadic.c3
-        - match: '([$#@&]?{{IDENT}})'
+        - match: '{{IDENT}}'
           scope: variable.parameter.c3
           push:
             - match: '(?=[;,)])'
               pop: true
             - include: attribute
-            - match: '\.\.\.'
-              scope: keyword.operator.variadic.c3
             # Parameter with default value
             - match: '='
               scope: keyword.operator.assignment.c3
