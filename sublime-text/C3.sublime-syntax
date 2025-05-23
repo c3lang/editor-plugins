@@ -118,7 +118,7 @@ contexts:
         - match: '(@{{IDENT}})|({{IDENT}})|({{CONST}})'
           captures:
             1: entity.name.function.c3
-            2: variable.other.c3
+            2: entity.name.alias.c3
             3: entity.name.constant.c3
           set:
             - include: pop_on_semicolon
@@ -171,6 +171,7 @@ contexts:
           set:
             - include: pop_on_semicolon
             - include: parameters
+            - include: attribute
             - match: '='
               scope: keyword.operator.assignment.c3
               set:
@@ -276,7 +277,11 @@ contexts:
     - include: punctuation
     - match: '\.\.\.'
       scope: keyword.operator.variadic.c3
-    - match: '[$#@&]?{{IDENT}}'
+    - match: '&'
+      scope: keyword.operator.address.c3
+    - match: '(?:(\$)|#)?{{IDENT}}'
+      captures:
+        1: punctuation.definition.variable.c3
       scope: variable.parameter.c3
       push:
         - include: attribute
@@ -336,6 +341,7 @@ contexts:
       scope: punctuation.accessor.c3
     - match: '\.'
       scope: punctuation.accessor.c3
+    - include: path
     - match: '@?{{IDENT}}'
       scope: variable.function.c3
       push: maybe_generic_params
@@ -473,7 +479,6 @@ contexts:
     - match: '\b(true|false|null)\b'
       scope: constant.language.c3
     - match: '{{CONST}}'
-      #scope: entity.name.constant.c3
       scope: constant.other.c3
       push: maybe_generic_params
 
@@ -500,10 +505,10 @@ contexts:
       scope: keyword.operator.assignment.c3
 
   path:
-    - match: '({{IDENT}})(::)'
+    - match: '{{IDENT}}\s*(::)'
       captures: 
-        1: meta.path.c3
-        2: meta.path.c3 punctuation.accessor.c3
+        1: punctuation.accessor.c3
+      scope: meta.path.c3
 
   literals:
     - include: string_literal
@@ -727,6 +732,7 @@ contexts:
           set: [maybe_declaration_after_type]
         - match: '(?=\S)'
           set: [maybe_declaration_after_type, expect_type]
+    - include: path
     - match: '(?={{TYPE_IDENT}}|\$(?:typeof|typefrom|vatype|evaltype)\b)'
       push: [maybe_declaration_after_type, expect_type]
     - match: '\bvar\b'
@@ -736,8 +742,8 @@ contexts:
         - include: pop_on_semicolon
         - match: '(\$)?{{IDENT}}'
           captures:
-            0: variable.other.c3
             1: punctuation.definition.variable.c3
+          scope: variable.other.c3
         - match: '\$?{{TYPE}}'
           scope: storage.type.c3
         - include: attribute
@@ -751,8 +757,8 @@ contexts:
       scope: punctuation.separator.c3
     - match: '(\$)?{{IDENT}}'
       captures:
-        0: variable.other.c3
         1: punctuation.definition.variable.c3
+      scope: variable.other.c3
     - match: '{{CONST}}'
       scope: entity.name.constant.c3
     - include: attribute
@@ -772,8 +778,8 @@ contexts:
       push:
         - match: '(\$){{IDENT}}'
           captures:
-            0: variable.other.c3
             1: punctuation.definition.variable.c3
+          scope: variable.other.c3
         - match: ','
           scope: punctuation.separator.c3
         - match: ':'
@@ -819,15 +825,14 @@ contexts:
   variable:
     - match: '(?<!#)(\$)?{{IDENT}}'
       captures:
-        0: variable.other.c3
         1: punctuation.definition.variable.c3
+      scope: variable.other.c3
       push: maybe_generic_params
 
   expression:
     - match: '\bfn\b'
       scope: keyword.declaration.function.c3
       push: function
-
     - include: constants
     - include: builtin
     - include: literals
@@ -836,12 +841,9 @@ contexts:
     - include: type
     - include: path
     - include: function_call
-
     - include: variable
-
     - include: parens
     - include: brackets
-
     # Just assume anything in curly braces is a block of statements (even if it's an initializer list)
     - include: block
     - include: punctuation

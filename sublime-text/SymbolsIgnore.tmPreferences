@@ -5,13 +5,15 @@
 	<key>scope</key>
 	<!-- Don't show interface functions, trailing block params and anything inside functions -->
 	<string>
-		source.c3 meta.function.c3, 
-		source.c3 meta.function.parameters.c3, 
+		source.c3 meta.function.c3 meta.block.c3,
+		source.c3 meta.function.parameters.c3,
 		source.c3 meta.interface.body.c3
 	</string>
 	<key>settings</key>
 	<dict>
 		<key>showInSymbolList</key>
+		<integer>0</integer>
+		<key>showInIndexedSymbolList</key>
 		<integer>0</integer>
 	</dict>
 </dict>
