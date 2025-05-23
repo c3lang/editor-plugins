@@ -145,6 +145,8 @@ contexts:
           scope: entity.name.type.c3
           set:
             - include: pop_on_semicolon
+            # Interface implementation
+            - include: parens
             - include: attribute
             - include: assign_right_expression
 
