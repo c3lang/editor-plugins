@@ -5,9 +5,9 @@ endif
 syn match c3Identifier  display "\v<_*[a-z][A-Za-z0-9_]*>"
 syn match c3Function    display "\zs\(\w*\)*\s*\ze("
 syn match c3Macro       display "@\zs\(\w*\)*\s*\ze("
-syn match c3UserAttr    display "@_*[A-Z][a-zA-Z0-9_]\+"
+syn match c3UserAttr    display "@_*[A-Z][A-Z0-9_]*[a-z][a-zA-Z0-9_]*"
 syn match c3GlobalConst display "_*[A-Z][A-Z0-9_]\+"
-syn match c3UserType    display "_*[A-Z][a-zA-Z0-9_]*[a-z][a-zA-Z0-9_]*"
+syn match c3UserType    display "_*[A-Z][A-Z0-9_]*[a-z][a-zA-Z0-9_]*"
 syn match c3Label       display "^\s*_*[A-Z][A-Z0-9_]\+:"
 syn match c3ComptimeId  display "\v\$<_*[a-z][A-Za-z0-9_]*>"
 
