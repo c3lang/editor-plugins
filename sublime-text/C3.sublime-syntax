@@ -9,12 +9,12 @@ file_extensions:
 scope: source.c3
 
 variables:
-  INT: '[0-9](_?[0-9])*'
-  HINT: '[a-fA-F0-9](_?[a-fA-F0-9])*'
+  INT: '[0-9](?:_?[0-9])*'
+  HINT: '[a-fA-F0-9](?:_?[a-fA-F0-9])*'
   OINT: '[0-7](_?[0-7])*'
   BINT: '[0-1](_?[0-1])*'
-  INTTYPE: '(?:[ui](8|16|32|64|128)|[Uu][Ll]{0,2}|[Ll]{1,2})'
-  REALTYPE: '(?:[f](8|16|32|64|128)?)'
+  INTTYPE: '(?:[UuIi](?:8|16|32|64|128)|[Uu][Ll]{0,2}|[Ll]{1,2})'
+  REALTYPE: '(?:[Ff](?:16|32|64|128)?|[Dd])'
   E: '[Ee][+-]?[0-9]+'
   P: '[Pp][+-]?[0-9]+'
   CONST: '(?:\b_*[A-Z][_A-Z0-9]*\b)'
@@ -24,8 +24,8 @@ variables:
   control_keyword: 'break|case|continue|default|defer|do|else|for|foreach|foreach_r|if|nextcase|return|switch|while'
   ct_keyword: 'alignof|assert|assignable|default|defined|echo|embed|eval|error|exec|extnameof|feature|include|is_const|nameof|offsetof|qnameof|sizeof|stringify|vacount|vaconst|vaarg|vaexpr|vasplat'
   ct_control_keyword: 'case|else|endfor|endforeach|endif|endswitch|for|foreach|if|switch'
-  base_type: 'void|bool|char|double|float|float16|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|anyfault|typeid'
-  attribute: 'align|benchmark|bigendian|builtin|callconv|compact|const|deprecated|dynamic|export|extern|finalizer|format|if|inline|init|link|littleendian|local|maydiscard|naked|noalias|nodiscard|noinit|noinline|nopadding|norecurse|noreturn|nosanitize|nostrip|obfuscate|operator|operator_r|operator_s|optional|overlap|packed|private|public|pure|reflect|safemacro|section|tag|test|unused|used|wasm|weak|winmain'
+  base_type: 'void|bool|char|double|float|float16|bfloat|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|fault|typeid'
+  attribute: 'align|allow_deprecated|benchmark|bigendian|builtin|callconv|compact|const|deprecated|dynamic|export|extern|finalizer|format|if|inline|init|jump|link|littleendian|local|maydiscard|naked|noalias|nodiscard|noinit|noinline|nopadding|norecurse|noreturn|nosanitize|nostrip|obfuscate|operator|operator_r|operator_s|optional|overlap|packed|private|public|pure|reflect|safemacro|section|structlike|tag|test|unused|used|wasm|weak|winmain'
   TYPE_IDENT: '\b(?:{{base_type}})\b|\$?{{TYPE}}'
 
 contexts:
@@ -198,8 +198,8 @@ contexts:
           push:
             - match: '(?=\{)'
               pop: true
-            - match: '\binline\b'
-              scope: storage.modifier.c3 # TODO
+            - match: '\b(?:inline|const)\b'
+              scope: storage.modifier.c3
             - include: type_no_generics
             # Enum parameters
             - include: parameters
@@ -487,24 +487,24 @@ contexts:
   operators:
     - match: '&&&?|\|\|\|?'
       scope: keyword.operator.logical.c3
-    - match: '!|\?[?:]?|\*|&|:'
-      scope: keyword.operator.c3
-    - match: '\.\.(?!\.)'
-      scope: keyword.operator.range.c3
+    - match: '(?:[-%&*+/^|]|>>|<<)='
+      scope: keyword.operator.assignment.augmented.c3
     - match: '\.\.\.'
       scope: keyword.operator.variadic.c3
+    - match: '\.\.'
+      scope: keyword.operator.range.c3
     - match: '\+\+\+?|--'
       scope: keyword.operator.arithmetic.c3
-    - match: '\+=|-=|\*=|/=|%=|&=|\|=|\^=|>>=|<<='
-      scope: keyword.operator.assignment.augmented.c3
     - match: '<<|>>'
       scope: keyword.operator.arithmetic.c3
-    - match: '<=|>=|==|<|>|\!='
+    - match: '<=|>=|==|<|>|!='
       scope: keyword.operator.comparison.c3
-    - match: '\+|\-|/|%|\||\^|~|!'
+    - match: '[-%+/^|~]'
       scope: keyword.operator.arithmetic.c3
     - match: '='
       scope: keyword.operator.assignment.c3
+    - match: '!|\?[?:]?|[&*:]'
+      scope: keyword.operator.c3
 
   path:
     - match: '{{IDENT}}\s*(::)'
@@ -520,14 +520,17 @@ contexts:
     - include: integer_literal
     - include: bytes_literal
 
+  escape_sequence:
+    - match: '\\([0abefnrtv''"\\]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})'
+      scope: constant.character.escape.c3
+
   char_literal:
     - match: "'"
       scope: punctuation.definition.string.begin.c3
       push:
       - meta_include_prototype: false
       - meta_scope: string.quoted.single.c3
-      - match: '\\.'
-        scope: constant.character.escape.c3
+      - include: escape_sequence
       - match: "'"
         scope: punctuation.definition.string.end.c3
         pop: true
@@ -538,8 +541,7 @@ contexts:
       push:
       - meta_include_prototype: false
       - meta_scope: string.quoted.double.c3
-      - match: '\\([0abefnrtv''"\\]|x[0-9a-fA-F]{2}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})'
-        scope: constant.character.escape.c3
+      - include: escape_sequence
       - match: '"'
         scope: punctuation.definition.string.end.c3
         pop: true
@@ -561,7 +563,7 @@ contexts:
       scope: constant.numeric.float.c3
     - match: '\b(?:{{INT}}{{E}}|{{INT}}\.(?!\.)(?:{{INT}})?(?:{{E}})?){{REALTYPE}}?'
       scope: constant.numeric.float.c3
-    - match: '\b(?:0[xX]{{HINT}}{{P}}|0[xX]{{HINT}}\.(?!\.)(?:{{HINT}})?(?:{{P}})?)'
+    - match: '\b0[xX]{{HINT}}(?:\.(?:{{HINT}})?)?{{P}}{{REALTYPE}}?'
       scope: constant.numeric.float.c3
 
   integer_literal:
@@ -862,15 +864,26 @@ contexts:
         - match: ';'
           scope: punctuation.separator.c3
           set: [maybe_attribute, function_parameters_inner]
+        - match: ','
+          scope: punctuation.separator.c3
         # Named argument
-        - match: '([$#]?{{IDENT}}|\${{TYPE}})\s*(:(?!:))' # TODO using \s* doesn't match over multiple lines
+        - match: '([$#]?{{IDENT}}|\${{TYPE}})\s*(:)(?!:)'
           captures:
             1: variable.parameter.c3
             2: punctuation.separator.c3
-        - include: expression
+          push:
+            - match: '(?=[);,])'
+              pop: true
+            - include: expression
+        # Unnamed argument
+        - match: '(?=\S)'
+          push:
+            - match: '(?=[);,])'
+              pop: true
+            - include: expression
 
   function_call:
-    - match: '([@#]?{{IDENT}})(?=\s*(\{.*\})?\s*\()' # TODO using \s* doesn't match over multiple lines
+    - match: '([@#]?{{IDENT}})(?=\s*(\{.*\})?\s*\()'
       captures:
         1: variable.function.c3
       push:
@@ -950,6 +963,8 @@ contexts:
           pop: true
 
         # Parameters
+        - match: '\binline\b' # NOTE For enum parameters only
+          scope: storage.modifier.c3
         - include: type
         - include: punctuation
         - match: '{{IDENT}}'
