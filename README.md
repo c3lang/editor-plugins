@@ -12,6 +12,7 @@ Currently available are:
 - Kakoune
 - [Zed](https://github.com/AineeJames/c3-zed)
 - [Kate](https://kate-editor.org/get-it/)
+- Lite-xl
 
 Please note that since the language is still undergoing revisions, these may or may not be completely
 current.
