@@ -30,6 +30,7 @@ addhl shared/c3/code/func         regex '(?:[@#$])?\b_*[a-z][a-zA-Z0-9_]*\s*(?=\
 addhl shared/c3/code/module       regex '([a-z0-9_]+)(?=::)' 1:module
 # code/module-decl highlights '::' as modules, but they should not be highlighted
 addhl shared/c3/code/namespace    regex '::' 0:Default
+addhl shared/c3/code/shebang      regex '\A#! ?/.*?\n' 0:comment
 
 evaluate-commands %sh{
 	# generated using "c3c --list-{} | string join ' '" in fish
