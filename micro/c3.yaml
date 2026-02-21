@@ -81,6 +81,11 @@ rules:
         end: "\\*>"
         rules: 
             - todo: "(TODO|XXX|FIXME):?"
+            - preproc: "@(param|require|ensure|return|return\\?|deprecated|pure)\\b"
+            - constant.special: "\\[(?:&)?(in|out|inout)\\]"
+            - constant.string:
+                start: "```"
+                end: "```"
 
     # Shebang
     - comment:
