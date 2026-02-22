@@ -13,10 +13,10 @@ rules:
     - type: "\\b(void|bool|char|double|float|float16|bfloat16|bfloat|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|anyfault|String|fault)\\b"
 
     # Keywords
-    - statement: "\\b(alias|any|asm|assert|attrdef|bitstruct|break|case|catch|const|continue|default|defer|do|else|enum|extern|false|fault|faultdef|fn|for|foreach|foreach_r|ichar|if|import|inline|int|int128|interface|iptr|isz|long|macro|module|nextcase|null|return|short|struct|static|switch|tlocal|true|try|typedef|typeid|uint|uint128|ulong|union|uptr|ushort|usz|var|void|while|constdef|lengthof)\\b"
+    - statement: "\\b(alias|any|asm|assert|attrdef|bitstruct|break|case|catch|const|continue|default|defer|distinct|do|else|enum|extern|false|fault|faultdef|fn|for|foreach|foreach_r|ichar|if|import|inline|int|int128|interface|iptr|isz|long|macro|module|nextcase|null|return|short|struct|static|switch|tlocal|true|try|typedef|typeid|uint|uint128|ulong|union|uptr|ushort|usz|var|void|while|constdef|lengthof)\\b"
 
     # $$ builtins
-    - statement: "(\\$\\$abs|\\$\\$add|\\$\\$any_make|\\$\\$atomic_fetch_add|\\$\\$atomic_fetch_and|\\$\\$atomic_fetch_dec_wrap|\\$\\$atomic_fetch_exchange|\\$\\$atomic_fetch_inc_wrap|\\$\\$atomic_fetch_max|\\$\\$atomic_fetch_min|\\$\\$atomic_fetch_nand|\\$\\$atomic_fetch_or|\\$\\$atomic_fetch_sub|\\$\\$atomic_fetch_xor|\\$\\$atomic_load|\\$\\$atomic_store|\\$\\$bitreverse|\\$\\$breakpoint|\\$\\$bswap|\\$\\$ceil|\\$\\$clz|\\$\\$compare_exchange|\\$\\$copysign|\\$\\$cos|\\$\\$ctz|\\$\\$DATE|\\$\\$div|\\$\\$exp|\\$\\$exp2|\\$\\$expect|\\$\\$expect_with_probability|\\$\\$fabs|\\$\\$FILE|\\$\\$FILEPATH|\\$\\$floor|\\$\\$fma|\\$\\$fmuladd|\\$\\$frameaddress|\\$\\$fshl|\\$\\$fshr|\\$\\$FUNC|\\$\\$FUNCTION|\\$\\$gather|\\$\\$get_rounding_mode|\\$\\$int_to_mask|\\$\\$LINE|\\$\\$LINE_RAW|\\$\\$log|\\$\\$log10|\\$\\$log2|\\$\\$masked_load|\\$\\$masked_store|\\$\\$max|\\$\\$memcpy|\\$\\$memcpy_inline|\\$\\$memmove|\\$\\$memset|\\$\\$memset_inline|\\$\\$min|\\$\\$MODULE|\\$\\$mask_to_int|\\$\\$nearbyint|\\$\\$neg|\\$\\$overflow_add|\\$\\$overflow_mul|\\$\\$overflow_sub|\\$\\$popcount|\\$\\$pow|\\$\\$pow_int|\\$\\$prefetch|\\$\\$PRERELEASE|\\$\\$reduce_add|\\$\\$reduce_and|\\$\\$reduce_fadd|\\$\\$reduce_fmul|\\$\\$reduce_max|\\$\\$reduce_min|\\$\\$reduce_mul|\\$\\$reduce_or|\\$\\$reduce_xor|\\$\\$reverse|\\$\\$returnaddress|\\$\\$rint|\\$\\$round|\\$\\$roundeven|\\$\\$sat_add|\\$\\$sat_shl|\\$\\$sat_sub|\\$\\$scatter|\\$\\$select|\\$\\$set_rounding_mode|\\$\\$shufflevector|\\$\\$sin|\\$\\$sqrt|\\$\\$stacktrace|\\$\\$str_find|\\$\\$str_hash|\\$\\$str_lower|\\$\\$str_pascalcase|\\$\\$str_replace|\\$\\$str_snakecase|\\$\\$str_upper|\\$\\$swizzle|\\$\\$swizzle2|\\$\\$syscall|\\$\\$sysclock|\\$\\$TIME|\\$\\$trap|\\$\\$trunc|\\$\\$unaligned_load|\\$\\$unaligned_store|\\$\\$unreachable|\\$\\$veccompeq|\\$\\$veccompge|\\$\\$veccompgt|\\$\\$veccomple|\\$\\$veccomplt|\\$\\$veccompne|\\$\\$VERSION|\\$\\$volatile_load|\\$\\$volatile_store|\\$\\$wasm_memory_grow|\\$\\$wasm_memory_size)"
+    - statement: "(\\$\\$BENCHMARK_FNS|\\$\\$BENCHMARK_NAMES|\\$\\$TEST_FNS|\\$\\$TEST_NAMES|\\$\\$abs|\\$\\$add|\\$\\$any_make|\\$\\$atomic_fetch_add|\\$\\$atomic_fetch_and|\\$\\$atomic_fetch_dec_wrap|\\$\\$atomic_fetch_exchange|\\$\\$atomic_fetch_inc_wrap|\\$\\$atomic_fetch_max|\\$\\$atomic_fetch_min|\\$\\$atomic_fetch_nand|\\$\\$atomic_fetch_or|\\$\\$atomic_fetch_sub|\\$\\$atomic_fetch_xor|\\$\\$atomic_load|\\$\\$atomic_store|\\$\\$bitreverse|\\$\\$breakpoint|\\$\\$bswap|\\$\\$ceil|\\$\\$clz|\\$\\$compare_exchange|\\$\\$copysign|\\$\\$cos|\\$\\$ctz|\\$\\$DATE|\\$\\$div|\\$\\$exp|\\$\\$exp2|\\$\\$expect|\\$\\$expect_with_probability|\\$\\$fabs|\\$\\$FILE|\\$\\$FILEPATH|\\$\\$floor|\\$\\$fma|\\$\\$fmuladd|\\$\\$frameaddress|\\$\\$fshl|\\$\\$fshr|\\$\\$FUNC|\\$\\$FUNCTION|\\$\\$gather|\\$\\$get_rounding_mode|\\$\\$int_to_mask|\\$\\$LINE|\\$\\$LINE_RAW|\\$\\$log|\\$\\$log10|\\$\\$log2|\\$\\$masked_load|\\$\\$masked_store|\\$\\$max|\\$\\$memcpy|\\$\\$memcpy_inline|\\$\\$memmove|\\$\\$memset|\\$\\$memset_inline|\\$\\$min|\\$\\$MODULE|\\$\\$mask_to_int|\\$\\$nearbyint|\\$\\$neg|\\$\\$overflow_add|\\$\\$overflow_mul|\\$\\$overflow_sub|\\$\\$popcount|\\$\\$pow|\\$\\$pow_int|\\$\\$prefetch|\\$\\$PRERELEASE|\\$\\$reduce_add|\\$\\$reduce_and|\\$\\$reduce_fadd|\\$\\$reduce_fmul|\\$\\$reduce_max|\\$\\$reduce_min|\\$\\$reduce_mul|\\$\\$reduce_or|\\$\\$reduce_xor|\\$\\$reverse|\\$\\$returnaddress|\\$\\$rint|\\$\\$round|\\$\\$roundeven|\\$\\$sat_add|\\$\\$sat_shl|\\$\\$sat_sub|\\$\\$scatter|\\$\\$select|\\$\\$set_rounding_mode|\\$\\$shufflevector|\\$\\$sin|\\$\\$sqrt|\\$\\$stacktrace|\\$\\$str_find|\\$\\$str_hash|\\$\\$str_lower|\\$\\$str_pascalcase|\\$\\$str_replace|\\$\\$str_snakecase|\\$\\$str_upper|\\$\\$swizzle|\\$\\$swizzle2|\\$\\$syscall|\\$\\$sysclock|\\$\\$TIME|\\$\\$trap|\\$\\$trunc|\\$\\$unaligned_load|\\$\\$unaligned_store|\\$\\$unreachable|\\$\\$veccompeq|\\$\\$veccompge|\\$\\$veccompgt|\\$\\$veccomple|\\$\\$veccomplt|\\$\\$veccompne|\\$\\$VERSION|\\$\\$volatile_load|\\$\\$volatile_store|\\$\\$wasm_memory_grow|\\$\\$wasm_memory_size)"
 
     # $ compile-time directives
     - preproc: "(\\$foreach|\\$endforeach|\\$endswitch|\\$endfor|\\$typeof|\\$typefrom|\\$qnameof|\\$offsetof|\\$nameof|\\$kindof|\\$is_const|\\$include|\\$if|\\$foreach_r|\\$feature|\\$extnameof|\\$exec|\\$evaltype|\\$eval|\\$error|\\$embed|\\$else|\\$echo|\\$endif|\\$defined|\\$default|\\$case|\\$assert|\\$alignof|\\$and|\\$append|\\$assignable|\\$for|\\$switch|\\$sizeof|\\$stringify|\\$vaarg|\\$vaconst|\\$vacount|\\$vaexpr|\\$varef|\\$vasplat|\\$vatype)"
@@ -28,6 +28,10 @@ rules:
     - symbol.operator: "(=>|\\?\\?|\\?:|&&&|\\|\\|\\||\\+\\+\\+|\\.\\.\\.|\\.\\.|!!|==|!=|<=|>=|&&|\\|\\||<<|>>|[-+*/%=<>.:;,~&|^!\\?])"
 
     - symbol.brackets: "[(){}\\[\\]]"
+
+    # Generic parameters: <T> and wildcard [<*>]
+    - type: "<[A-Za-z_][A-Za-z0-9_]*>"
+    - type: "\\[<\\*>\\]"
 
     # Numbers
     - constant.number: "\\b(0[xX][0-9a-fA-F_]+|0[oO][0-7_]+|0[bB][01_]+|[0-9_]+)([ui](8|16|32|64|128)|[Uu][Ll]?|[Ll])?\\b"
@@ -77,17 +81,21 @@ rules:
             - todo: "(TODO|XXX|FIXME):?"
 
     - comment.block:
-        start: "<\\*"
-        end: "\\*>"
+        start: "([^[]|^|\\s+)<\\*"
+        end: "\\s*\\*>"
         rules: 
             - todo: "(TODO|XXX|FIXME):?"
             - preproc: "@(param|require|ensure|return|return\\?|deprecated|pure)\\b"
-            - constant.special: "\\[(?:&)?(in|out|inout)\\]"
-            - constant.string:
-                start: "```"
-                end: "```"
+            - type: "\\[(?:&)?(in|out|inout)\\]"
+            # - constant.string:
+            #     start: "```"
+            #     end: "```"
+            # - constant.string:
+            #     start: "`"
+            #     end: "`"
+            #     skip: "``"
 
     # Shebang
-    - comment:
+    - preproc.shebang:
         start: "^#!"
         end: "$"
