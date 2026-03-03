@@ -52,7 +52,6 @@ rules:
         end: "'"
         skip: "\\\\."
         rules:
-            - error: "..+"
             - constant.specialChar: "\\\\."
 
     # Raw strings `...`
