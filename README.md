@@ -9,6 +9,7 @@ Currently available are:
 - [NeoVim](https://github.com/wstucco/c3.nvim)
 - Sublime Text
 - Nano
+- Notepad++
 - Kakoune
 - [Zed](https://github.com/AineeJames/c3-zed)
 - [Kate](https://kate-editor.org/get-it/)
