@@ -29,9 +29,14 @@ rules:
 
     - symbol.brackets: "[(){}\\[\\]]"
 
-    # Generic parameters: <T> and wildcard [<*>]
-    - type: "<[A-Za-z_][A-Za-z0-9_]*>"
-    - type: "\\[<\\*>\\]"
+    # Vectors
+    - symbol.operator:
+        start: "\\[<"
+        end: ">]"
+        rules:
+            - constant.number: "\\*"
+            - constant.number: "\\b[0-9_]+\\b"
+
 
     # Numbers
     - constant.number: "\\b(0[xX][0-9a-fA-F_]+|0[oO][0-7_]+|0[bB][01_]+|[0-9_]+)([ui](8|16|32|64|128)|[Uu][Ll]{0,2}|[Ll]{1,2}|[Zz])?\\b"
