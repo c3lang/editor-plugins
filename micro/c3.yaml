@@ -1,59 +1,99 @@
 filetype: c3
 
 detect:
-    filename: "(\\.(c3)$)"
+    filename: "(\\.(c3|c3i|c3t)$)"
 
 rules:
     - identifier: "\\b[A-Z_][0-9A-Z_]+\\b"
-    - type: "\\b[A-Z][A-Za-z_]+\\b"
-    - identifier.constant: "\\b[A-Z_]+\\b"
-    - identifer: "\\$[A-Za-z_][0-9A-Za-z_]+"
-    - type: "\\b(void|bool|char|double|float|float16|bfloat|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|anyfault|String)\\b"
-    - type: "\\b(CChar|CShort|CUShort|CInt|CUInt|CLong|CULong|CLongLong|CULongLong|CLongDouble)\\b"
-    - statement: "\\b(typeid|assert|asm|bitstruct|break|case|catch|const|continue|def|default|defer|distinct|do|else|enum|extern|fault|for|foreach|foreach_r|fn|tlocal|if|inline|import|macro|module|nextcase|null|interface|return|static|struct|switch|try|union|var|while)\\b"
-    - statement: "(\\$\\$abs|\\$\\$any_make|\\$\\$atomic_load|\\$\\$atomic_store|\\$\\$atomic_fetch_exchange|\\$\\$atomic_fetch_add|\\$\\$atomic_fetch_sub|\\$\\$atomic_fetch_and|\\$\\$atomic_fetch_nand|\\$\\$atomic_fetch_or|\\$\\$atomic_fetch_xor|\\$\\$atomic_fetch_max|\\$\\$atomic_fetch_min|\\$\\$atomic_fetch_inc_wrap|\\$\\$atomic_fetch_dec_wrap|\\$\\$bitreverse|\\$\\$breakpoint|\\$\\$bswap|\\$\\$ceil|\\$\\$compare_exchange|\\$\\$copysign|\\$\\$cos|\\$\\$clz|\\$\\$ctz|\\$\\$add|\\$\\$div|\\$\\$mod|\\$\\$mul|\\$\\$neg|\\$\\$sub|\\$\\$exp|\\$\\$exp2|\\$\\$floor|\\$\\$fma|\\$\\$fmuladd|\\$\\$frameaddress|\\$\\$fshl|\\$\\$fshr|\\$\\$gather|\\$\\$get_rounding_mode|\\$\\$log|\\$\\$log10|\\$\\$log2|\\$\\$masked_load|\\$\\$masked_store|\\$\\$max|\\$\\$memcpy|\\$\\$memcpy_inline|\\$\\$memmove|\\$\\$memset|\\$\\$memset_inline|\\$\\$min|\\$\\$nearbyint|\\$\\$overflow_add|\\$\\$overflow_mul|\\$\\$overflow_sub|\\$\\$popcount|\\$\\$pow|\\$\\$pow_int|\\$\\$prefetch|\\$\\$reduce_add|\\$\\$reduce_and|\\$\\$reduce_fadd|\\$\\$reduce_fmul|\\$\\$reduce_max|\\$\\$reduce_min|\\$\\$reduce_mul|\\$\\$reduce_or|\\$\\$reduce_xor|\\$\\$reverse|\\$\\$returnaddress|\\$\\$rint|\\$\\$round|\\$\\$roundeven|\\$\\$sat_add|\\$\\$sat_shl|\\$\\$sat_sub|\\$\\$scatter|\\$\\$select|\\$\\$set_rounding_mode|\\$\\$str_hash|\\$\\$str_upper|\\$\\$str_lower|\\$\\$str_find|\\$\\$swizzle|\\$\\$swizzle2|\\$\\$sin|\\$\\$sqrt|\\$\\$syscall|\\$\\$sysclock|\\$\\$trap|\\$\\$trunc|\\$\\$unaligned_load|\\$\\$unaligned_store|\\$\\$unreachable|\\$\\$veccomplt|\\$\\$veccomple|\\$\\$veccompgt|\\$\\$veccompge|\\$\\$veccompeq|\\$\\$veccompne|\\$\\$volatile_load|\\$\\$volatile_store|\\$\\$wasm_memory_size|\\$\\$wasm_memory_grow|\\$\\$DATE|\\$\\$FILE|\\$\\$FILEPATH|\\$\\$FUNC|\\$\\$FUNCTION|\\$\\$LINE|\\$\\$LINE_RAW|\\$\\$MODULE|\\$\\$BENCHMARK_NAMES|\\$\\$BENCHMARK_FNS|\\$\\$TEST_NAMES|\\$\\$TEST_FNS|\\$\\$TIME)"
-    - statement: "(\\$\\$expect_with_probability|\\$\\$expect)"
-    - preproc: "(\\$alignof|\\$and|\\$append|\\$assert|\\$assignable|\\$case|\\$concat|\\$default|\\$defined|\\$echo|\\$else|\\$embed|\\$endfor|\\$endforeach|\\$endif|\\$endswitch|\\$eval|\\$evaltype|\\$error|\\$exec|\\$extnameof|\\$feature|\\$for|\\$foreach|\\$if|\\$include|\\$is_const|\\$nameof|\\$offsetof|\\$or|\\$qnameof|\\$sizeof|\\$stringify|\\$switch|\\$typefrom|\\$typeof|\\$vacount|\\$vatype|\\$vaconst|\\$varef|\\$vaarg|\\$vaexpr|\\$vasplat)"
-    - preproc: "(@align|@benchmark|@bigendian|@builtin|@callconv|@compact|@const|@deprecated|@dynamic|@export|@extern|@finalizer|@if|@inline|@init|@link|@littleendian|@local|@maydiscard|@naked|@noalias|@nodiscard|@noinit|@noinline|@nopadding|@noreturn|@nostrip|@obfuscate|@operator|@optional|@overlap|@packed|@private|@public|@pure|@reflect|@safemacro|@section|@test|@unused|@used|@wasm|@weak|@winmain)"
-    - symbol.operator: "[-+*/%=<>.:;,~&|^!?]\\b"
-    - symbol.brackets: "[(){}]|\\[|\\]"
+    - type: "\\b[A-Z][A-Za-z_0-9]+\\b"
+    - identifier.constant: "\\b[A-Z_][A-Z0-9_]*\\b"
+    - identifier: "\\$[A-Za-z_][0-9A-Za-z_]*"
 
-      # Integer Constants
-    - constant.number: "(\\b([0-9_]+|0x[0-9A-Fa-f_]+|0b[01_]+)\\b)"
-      # Decimal Floating Constants
-    - constant.number: "(\\b([0-9_]+.[0-9]+)\\b)"
+    # Built-in types
+    - type: "\\b(void|any|bool|char|double|float|float16|bfloat|int128|ichar|int|iptr|isz|long|short|uint128|uint|ulong|uptr|ushort|usz|float128|any|String|fault|sz|typeid)\\b"
 
-    - constant.bool: "(\\b(true|false|null)\\b)"
+    # Keywords
+    - statement: "\\b(alias|asm|assert|attrdef|bitstruct|break|case|catch|const|continue|default|defer|do|else|enum|extern|false|faultdef|fn|for|foreach|foreach_r|if|import|inline|interface|macro|module|nextcase|null|return|struct|static|switch|tlocal|true|try|typedef|union|var|while|constdef|lengthof)\\b"
 
+    # $$ builtins
+    - statement: "(\\$\\$BENCHMARK_FNS|\\$\\$BENCHMARK_NAMES|\\$\\$TEST_FNS|\\$\\$TEST_NAMES|\\$\\$abs|\\$\\$add|\\$\\$any_make|\\$\\$atomic_fetch_add|\\$\\$atomic_fetch_and|\\$\\$atomic_fetch_dec_wrap|\\$\\$atomic_fetch_exchange|\\$\\$atomic_fetch_inc_wrap|\\$\\$atomic_fetch_max|\\$\\$atomic_fetch_min|\\$\\$atomic_fetch_nand|\\$\\$atomic_fetch_or|\\$\\$atomic_fetch_sub|\\$\\$atomic_fetch_xor|\\$\\$atomic_load|\\$\\$atomic_store|\\$\\$bitreverse|\\$\\$breakpoint|\\$\\$bswap|\\$\\$ceil|\\$\\$clz|\\$\\$compare_exchange|\\$\\$copysign|\\$\\$cos|\\$\\$ctz|\\$\\$DATE|\\$\\$div|\\$\\$exp|\\$\\$exp2|\\$\\$expect|\\$\\$expect_with_probability|\\$\\$fabs|\\$\\$FILE|\\$\\$FILEPATH|\\$\\$floor|\\$\\$fma|\\$\\$fmuladd|\\$\\$frameaddress|\\$\\$fshl|\\$\\$fshr|\\$\\$FUNC|\\$\\$FUNCTION|\\$\\$gather|\\$\\$get_rounding_mode|\\$\\$int_to_mask|\\$\\$LINE|\\$\\$LINE_RAW|\\$\\$log|\\$\\$log10|\\$\\$log2|\\$\\$masked_load|\\$\\$masked_store|\\$\\$max|\\$\\$memcpy|\\$\\$memcpy_inline|\\$\\$memmove|\\$\\$memset|\\$\\$memset_inline|\\$\\$min|\\$\\$MODULE|\\$\\$mask_to_int|\\$\\$nearbyint|\\$\\$neg|\\$\\$overflow_add|\\$\\$overflow_mul|\\$\\$overflow_sub|\\$\\$popcount|\\$\\$pow|\\$\\$pow_int|\\$\\$prefetch|\\$\\$PRERELEASE|\\$\\$reduce_add|\\$\\$reduce_and|\\$\\$reduce_fadd|\\$\\$reduce_fmul|\\$\\$reduce_max|\\$\\$reduce_min|\\$\\$reduce_mul|\\$\\$reduce_or|\\$\\$reduce_xor|\\$\\$reverse|\\$\\$returnaddress|\\$\\$rint|\\$\\$round|\\$\\$roundeven|\\$\\$sat_add|\\$\\$sat_shl|\\$\\$sat_sub|\\$\\$scatter|\\$\\$select|\\$\\$set_rounding_mode|\\$\\$shufflevector|\\$\\$sin|\\$\\$sqrt|\\$\\$stacktrace|\\$\\$str_find|\\$\\$str_hash|\\$\\$str_lower|\\$\\$str_pascalcase|\\$\\$str_replace|\\$\\$str_snakecase|\\$\\$str_upper|\\$\\$swizzle|\\$\\$swizzle2|\\$\\$syscall|\\$\\$sysclock|\\$\\$TIME|\\$\\$trap|\\$\\$trunc|\\$\\$unaligned_load|\\$\\$unaligned_store|\\$\\$unreachable|\\$\\$veccompeq|\\$\\$veccompge|\\$\\$veccompgt|\\$\\$veccomple|\\$\\$veccomplt|\\$\\$veccompne|\\$\\$VERSION|\\$\\$volatile_load|\\$\\$volatile_store|\\$\\$wasm_memory_grow|\\$\\$wasm_memory_size)"
+
+    # $ compile-time directives
+    - preproc: "(\\$foreach|\\$endforeach|\\$endswitch|\\$endfor|\\$typeof|\\$typefrom|\\$qnameof|\\$offsetof|\\$nameof|\\$kindof|\\$is_const|\\$include|\\$if|\\$foreach_r|\\$feature|\\$extnameof|\\$exec|\\$evaltype|\\$eval|\\$error|\\$embed|\\$else|\\$echo|\\$endif|\\$defined|\\$default|\\$case|\\$assert|\\$alignof|\\$and|\\$append|\\$assignable|\\$for|\\$switch|\\$sizeof|\\$stringify|\\$vaarg|\\$vaconst|\\$vacount|\\$vaexpr|\\$varef|\\$vasplat|\\$vatype)"
+
+    # @ attributes
+    - preproc: "(@align|@benchmark|@bigendian|@builtin|@callconv|@cdecl|@cname|@compact|@const|@constinit|@deprecated|@dynamic|@export|@extname|@finalizer|@if|@init|@inline|@interface|@link|@littleendian|@local|@maydiscard|@naked|@noalias|@nodiscard|@noinit|@noinline|@nopadding|@norecurse|@noreturn|@nosanitize|@nostrip|@obfuscate|@operator|@optional|@overlap|@packed|@param|@priority|@private|@public|@pure|@reflect|@safemacro|@safeinfer|@section|@simd|@stdcall|@structlike|@tag|@test|@try|@try_catch|@unused|@used|@veccall|@wasm|@weak|@winmain|@catch|@ok|@weaklink)"
+
+    # Operators
+    - symbol.operator: "(=>|\\?\\?\\?|\\?\\?|\\?:|&&&|\\|\\|\\||\\+\\+\\+|\\.\\.\\.|\\.\\.|!!|==|!=|<=|>=|&&|\\|\\||<<|>>|\\[<|>]|[-+*/%=<>.:;,~&|^!\\?])"
+
+    - symbol.brackets: "[(){}\\[\\]]"
+
+    # Vectors
+    - symbol.operator:
+        start: "\\[<"
+        end: ">]"
+        rules:
+            - constant.number: "\\*"
+            - constant.number: "\\b[0-9_]+\\b"
+
+
+    # Numbers
+    - constant.number: "\\b(0[xX][0-9a-fA-F_]+|0[oO][0-7_]+|0[bB][01_]+|[0-9_]+)([ui](8|16|32|64|128)|[Uu][Ll]{0,2}|[Ll]{1,2}|[Zz])?\\b"
+    - constant.number: "\\b[0-9_]+(\\.[0-9_]*)?([eEpP][+-]?[0-9_]+)?([fd](16|32|64|128)?)?\\b"
+
+    - constant.bool: "\\b(true|false|null)\\b"
+
+    # Strings
     - constant.string:
         start: "\""
         end: "\""
         skip: "\\\\."
         rules:
-            - constant.specialChar: "\\\\([\"'abfnrtv\\\\]|[0-3]?[0-7]{1,2}|x[0-9A-Fa-f]{1,2}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})"
+            - constant.specialChar: "\\\\."
 
     - constant.string:
         start: "'"
         end: "'"
         skip: "\\\\."
         rules:
-            - error: "..+"
-            - constant.specialChar: "\\\\([\"'abfnrtv\\\\]|[0-3]?[0-7]{1,2}|x[0-9A-Fa-f]{1,2}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})"
+            - error: ".[^']+"
+            - constant.specialChar: "\\\\."
 
+    # Raw strings `...`
+    - constant.string:
+        start: "`"
+        end: "`"
+        skip: "``"
+
+    # Bytes literals x'...', b64"..."
+    - constant.string:
+        start: "(x|b64)[`'\"]"
+        end: "[`'\"]"
+        skip: "\\\\."
+
+    # Comments
     - comment:
         start: "//"
         end: "$"
         rules:
             - todo: "(TODO|XXX|FIXME):?"
 
-    - comment:
+    - comment.block:
         start: "/\\*"
         end: "\\*/"
         rules:
             - todo: "(TODO|XXX|FIXME):?"
 
     - comment.block:
-        start: "<\\*"
-        end: "\\*>"
+        start: "([^[]|^|\\s+)<\\*"
+        end: "\\s*\\*>"
         rules: 
             - todo: "(TODO|XXX|FIXME):?"
+            - preproc: "@(param|require|ensure|return|return\\?|deprecated|pure)\\b"
+            - type: "\\[(?:&)?(in|out|inout)\\]"
+
+    # Shebang
+    - preproc.shebang:
+        start: "^#!"
+        end: "$"
