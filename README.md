@@ -5,7 +5,7 @@ editors.
 Currently available are:
 - [VS Code](https://github.com/c3lang/vscode-c3)
 - [Emacs 29+](https://github.com/c3lang/c3-ts-mode)
-- Emacs <= 28 (emacs-legacy)
+- Emacs <= 28 (emacs-simple)
 - [NeoVim](https://github.com/wstucco/c3.nvim)
 - Sublime Text
 - Nano
