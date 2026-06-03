@@ -27,6 +27,8 @@
     "float16" "bfloat" "float" "double" "float128"
     ;; Other types
     "any" "fault" "typeid" "untypedlist"
+    ;; C compatibility types
+    "CChar" "CShort" "CUShort" "CInt" "CUInt" "CLong" "CULong" "CLongLong" "CULongLong" "CFloat" "CDouble" "CLongDouble"
     ;; CT types
     "$Typefrom" "$Typeof"
     ))
