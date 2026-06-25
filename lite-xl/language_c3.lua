@@ -10,6 +10,7 @@ syntax.add {
 	patterns = {
 		{ pattern = "//.-\n",                   type = "comment"  },
 		{ pattern = { "/%*", "%*/" },           type = "comment"  },
+		{ pattern = "%[<%*>%]",                 type = "normal"   },
 		{ pattern = { "<%*", "%*>" },           type = "comment"  },
 		{ pattern = { '"', '"', '\\' },         type = "string"   },
 		{ pattern = { "`", "`", '\\' },         type = "string"   },
