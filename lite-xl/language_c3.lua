@@ -5,11 +5,11 @@ syntax.add {
 	name = "C3 Contract",
 	files = { "%.c3contract$" },
 	patterns = {
-		{ pattern = {"@require", "\n"}, type = "keyword", syntax = ".c3" },
-		{ pattern = {"@ensure", "\n"}, type = "keyword", syntax = ".c3" },
-		{ pattern = {"@param", "\n"}, type = "keyword", syntax = ".c3" },
-		{ pattern = {"@pure", "\n"}, type = "keyword", syntax = ".c3" },
-		{ pattern = {"@return?", "\n"}, type = "keyword", syntax = ".c3" },
+		{ pattern = {"@require",    "\n"}, type = "keyword", syntax = ".c3" },
+		{ pattern = {"@ensure",     "\n"}, type = "keyword", syntax = ".c3" },
+		{ pattern = {"@param",      "\n"}, type = "keyword", syntax = ".c3" },
+		{ pattern = {"@pure",       "\n"}, type = "keyword", syntax = ".c3" },
+		{ pattern = {"@return?",    "\n"}, type = "keyword", syntax = ".c3" },
 		{ pattern = {"@deprecated", "\n"}, type = "keyword", syntax = ".c3" },
 	},
 }
