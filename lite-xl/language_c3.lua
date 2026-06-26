@@ -11,6 +11,7 @@ syntax.add {
 		{ pattern = {"@pure",       "\n"}, type = "keyword", syntax = ".c3" },
 		{ pattern = {"@return?",    "\n"}, type = "keyword", syntax = ".c3" },
 		{ pattern = {"@deprecated", "\n"}, type = "keyword", syntax = ".c3" },
+		{ pattern = ".",                   type = "comment" },
 	},
 }
 
