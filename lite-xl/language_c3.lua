@@ -48,6 +48,7 @@ syntax.add {
 	["case"]        = "keyword",
 	["catch"]       = "keyword",
 	["const"]       = "keyword",
+	["constdef"]    = "keyword",
 	["continue"]    = "keyword",
 	["default"]     = "keyword",
 	["defer"]       = "keyword",
