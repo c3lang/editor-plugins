@@ -17,7 +17,7 @@ Currently available are:
 - [Micro](https://github.com/c3lang/editor-plugins/tree/main/micro)
 - [DTE](https://github.com/c3lang/editor-plugins/tree/main/dte)
 - [Iro](https://github.com/c3lang/editor-plugins/tree/main/iro)
-- [Zed](https://github.com/AineeJames/c3-zed)
+- [Zed](https://github.com/ManuLinares/c3-zed)
 - [Pragtical](https://github.com/0riginaln0/pragtical-c3)
 
 Please note that since the language is still undergoing revisions, these may or may not be completely
