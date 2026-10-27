@@ -21,21 +21,21 @@
       <item>foreach_r</item>
     </list>
     <list name="keywords">
-      <item>anyfault</item>
       <item>typeid</item>
       <item>assert</item>
       <item>asm</item>
       <item>bitstruct</item>
       <item>case</item>
       <item>const</item>
+      <item>constset</item>
       <item>def</item>
       <item>default</item>
       <item>defer</item>
       <item>distinct</item>
       <item>enum</item>
+      <item>excuse</item>
       <item>extern</item>
       <item>false</item>
-      <item>fault</item>
       <item>tlocal</item>
       <item>inline</item>
       <item>import</item>
@@ -101,7 +101,7 @@
       <item>ichar</item>
       <item>int</item>
       <item>iptr</item>
-      <item>isz</item>
+      <item>sz</item>
       <item>long</item>
       <item>short</item>
       <item>uint128</item>
