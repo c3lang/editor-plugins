@@ -186,7 +186,7 @@ contexts:
         - meta_scope: meta.attrdef.c3
         - include: pop_on_semicolon
         - match: '@{{TYPE}}'
-          scope: keyword.annotation.c3
+          scope: entity.name.attribute.c3
           set:
             - include: pop_on_semicolon
             - include: parameters

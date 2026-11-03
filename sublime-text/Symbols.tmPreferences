@@ -7,6 +7,7 @@
 		entity.name.module.c3,
 		entity.name.struct.c3,
 		entity.name.interface.c3,
+		entity.name.attribute.c3,
 		source.c3 meta.declaration.c3 entity.name.constant.c3,
 		source.c3 meta.declaration.c3 variable.other.c3 - meta.group - meta.brackets - meta.generic - meta.annotation,
 		meta.faultdef.c3 entity.name.constant.c3,
