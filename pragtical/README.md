@@ -1,4 +1,4 @@
-# C3 setup for Pragtical
+# C3 setup guide for Pragtical
 
 ## Syntax highlighting
 
@@ -38,4 +38,4 @@ Download [formatter](https://github.com/pragtical/formatter) plugin.
 
 Set it up following its [contributing a formatter](https://github.com/pragtical/formatter#contributing-a-formatter) `README.md` section.
 
-(If you succeed, paste code snippet here)
+*(If you successfully configure the C3 formatter, please paste your code snippet here!)*
