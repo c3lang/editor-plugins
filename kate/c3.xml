@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE language>
-<language name="C3" section="Sources" version="1" kateversion="5.79" indenter="cstyle" extensions="*.c3;*.c3i" mimetype="text/x-c3src" priority="1" author="Waqar Ahmed (waqar.17a@gmail.com)" license="MIT">
+<language name="C3" section="Sources" version="2" kateversion="5.79" indenter="cstyle" extensions="*.c3;*.c3i" mimetype="text/x-c3src" priority="1" author="Waqar Ahmed (waqar.17a@gmail.com)" license="MIT">
   <highlighting>
     <list name="fn">
       <item>fn</item>
+      <item>macro</item>
     </list>
     <list name="controlflow">
-      <item>switch</item>
-      <item>try</item>
-      <item>while</item>
-      <item>return</item>
-      <item>if</item>
+      <item>break</item>
       <item>catch</item>
       <item>continue</item>
-      <item>break</item>
       <item>do</item>
       <item>else</item>
       <item>for</item>
       <item>foreach</item>
       <item>foreach_r</item>
+      <item>if</item>
+      <item>return</item>
+      <item>switch</item>
+      <item>try</item>
+      <item>while</item>
     </list>
     <list name="keywords">
+      <item>alias</item>
       <item>anyfault</item>
-      <item>typeid</item>
-      <item>assert</item>
       <item>asm</item>
+      <item>assert</item>
+      <item>attrdef</item>
       <item>bitstruct</item>
       <item>case</item>
       <item>const</item>
+      <item>constdef</item>
       <item>def</item>
       <item>default</item>
       <item>defer</item>
@@ -36,122 +39,281 @@
       <item>extern</item>
       <item>false</item>
       <item>fault</item>
-      <item>tlocal</item>
-      <item>inline</item>
       <item>import</item>
+      <item>inline</item>
+      <item>interface</item>
       <item>macro</item>
       <item>module</item>
       <item>nextcase</item>
       <item>null</item>
       <item>static</item>
-      <item>true</item>
       <item>struct</item>
+      <item>tlocal</item>
+      <item>true</item>
+      <item>typedef</item>
+      <item>typeid</item>
       <item>union</item>
     </list>
     <list name="attributes">
       <item>@align</item>
+      <item>@allow_deprecated</item>
       <item>@benchmark</item>
       <item>@bigendian</item>
       <item>@builtin</item>
-      <item>@cdecl</item>
+      <item>@callconv</item>
+      <item>@cname</item>
+      <item>@compact</item>
+      <item>@const</item>
+      <item>@constinit</item>
       <item>@deprecated</item>
       <item>@dynamic</item>
+      <item>@ensure</item>
       <item>@export</item>
-      <item>@extern</item>
-      <item>@extname</item>
+      <item>@finalizer</item>
+      <item>@format</item>
+      <item>@if</item>
+      <item>@init</item>
       <item>@inline</item>
-      <item>@interface</item>
+      <item>@jump</item>
+      <item>@link</item>
       <item>@littleendian</item>
       <item>@local</item>
       <item>@maydiscard</item>
+      <item>@mustinit</item>
       <item>@naked</item>
+      <item>@noalias</item>
       <item>@nodiscard</item>
       <item>@noinit</item>
       <item>@noinline</item>
+      <item>@nopadding</item>
+      <item>@norecurse</item>
       <item>@noreturn</item>
+      <item>@nosanitize</item>
       <item>@nostrip</item>
       <item>@obfuscate</item>
       <item>@operator</item>
+      <item>@operator_r</item>
+      <item>@operator_s</item>
+      <item>@optional</item>
       <item>@overlap</item>
       <item>@packed</item>
-      <item>@priority</item>
+      <item>@param</item>
       <item>@private</item>
       <item>@public</item>
       <item>@pure</item>
       <item>@reflect</item>
+      <item>@require</item>
+      <item>@safeinfer</item>
+      <item>@safemacro</item>
       <item>@section</item>
-      <item>@stdcall</item>
+      <item>@simd</item>
+      <item>@tag</item>
       <item>@test</item>
       <item>@unused</item>
       <item>@used</item>
-      <item>@veccall</item>
       <item>@wasm</item>
       <item>@weak</item>
+      <item>@weaklink</item>
       <item>@winmain</item>
     </list>
     <list name="types">
-      <item>var</item>
-      <item>void</item>
+      <item>DString</item>
+      <item>String</item>
+      <item>WString</item>
+      <item>ZString</item>
+      <item>any</item>
       <item>bool</item>
       <item>char</item>
       <item>double</item>
-      <item>float</item>
+      <item>float128</item>
       <item>float16</item>
-      <item>int128</item>
+      <item>float</item>
       <item>ichar</item>
+      <item>int128</item>
       <item>int</item>
       <item>iptr</item>
       <item>isz</item>
       <item>long</item>
       <item>short</item>
+      <item>sz</item>
       <item>uint128</item>
       <item>uint</item>
       <item>ulong</item>
+      <item>untypedlist</item>
       <item>uptr</item>
       <item>ushort</item>
       <item>usz</item>
-      <item>float128</item>
-      <item>any</item>
-      <item>String</item>
-      <item>ZString</item>
+      <item>var</item>
+      <item>void</item>
     </list>
     <list name="preprocessor">
-      <item>$alignof</item>
+      <item>$$BENCHMARK_FNS</item>
+      <item>$$BENCHMARK_NAMES</item>
+      <item>$$DATE</item>
+      <item>$$FILE</item>
+      <item>$$FILEPATH</item>
+      <item>$$FUNC</item>
+      <item>$$FUNCTION</item>
+      <item>$$LINE</item>
+      <item>$$LINE_RAW</item>
+      <item>$$MODULE</item>
+      <item>$$TEST_FNS</item>
+      <item>$$TEST_NAMES</item>
+      <item>$$TIME</item>
+      <item>$$abs</item>
+      <item>$$acos</item>
+      <item>$$add</item>
+      <item>$$any_make</item>
+      <item>$$asin</item>
+      <item>$$atan</item>
+      <item>$$atomic_fetch_add</item>
+      <item>$$atomic_fetch_and</item>
+      <item>$$atomic_fetch_dec_wrap</item>
+      <item>$$atomic_fetch_exchange</item>
+      <item>$$atomic_fetch_inc_wrap</item>
+      <item>$$atomic_fetch_max</item>
+      <item>$$atomic_fetch_min</item>
+      <item>$$atomic_fetch_nand</item>
+      <item>$$atomic_fetch_or</item>
+      <item>$$atomic_fetch_sub</item>
+      <item>$$atomic_fetch_xor</item>
+      <item>$$atomic_load</item>
+      <item>$$atomic_store</item>
+      <item>$$bitreverse</item>
+      <item>$$breakpoint</item>
+      <item>$$bswap</item>
+      <item>$$ceil</item>
+      <item>$$clz</item>
+      <item>$$compare_exchange</item>
+      <item>$$copysign</item>
+      <item>$$cos</item>
+      <item>$$cosh</item>
+      <item>$$ctz</item>
+      <item>$$div</item>
+      <item>$$exp10</item>
+      <item>$$exp2</item>
+      <item>$$exp</item>
+      <item>$$expect</item>
+      <item>$$expect_with_probability</item>
+      <item>$$fence</item>
+      <item>$$floor</item>
+      <item>$$fma</item>
+      <item>$$fmuladd</item>
+      <item>$$frameaddress</item>
+      <item>$$fshl</item>
+      <item>$$fshr</item>
+      <item>$$gather</item>
+      <item>$$get_rounding_mode</item>
+      <item>$$int_to_mask</item>
+      <item>$$log10</item>
+      <item>$$log2</item>
+      <item>$$log</item>
+      <item>$$mask_to_int</item>
+      <item>$$masked_load</item>
+      <item>$$masked_store</item>
+      <item>$$matrix_mul</item>
+      <item>$$matrix_transpose</item>
+      <item>$$max</item>
+      <item>$$memcpy</item>
+      <item>$$memcpy_inline</item>
+      <item>$$memmove</item>
+      <item>$$memset</item>
+      <item>$$memset_inline</item>
+      <item>$$min</item>
+      <item>$$mod</item>
+      <item>$$mul</item>
+      <item>$$nearbyint</item>
+      <item>$$neg</item>
+      <item>$$overflow_add</item>
+      <item>$$overflow_mul</item>
+      <item>$$overflow_sub</item>
+      <item>$$popcount</item>
+      <item>$$pow</item>
+      <item>$$pow_int</item>
+      <item>$$prefetch</item>
+      <item>$$reduce_add</item>
+      <item>$$reduce_and</item>
+      <item>$$reduce_fadd</item>
+      <item>$$reduce_fmul</item>
+      <item>$$reduce_max</item>
+      <item>$$reduce_min</item>
+      <item>$$reduce_mul</item>
+      <item>$$reduce_or</item>
+      <item>$$reduce_xor</item>
+      <item>$$returnaddress</item>
+      <item>$$reverse</item>
+      <item>$$rint</item>
+      <item>$$rnd</item>
+      <item>$$round</item>
+      <item>$$roundeven</item>
+      <item>$$sat_add</item>
+      <item>$$sat_mul</item>
+      <item>$$sat_shl</item>
+      <item>$$sat_sub</item>
+      <item>$$scatter</item>
+      <item>$$select</item>
+      <item>$$set_rounding_mode</item>
+      <item>$$sin</item>
+      <item>$$sinh</item>
+      <item>$$sprintf</item>
+      <item>$$sqrt</item>
+      <item>$$str_find</item>
+      <item>$$str_hash</item>
+      <item>$$str_lower</item>
+      <item>$$str_pascalcase</item>
+      <item>$$str_replace</item>
+      <item>$$str_snakecase</item>
+      <item>$$str_upper</item>
+      <item>$$sub</item>
+      <item>$$swizzle2</item>
+      <item>$$swizzle</item>
+      <item>$$syscall</item>
+      <item>$$sysclock</item>
+      <item>$$tan</item>
+      <item>$$tanh</item>
+      <item>$$trap</item>
+      <item>$$trunc</item>
+      <item>$$unaligned_load</item>
+      <item>$$unaligned_store</item>
+      <item>$$unreachable</item>
+      <item>$$veccompeq</item>
+      <item>$$veccompge</item>
+      <item>$$veccompgt</item>
+      <item>$$veccomple</item>
+      <item>$$veccomplt</item>
+      <item>$$veccompne</item>
+      <item>$$volatile_load</item>
+      <item>$$volatile_store</item>
+      <item>$$wasm_memory_grow</item>
+      <item>$$wasm_memory_size</item>
+      <item>$$wstr16</item>
+      <item>$$wstr32</item>
       <item>$assert</item>
+      <item>$Typefrom</item>
+      <item>$Typeof</item>
       <item>$case</item>
       <item>$default</item>
       <item>$defined</item>
       <item>$echo</item>
-      <item>$embed</item>
-      <item>$exec</item>
       <item>$else</item>
+      <item>$embed</item>
       <item>$endfor</item>
       <item>$endforeach</item>
       <item>$endif</item>
       <item>$endswitch</item>
-      <item>$eval</item>
-      <item>$evaltype</item>
       <item>$error</item>
-      <item>$extnameof</item>
+      <item>$eval</item>
+      <item>$exec</item>
+      <item>$expand</item>
+      <item>$feature</item>
       <item>$for</item>
       <item>$foreach</item>
       <item>$if</item>
       <item>$include</item>
-      <item>$nameof</item>
-      <item>$offsetof</item>
-      <item>$qnameof</item>
-      <item>$sizeof</item>
+      <item>$reflect</item>
       <item>$stringify</item>
       <item>$switch</item>
-      <item>$typefrom</item>
-      <item>$typeof</item>
-      <item>$vacount</item>
-      <item>$vatype</item>
-      <item>$vaconst</item>
-      <item>$varef</item>
       <item>$vaarg</item>
-      <item>$vaexpr</item>
-      <item>$vasplat</item>
     </list>
     <contexts>
       <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
@@ -159,20 +321,34 @@
         <!-- comments -->
         <Detect2Chars char="/" char1="/" attribute="Comment" context="Comment"/>
         <Detect2Chars char="/" char1="*" attribute="Comment" context="MultiLineComment" beginRegion="Comment"/>
+        <Detect2Chars char="&lt;" char1="*" attribute="Comment" context="Contract" beginRegion="Contract"/>
+        <Detect2Chars char="*" char1="&gt;" attribute="Comment" context="#pop" endRegion="Contract"/>
         <DetectChar attribute="Symbol" context="#stay" char="{" beginRegion="Brace1"/>
         <DetectChar attribute="Symbol" context="#stay" char="}" endRegion="Brace1"/>
         <!-- keywords -->
-        <keyword String="fn" attribute="Keyword" context="Function"/>
+        <keyword attribute="Keyword" context="Function" String="fn"/>
         <keyword attribute="Keyword" context="#stay" String="keywords"/>
         <keyword attribute="Control Flow" context="#stay" String="controlflow"/>
         <keyword attribute="Data Type" context="#stay" String="types"/>
         <keyword attribute="Preprocessor" context="#stay" String="preprocessor"/>
         <keyword attribute="Attribute" context="#stay" String="attributes"/>
+        <!-- function calls -->
+        <RegExpr String="[A-Za-z0-9_]+(?=\()" attribute="Function" context="#stay"/>
+        <!-- inner structs -->
+        <RegExpr String="(?&lt;=(bit)?struct )[a-z_][a-zA-Z0-9_]+" attribute="Data Type" context="#stay"/>
+        <!-- methods -->
+        <DetectChar char="." attribute="Symbol" context="Dot" lookAhead="1"/>
+        <!-- module -->
+        <RegExpr String="(?&lt;=(module|import) )[a-z0-9_]+" attribute="Standard Suffix" context="#stay"/>
+        <IncludeRules context="ModuleMember"/>
+        <IncludeRules context="ModuleName"/>
+        <!-- user defined types and contants -->
+        <RegExpr String="[A-Z_]" attribute="Data Type" context="TypeOrConst"/>
         <!-- numbers -->
-        <Int attribute="Decimal" context="#stay"/>
-        <Float attribute="Float" context="#stay"/>
-        <HlCHex attribute="Hex" context="#stay"/>
-        <HlCOct attribute="Octal" context="#stay"/>
+        <RegExpr String="0[xX]" attribute="Standard Suffix" context="HexPrefix"/>
+        <RegExpr String="0o" attribute="Standard Suffix" context="OctalPrefix"/>
+        <RegExpr String="[0-9_]+\.[0-9_]+" attribute="Float" context="FloatSuffixes"/>
+        <RegExpr String="[0-9_]+" attribute="Decimal" context="IntSuffixes"/>
         <!-- strings -->
         <DetectChar attribute="String" context="DoubleQuoteString" char="&quot;"/>
         <DetectIdentifier/>
@@ -190,16 +366,64 @@
         <RegExpr attribute="String Char" context="#pop" String="\\([nrt'&quot;\\]|x[0-9a-fA-F]{2}|u\{[0-9a-fA-F]+\})"/>
         <RegExpr attribute="Error" context="#pop" String="\\(x[0-9a-fA-F]?|u\{[0-9a-fA-F]{0,8}\}?)?"/>
       </context>
+      <context name="IntSuffixes" attribute="Standard Suffix" fallthroughContext="#pop" lineEndContext="#pop">
+        <RegExpr String="(?i)u?l?l?(?-i)" attribute="Standard Suffix" context="#pop"/>
+      </context>
+      <context name="FloatSuffixes" attribute="Standard Suffix" fallthroughContext="#pop" lineEndContext="#pop">
+        <StringDetect String="f" attribute="Standard Suffix" context="#pop" insensitive="1"/>
+        <StringDetect String="d" attribute="Standard Suffix" context="#pop" insensitive="1"/>
+        <AnyChar String="fFdD" attribute="Standard Suffix" context="#pop"/>
+      </context>
+      <context name="HexPrefix" attribute="Normal Text" fallthroughContext="#pop" lineEndContext="#pop">
+        <RegExpr String="[0-9a-fA-F_]+" attribute="Hex" context="pop"/>
+      </context>
+      <context name="OctalPrefix" attribute="Normal Text" fallthroughContext="#pop" lineEndContext="#pop">
+        <RegExpr String="[0-7_]+" attribute="Octal" context="pop"/>
+      </context>
+      <context name="TypeOrConst" attribute="Data Type" fallthroughContext="#pop" lineEndContext="#pop">
+        <RegExpr String="[A-Za-z0-9_]+" attribute="Data Type" context="#pop"/>
+      </context>
       <!-- func highlighting -->
       <context attribute="Normal Text" lineEndContext="#pop" name="Function">
         <DetectSpaces/>
+        <!-- built in types -->
         <keyword attribute="Data Type" context="FindFunctionName" String="types"/>
-        <RegExpr attribute="Normal Text" context="#stay" String="[a-zA-Z]+:{2}"/>
-        <RegExpr attribute="Data Type" context="FindFunctionName" String="[A-Z][A-Za-z0-9]+"/>
+        <!-- BEGIN namespaces and such -->
+        <RegExpr String="[A-Z][A-Za-z0-9_]+" attribute="Data Type" context="#stay"/>
+        <RegExpr String="(?&lt;=::)[A-Za-z0-9_]+" attribute="Data Type" context="#stay"/>
+        <RegExpr String="[A-Za-z0-9_]+(?=::)" attribute="Standard Suffix" context="#stay"/>
+        <!-- END namespaces and such -->
+        <IncludeRules context="FindFunctionName" includeAttrib="true"/>
       </context>
       <context attribute="Function" lineEndContext="#pop#pop" name="FindFunctionName">
         <DetectSpaces/>
+        <RegExpr String="::|\*|\?|!|\[\]|\.|@" attribute="Symbol" context="#stay"/>
         <AnyChar String="(&lt;" attribute="Normal Text" context="#pop#pop" lookAhead="true"/>
+      </context>
+      <!-- method highlighting -->
+      <context name="Dot" attribute="Normal Text">
+        <StringDetect String="..." attribute="Keyword" context="#pop"/>
+        <DetectChar char="." attribute="Symbol" context="#pop!Member"/>
+      </context>
+      <context name="Member" attribute="Normal Text" fallthroughContext="#pop">
+        <DetectSpaces attribute="Normal Text"/>
+        <RegExpr String="(?&lt;=\.)[A-Za-z0-9_]+(?=\()" attribute="Function" context="#pop"/>
+        <RegExpr String="(?&lt;=\.)[A-Za-z0-9_]+" attribute="Data Type" context="#pop"/>
+      </context>
+      <!-- module highlighting -->
+      <context name="ModuleName" attribute="Normal Text">
+        <RegExpr String="[A-Za-z0-9_]+(?=::)" attribute="Standard Suffix" context="#pop"/>
+      </context>
+      <context name="ModuleMember" attribute="Normal Text">
+        <RegExpr String="(?&lt;=::)[A-Za-z0-9_]+(?=\()" attribute="Function" context="#pop"/>
+        <RegExpr String="(?&lt;=::)[A-Za-z0-9_]+" attribute="Data Type" context="#pop"/>
+      </context>
+      <!-- contract highlighting -->
+      <context name="Contract" attribute="Comment">
+        <DetectSpaces/>
+        <!-- change the context to "#pop" for full highlighting. -->
+        <RegExpr String="@require|@ensure|@param|@return" attribute="Attribute" context="#stay"/>
+        <Detect2Chars char="*" char1="&gt;" attribute="Comment" context="#pop" endRegion="Contract"/>
       </context>
     </contexts>
     <itemDatas>
@@ -233,6 +457,7 @@
     <comments>
       <comment name="singleLine" start="//" position="afterwhitespace"/>
       <comment name="multiLine" start="/*" end="*/" region="Comment"/>
+      <comment name="multiLine" start="&lt;*" end="*&gt;" region="Comment"/>
     </comments>
     <keywords casesensitive="1" additionalDeliminator="#'&quot;"/>
   </general>
