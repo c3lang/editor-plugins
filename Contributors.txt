@@ -3,5 +3,6 @@ The following contributors worked on these plugins in the C3C repository:
 dte: data-man
 Nano: André, data-man
 Kakoune: Hanna
+Kate: Waqar Ahmed, 5Stygian
 VsCode: Pyxel, Thsm
 Sublime Text: everlyy
