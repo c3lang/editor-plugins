@@ -4,7 +4,7 @@
 	branch = main
 [submodule "zed"]
 	path = zed
-	url = https://github.com/AineeJames/c3-zed.git
+	url = https://github.com/ManuLinares/c3-zed
 	branch = main
 [submodule "neovim"]
 	path = neovim
