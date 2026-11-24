@@ -39,6 +39,7 @@
       <item>extern</item>
       <item>false</item>
       <item>fault</item>
+      <item>faultdef</item>
       <item>import</item>
       <item>inline</item>
       <item>interface</item>
@@ -332,7 +333,15 @@
         <keyword attribute="Data Type" context="#stay" String="types"/>
         <keyword attribute="Preprocessor" context="#stay" String="preprocessor"/>
         <keyword attribute="Attribute" context="#stay" String="attributes"/>
-        <!-- function calls -->
+        <!-- preprocessor -->
+        <DetectChar char="$" attribute="Preprocessor" context="CustomPreprocessor" />
+        <DetectChar char="#" attribute="Preprocessor" context="CustomPreprocessor" />
+        <!-- atributes -->
+        <RegExpr String="@(?=[A-Za-z0-9_]+\()" attribute="Function" context="#stay" />
+        <DetectChar char="@" attribute="Attribute" context="#stay" />
+        <RegExpr String="(?&lt;=@)[A-Za-z0-9_]+(?=\()" attribute="Function" context="FindFunctionName"/>
+        <RegExpr String="(?&lt;=@)[A-Za-z0-9_]+" attribute="Attribute" context="#stay" />
+        <!-- functions -->
         <RegExpr String="[A-Za-z0-9_]+(?=\()" attribute="Function" context="#stay"/>
         <!-- inner structs -->
         <RegExpr String="(?&lt;=(bit)?struct )[a-z_][a-zA-Z0-9_]+" attribute="Data Type" context="#stay"/>
@@ -351,6 +360,7 @@
         <RegExpr String="[0-9_]+" attribute="Decimal" context="IntSuffixes"/>
         <!-- strings -->
         <DetectChar attribute="String" context="DoubleQuoteString" char="&quot;"/>
+        <DetectChar attribute="String" context="RawString" char="`"/>
         <DetectIdentifier/>
       </context>
       <context attribute="Comment" lineEndContext="#pop" name="Comment"/>
@@ -361,6 +371,9 @@
       <context attribute="String" lineEndContext="#pop" name="DoubleQuoteString">
         <DetectChar context="EscapeChar" char="\" lookAhead="1"/>
         <DetectChar attribute="String" context="#pop" char="&quot;"/>
+      </context>
+      <context attribute="String" lineEndContext="#pop" name="RawString">
+        <DetectChar attribute="String" context="#pop" char="`"/>
       </context>
       <context attribute="String Char" lineEndContext="#pop" name="EscapeChar">
         <RegExpr attribute="String Char" context="#pop" String="\\([nrt'&quot;\\]|x[0-9a-fA-F]{2}|u\{[0-9a-fA-F]+\})"/>
@@ -383,21 +396,28 @@
       <context name="TypeOrConst" attribute="Data Type" fallthroughContext="#pop" lineEndContext="#pop">
         <RegExpr String="[A-Za-z0-9_]+" attribute="Data Type" context="#pop"/>
       </context>
+      <context name="CustomPreprocessor" attribute="Preprocessor" lineEndContext="#pop">
+        <RegExpr String="[a-zA-Z0-9_]+" attribute="Preprocessor" context="#pop" />
+      </context>
+      <context name="CustomAttribute" attribute="Attribute" lineEndContext="#pop">
+        <RegExpr String="[a-zA-Z0-9_]+" attribute="Attribute" context="#pop" />
+      </context>
       <!-- func highlighting -->
       <context attribute="Normal Text" lineEndContext="#pop" name="Function">
         <DetectSpaces/>
+        <RegExpr String="[A-Za-z0-9_]+(?=\.)" attribute="Function" context="#stay" />
         <!-- built in types -->
         <keyword attribute="Data Type" context="FindFunctionName" String="types"/>
         <!-- BEGIN namespaces and such -->
         <RegExpr String="[A-Z][A-Za-z0-9_]+" attribute="Data Type" context="#stay"/>
-        <RegExpr String="(?&lt;=::)[A-Za-z0-9_]+" attribute="Data Type" context="#stay"/>
         <RegExpr String="[A-Za-z0-9_]+(?=::)" attribute="Standard Suffix" context="#stay"/>
+        <RegExpr String="(?&lt;=::)[A-Za-z0-9_]+" attribute="Data Type" context="#stay"/>
         <!-- END namespaces and such -->
         <IncludeRules context="FindFunctionName" includeAttrib="true"/>
       </context>
       <context attribute="Function" lineEndContext="#pop#pop" name="FindFunctionName">
         <DetectSpaces/>
-        <RegExpr String="::|\*|\?|!|\[\]|\.|@" attribute="Symbol" context="#stay"/>
+        <RegExpr String="[::|\*|\?|!|\[\]|\.|@]" attribute="Symbol" context="#stay"/>
         <AnyChar String="(&lt;" attribute="Normal Text" context="#pop#pop" lookAhead="true"/>
       </context>
       <!-- method highlighting -->
