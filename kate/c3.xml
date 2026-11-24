@@ -2,20 +2,19 @@
 <!DOCTYPE language>
 <language name="C3" section="Sources" version="2" kateversion="5.79" indenter="cstyle" extensions="*.c3;*.c3i" mimetype="text/x-c3src" priority="1" author="Waqar Ahmed (waqar.17a@gmail.com)" license="MIT">
   <highlighting>
-    <list name="fn">
-      <item>fn</item>
-      <item>macro</item>
-    </list>
     <list name="controlflow">
       <item>break</item>
+      <item>case</item>
       <item>catch</item>
       <item>continue</item>
+      <item>default</item>
       <item>do</item>
       <item>else</item>
       <item>for</item>
       <item>foreach</item>
       <item>foreach_r</item>
       <item>if</item>
+      <item>nextcase</item>
       <item>return</item>
       <item>switch</item>
       <item>try</item>
@@ -23,41 +22,103 @@
     </list>
     <list name="keywords">
       <item>alias</item>
-      <item>anyfault</item>
       <item>asm</item>
       <item>assert</item>
       <item>attrdef</item>
+      <item>attrmacro</item>
       <item>bitstruct</item>
-      <item>case</item>
       <item>const</item>
       <item>constdef</item>
-      <item>def</item>
-      <item>default</item>
+      <item>constset</item>
       <item>defer</item>
-      <item>distinct</item>
       <item>enum</item>
       <item>extern</item>
-      <item>false</item>
-      <item>fault</item>
       <item>faultdef</item>
-      <item>import</item>
+      <item>fn</item>
       <item>inline</item>
       <item>interface</item>
+      <item>lengthof</item>
       <item>macro</item>
-      <item>module</item>
-      <item>nextcase</item>
-      <item>null</item>
       <item>static</item>
       <item>struct</item>
       <item>tlocal</item>
-      <item>true</item>
       <item>typedef</item>
-      <item>typeid</item>
       <item>union</item>
+      <item>var</item>
+    </list>
+    <list name="modulekw">
+      <item>import</item>
+      <item>module</item>
+    </list>
+    <list name="constants">
+      <item>false</item>
+      <item>null</item>
+      <item>true</item>
+    </list>
+    <list name="types">
+      <item>any</item>
+      <item>bfloat</item>
+      <item>bool</item>
+      <item>char</item>
+      <item>double</item>
+      <item>fault</item>
+      <item>float</item>
+      <item>float16</item>
+      <item>float128</item>
+      <item>ichar</item>
+      <item>int</item>
+      <item>int128</item>
+      <item>iptr</item>
+      <item>long</item>
+      <item>short</item>
+      <item>sz</item>
+      <item>typeid</item>
+      <item>uint</item>
+      <item>uint128</item>
+      <item>ulong</item>
+      <item>untypedlist</item>
+      <item>uptr</item>
+      <item>ushort</item>
+      <item>usz</item>
+      <item>void</item>
+    </list>
+    <list name="ct_begin">
+      <item>$for</item>
+      <item>$foreach</item>
+      <item>$if</item>
+      <item>$switch</item>
+    </list>
+    <list name="ct_end">
+      <item>$endfor</item>
+      <item>$endforeach</item>
+      <item>$endif</item>
+      <item>$endswitch</item>
+    </list>
+    <list name="ct_keywords">
+      <item>$assert</item>
+      <item>$case</item>
+      <item>$default</item>
+      <item>$defined</item>
+      <item>$echo</item>
+      <item>$else</item>
+      <item>$embed</item>
+      <item>$error</item>
+      <item>$eval</item>
+      <item>$exec</item>
+      <item>$expand</item>
+      <item>$feat</item>
+      <item>$feature</item>
+      <item>$include</item>
+      <item>$reflect</item>
+      <item>$stringify</item>
+      <item>$Typefrom</item>
+      <item>$Typeof</item>
+      <item>$vaarg</item>
     </list>
     <list name="attributes">
       <item>@align</item>
       <item>@allow_deprecated</item>
+      <item>@asmname</item>
       <item>@benchmark</item>
       <item>@bigendian</item>
       <item>@builtin</item>
@@ -68,8 +129,8 @@
       <item>@constinit</item>
       <item>@deprecated</item>
       <item>@dynamic</item>
-      <item>@ensure</item>
       <item>@export</item>
+      <item>@feat</item>
       <item>@finalizer</item>
       <item>@format</item>
       <item>@if</item>
@@ -88,8 +149,11 @@
       <item>@noinline</item>
       <item>@nopadding</item>
       <item>@norecurse</item>
+      <item>@noredzone</item>
       <item>@noreturn</item>
       <item>@nosanitize</item>
+      <item>@nostackprobe</item>
+      <item>@nostackprotector</item>
       <item>@nostrip</item>
       <item>@obfuscate</item>
       <item>@operator</item>
@@ -98,16 +162,16 @@
       <item>@optional</item>
       <item>@overlap</item>
       <item>@packed</item>
-      <item>@param</item>
       <item>@private</item>
       <item>@public</item>
       <item>@pure</item>
       <item>@reflect</item>
-      <item>@require</item>
       <item>@safeinfer</item>
       <item>@safemacro</item>
       <item>@section</item>
       <item>@simd</item>
+      <item>@stackprobe</item>
+      <item>@stackprotector</item>
       <item>@tag</item>
       <item>@test</item>
       <item>@unused</item>
@@ -117,369 +181,172 @@
       <item>@weaklink</item>
       <item>@winmain</item>
     </list>
-    <list name="types">
-      <item>DString</item>
-      <item>String</item>
-      <item>WString</item>
-      <item>ZString</item>
-      <item>any</item>
-      <item>bool</item>
-      <item>char</item>
-      <item>double</item>
-      <item>float128</item>
-      <item>float16</item>
-      <item>float</item>
-      <item>ichar</item>
-      <item>int128</item>
-      <item>int</item>
-      <item>iptr</item>
-      <item>isz</item>
-      <item>long</item>
-      <item>short</item>
-      <item>sz</item>
-      <item>uint128</item>
-      <item>uint</item>
-      <item>ulong</item>
-      <item>untypedlist</item>
-      <item>uptr</item>
-      <item>ushort</item>
-      <item>usz</item>
-      <item>var</item>
-      <item>void</item>
-    </list>
-    <list name="preprocessor">
-      <item>$$BENCHMARK_FNS</item>
-      <item>$$BENCHMARK_NAMES</item>
-      <item>$$DATE</item>
-      <item>$$FILE</item>
-      <item>$$FILEPATH</item>
-      <item>$$FUNC</item>
-      <item>$$FUNCTION</item>
-      <item>$$LINE</item>
-      <item>$$LINE_RAW</item>
-      <item>$$MODULE</item>
-      <item>$$TEST_FNS</item>
-      <item>$$TEST_NAMES</item>
-      <item>$$TIME</item>
-      <item>$$abs</item>
-      <item>$$acos</item>
-      <item>$$add</item>
-      <item>$$any_make</item>
-      <item>$$asin</item>
-      <item>$$atan</item>
-      <item>$$atomic_fetch_add</item>
-      <item>$$atomic_fetch_and</item>
-      <item>$$atomic_fetch_dec_wrap</item>
-      <item>$$atomic_fetch_exchange</item>
-      <item>$$atomic_fetch_inc_wrap</item>
-      <item>$$atomic_fetch_max</item>
-      <item>$$atomic_fetch_min</item>
-      <item>$$atomic_fetch_nand</item>
-      <item>$$atomic_fetch_or</item>
-      <item>$$atomic_fetch_sub</item>
-      <item>$$atomic_fetch_xor</item>
-      <item>$$atomic_load</item>
-      <item>$$atomic_store</item>
-      <item>$$bitreverse</item>
-      <item>$$breakpoint</item>
-      <item>$$bswap</item>
-      <item>$$ceil</item>
-      <item>$$clz</item>
-      <item>$$compare_exchange</item>
-      <item>$$copysign</item>
-      <item>$$cos</item>
-      <item>$$cosh</item>
-      <item>$$ctz</item>
-      <item>$$div</item>
-      <item>$$exp10</item>
-      <item>$$exp2</item>
-      <item>$$exp</item>
-      <item>$$expect</item>
-      <item>$$expect_with_probability</item>
-      <item>$$fence</item>
-      <item>$$floor</item>
-      <item>$$fma</item>
-      <item>$$fmuladd</item>
-      <item>$$frameaddress</item>
-      <item>$$fshl</item>
-      <item>$$fshr</item>
-      <item>$$gather</item>
-      <item>$$get_rounding_mode</item>
-      <item>$$int_to_mask</item>
-      <item>$$log10</item>
-      <item>$$log2</item>
-      <item>$$log</item>
-      <item>$$mask_to_int</item>
-      <item>$$masked_load</item>
-      <item>$$masked_store</item>
-      <item>$$matrix_mul</item>
-      <item>$$matrix_transpose</item>
-      <item>$$max</item>
-      <item>$$memcpy</item>
-      <item>$$memcpy_inline</item>
-      <item>$$memmove</item>
-      <item>$$memset</item>
-      <item>$$memset_inline</item>
-      <item>$$min</item>
-      <item>$$mod</item>
-      <item>$$mul</item>
-      <item>$$nearbyint</item>
-      <item>$$neg</item>
-      <item>$$overflow_add</item>
-      <item>$$overflow_mul</item>
-      <item>$$overflow_sub</item>
-      <item>$$popcount</item>
-      <item>$$pow</item>
-      <item>$$pow_int</item>
-      <item>$$prefetch</item>
-      <item>$$reduce_add</item>
-      <item>$$reduce_and</item>
-      <item>$$reduce_fadd</item>
-      <item>$$reduce_fmul</item>
-      <item>$$reduce_max</item>
-      <item>$$reduce_min</item>
-      <item>$$reduce_mul</item>
-      <item>$$reduce_or</item>
-      <item>$$reduce_xor</item>
-      <item>$$returnaddress</item>
-      <item>$$reverse</item>
-      <item>$$rint</item>
-      <item>$$rnd</item>
-      <item>$$round</item>
-      <item>$$roundeven</item>
-      <item>$$sat_add</item>
-      <item>$$sat_mul</item>
-      <item>$$sat_shl</item>
-      <item>$$sat_sub</item>
-      <item>$$scatter</item>
-      <item>$$select</item>
-      <item>$$set_rounding_mode</item>
-      <item>$$sin</item>
-      <item>$$sinh</item>
-      <item>$$sprintf</item>
-      <item>$$sqrt</item>
-      <item>$$str_find</item>
-      <item>$$str_hash</item>
-      <item>$$str_lower</item>
-      <item>$$str_pascalcase</item>
-      <item>$$str_replace</item>
-      <item>$$str_snakecase</item>
-      <item>$$str_upper</item>
-      <item>$$sub</item>
-      <item>$$swizzle2</item>
-      <item>$$swizzle</item>
-      <item>$$syscall</item>
-      <item>$$sysclock</item>
-      <item>$$tan</item>
-      <item>$$tanh</item>
-      <item>$$trap</item>
-      <item>$$trunc</item>
-      <item>$$unaligned_load</item>
-      <item>$$unaligned_store</item>
-      <item>$$unreachable</item>
-      <item>$$veccompeq</item>
-      <item>$$veccompge</item>
-      <item>$$veccompgt</item>
-      <item>$$veccomple</item>
-      <item>$$veccomplt</item>
-      <item>$$veccompne</item>
-      <item>$$volatile_load</item>
-      <item>$$volatile_store</item>
-      <item>$$wasm_memory_grow</item>
-      <item>$$wasm_memory_size</item>
-      <item>$$wstr16</item>
-      <item>$$wstr32</item>
-      <item>$assert</item>
-      <item>$Typefrom</item>
-      <item>$Typeof</item>
-      <item>$case</item>
-      <item>$default</item>
-      <item>$defined</item>
-      <item>$echo</item>
-      <item>$else</item>
-      <item>$embed</item>
-      <item>$endfor</item>
-      <item>$endforeach</item>
-      <item>$endif</item>
-      <item>$endswitch</item>
-      <item>$error</item>
-      <item>$eval</item>
-      <item>$exec</item>
-      <item>$expand</item>
-      <item>$feature</item>
-      <item>$for</item>
-      <item>$foreach</item>
-      <item>$if</item>
-      <item>$include</item>
-      <item>$reflect</item>
-      <item>$stringify</item>
-      <item>$switch</item>
-      <item>$vaarg</item>
-    </list>
+
     <contexts>
-      <context attribute="Normal Text" lineEndContext="#stay" name="Normal">
+      <context name="Normal" attribute="Normal Text" lineEndContext="#stay">
         <DetectSpaces/>
-        <!-- comments -->
+        <Detect2Chars char="#" char1="!" column="0" attribute="Comment" context="Comment"/>
         <Detect2Chars char="/" char1="/" attribute="Comment" context="Comment"/>
         <Detect2Chars char="/" char1="*" attribute="Comment" context="MultiLineComment" beginRegion="Comment"/>
-        <Detect2Chars char="&lt;" char1="*" attribute="Comment" context="Contract" beginRegion="Contract"/>
-        <Detect2Chars char="*" char1="&gt;" attribute="Comment" context="#pop" endRegion="Contract"/>
-        <DetectChar attribute="Symbol" context="#stay" char="{" beginRegion="Brace1"/>
-        <DetectChar attribute="Symbol" context="#stay" char="}" endRegion="Brace1"/>
-        <!-- keywords -->
-        <keyword attribute="Keyword" context="Function" String="fn"/>
-        <keyword attribute="Keyword" context="#stay" String="keywords"/>
-        <keyword attribute="Control Flow" context="#stay" String="controlflow"/>
-        <keyword attribute="Data Type" context="#stay" String="types"/>
-        <keyword attribute="Preprocessor" context="#stay" String="preprocessor"/>
-        <keyword attribute="Attribute" context="#stay" String="attributes"/>
-        <!-- preprocessor -->
-        <DetectChar char="$" attribute="Preprocessor" context="CustomPreprocessor" />
-        <DetectChar char="#" attribute="Preprocessor" context="CustomPreprocessor" />
-        <!-- atributes -->
-        <RegExpr String="@(?=[A-Za-z0-9_]+\()" attribute="Function" context="#stay" />
-        <DetectChar char="@" attribute="Attribute" context="#stay" />
-        <RegExpr String="(?&lt;=@)[A-Za-z0-9_]+(?=\()" attribute="Function" context="FindFunctionName"/>
-        <RegExpr String="(?&lt;=@)[A-Za-z0-9_]+" attribute="Attribute" context="#stay" />
-        <!-- functions -->
-        <RegExpr String="[A-Za-z0-9_]+(?=\()" attribute="Function" context="#stay"/>
-        <!-- inner structs -->
-        <RegExpr String="(?&lt;=(bit)?struct )[a-z_][a-zA-Z0-9_]+" attribute="Data Type" context="#stay"/>
-        <!-- methods -->
-        <DetectChar char="." attribute="Symbol" context="Dot" lookAhead="1"/>
-        <!-- module -->
-        <RegExpr String="(?&lt;=(module|import) )[a-z0-9_]+" attribute="Standard Suffix" context="#stay"/>
-        <IncludeRules context="ModuleMember"/>
-        <IncludeRules context="ModuleName"/>
-        <!-- user defined types and contants -->
-        <RegExpr String="[A-Z_]" attribute="Data Type" context="TypeOrConst"/>
-        <!-- numbers -->
-        <RegExpr String="0[xX]" attribute="Standard Suffix" context="HexPrefix"/>
-        <RegExpr String="0o" attribute="Standard Suffix" context="OctalPrefix"/>
-        <RegExpr String="[0-9_]+\.[0-9_]+" attribute="Float" context="FloatSuffixes"/>
-        <RegExpr String="[0-9_]+" attribute="Decimal" context="IntSuffixes"/>
-        <!-- strings -->
-        <DetectChar attribute="String" context="DoubleQuoteString" char="&quot;"/>
-        <DetectChar attribute="String" context="RawString" char="`"/>
+        <!-- "[<" (vector) is lexed before "<*", so bool[<*>] is not a doc comment -->
+        <Detect2Chars char="[" char1="&lt;" attribute="Symbol" context="#stay"/>
+        <Detect2Chars char="&lt;" char1="*" attribute="Documentation" context="Doc" beginRegion="Doc"/>
+        <DetectChar char="{" attribute="Symbol" context="#stay" beginRegion="Brace"/>
+        <DetectChar char="}" attribute="Symbol" context="#stay" endRegion="Brace"/>
+
+        <keyword String="controlflow" attribute="Control Flow" context="#stay"/>
+        <keyword String="keywords" attribute="Keyword" context="#stay"/>
+        <keyword String="modulekw" attribute="Keyword" context="ModulePath"/>
+        <keyword String="constants" attribute="Constant" context="#stay"/>
+        <keyword String="types" attribute="Data Type" context="#stay"/>
+        <keyword String="ct_begin" attribute="Compile-time" context="#stay" beginRegion="CT"/>
+        <keyword String="ct_end" attribute="Compile-time" context="#stay" endRegion="CT"/>
+        <keyword String="ct_keywords" attribute="Compile-time" context="#stay"/>
+        <keyword String="attributes" attribute="Attribute" context="#stay"/>
+
+        <!-- prefixed identifiers -->
+        <RegExpr String="\$\$[A-Za-z_][A-Za-z0-9_]*" attribute="Builtin" context="#stay"/>
+        <RegExpr String="\$_*[A-Z][A-Z0-9_]*[a-z][A-Za-z0-9_]*" attribute="Data Type" context="#stay"/>
+        <RegExpr String="\$[A-Za-z_][A-Za-z0-9_]*|#_*[a-z][A-Za-z0-9_]*" attribute="Compile-time Variable" context="#stay"/>
+        <RegExpr String="@_*[A-Z][A-Za-z0-9_]*" attribute="Attribute" context="#stay"/>
+        <RegExpr String="@_*[a-z][A-Za-z0-9_]*" attribute="Function" context="#stay"/>
+
+        <!-- literals -->
+        <RegExpr String="x([&quot;'`])" attribute="Bytes" context="HexBytes"/>
+        <RegExpr String="b64([&quot;'`])" attribute="Bytes" context="Base64Bytes"/>
+        <DetectChar char="&quot;" attribute="String" context="String"/>
+        <DetectChar char="`" attribute="String" context="RawString"/>
+        <DetectChar char="'" attribute="Char" context="Char"/>
+        <RegExpr String="0[xX][0-9A-Fa-f](?:_?[0-9A-Fa-f])*(?:\.(?!\.)[0-9A-Fa-f_]*)?(?:[pP][+-]?[0-9]+[fFdD]?)?(?:[uU][lL]{0,2}|[lL]{1,2})?(?![A-Za-z0-9_])" attribute="Hex" context="#stay"/>
+        <RegExpr String="0[bB][01](?:_?[01])*(?:[uU][lL]{0,2}|[lL]{1,2})?(?![A-Za-z0-9_])" attribute="Binary" context="#stay"/>
+        <RegExpr String="0[oO][0-7](?:_?[0-7])*(?:[uU][lL]{0,2}|[lL]{1,2})?(?![A-Za-z0-9_])" attribute="Octal" context="#stay"/>
+        <RegExpr String="[0-9](?:_?[0-9])*(?:\.(?!\.)(?:[0-9](?:_?[0-9])*)?(?:[eE][+-]?[0-9]+)?[fFdD]?|[eE][+-]?[0-9]+[fFdD]?|[fFdD])(?![A-Za-z0-9_])" attribute="Float" context="#stay"/>
+        <RegExpr String="[0-9](?:_?[0-9])*(?:[uU][lL]{0,2}|[lL]{1,2})?(?![A-Za-z0-9_])" attribute="Decimal" context="#stay"/>
+        <RegExpr String="[0-9][A-Za-z0-9_.]*" attribute="Error" context="#stay"/>
+
+        <!-- plain identifiers -->
+        <RegExpr String="_*[a-z][A-Za-z0-9_]*(?=::)" attribute="Module" context="#stay"/>
+        <RegExpr String="_*[a-z][A-Za-z0-9_]*(?=\s*\()" attribute="Function" context="#stay"/>
+        <RegExpr String="_*[A-Z][A-Z0-9_]*[a-z][A-Za-z0-9_]*" attribute="Data Type" context="#stay"/>
+        <RegExpr String="_*[A-Z][A-Z0-9_]*" attribute="Constant" context="#stay"/>
+        <DetectIdentifier/>
+
+        <AnyChar String=".:;,=+-*/%&amp;|^~!?&lt;&gt;()[]@#$" attribute="Symbol" context="#stay"/>
+      </context>
+
+      <!-- module/import paths: every segment is a module name -->
+      <context name="ModulePath" attribute="Normal Text" lineEndContext="#stay" fallthroughContext="#pop">
+        <DetectSpaces/>
+        <IncludeRules context="CommentStart"/>
+        <Detect2Chars char=":" char1=":" attribute="Symbol" context="#stay"/>
+        <DetectChar char="," attribute="Symbol" context="#stay"/>
+        <keyword String="attributes" attribute="Attribute" context="#stay"/>
+        <RegExpr String="@_*[A-Z][A-Za-z0-9_]*" attribute="Attribute" context="#stay"/>
+        <RegExpr String="_*[a-z][A-Za-z0-9_]*" attribute="Module" context="#stay"/>
+      </context>
+
+      <!-- comments -->
+      <context name="CommentStart" attribute="Normal Text" lineEndContext="#stay">
+        <Detect2Chars char="/" char1="/" attribute="Comment" context="Comment"/>
+        <Detect2Chars char="/" char1="*" attribute="Comment" context="MultiLineComment" beginRegion="Comment"/>
+      </context>
+      <context name="Comment" attribute="Comment" lineEndContext="#pop">
+        <DetectSpaces/>
+        <IncludeRules context="##Comments"/>
         <DetectIdentifier/>
       </context>
-      <context attribute="Comment" lineEndContext="#pop" name="Comment"/>
-      <context attribute="Comment" lineEndContext="#stay" name="MultiLineComment">
+      <!-- c3c allows nested block comments -->
+      <context name="MultiLineComment" attribute="Comment" lineEndContext="#stay">
         <DetectSpaces/>
-        <Detect2Chars attribute="Comment" context="#pop" char="*" char1="/" endRegion="Comment"/>
+        <Detect2Chars char="*" char1="/" attribute="Comment" context="#pop" endRegion="Comment"/>
+        <Detect2Chars char="/" char1="*" attribute="Comment" context="MultiLineComment" beginRegion="Comment"/>
+        <IncludeRules context="##Comments"/>
+        <DetectIdentifier/>
       </context>
-      <context attribute="String" lineEndContext="#pop" name="DoubleQuoteString">
-        <DetectChar context="EscapeChar" char="\" lookAhead="1"/>
-        <DetectChar attribute="String" context="#pop" char="&quot;"/>
-      </context>
-      <context attribute="String" lineEndContext="#pop" name="RawString">
-        <DetectChar attribute="String" context="#pop" char="`"/>
-      </context>
-      <context attribute="String Char" lineEndContext="#pop" name="EscapeChar">
-        <RegExpr attribute="String Char" context="#pop" String="\\([nrt'&quot;\\]|x[0-9a-fA-F]{2}|u\{[0-9a-fA-F]+\})"/>
-        <RegExpr attribute="Error" context="#pop" String="\\(x[0-9a-fA-F]?|u\{[0-9a-fA-F]{0,8}\}?)?"/>
-      </context>
-      <context name="IntSuffixes" attribute="Standard Suffix" fallthroughContext="#pop" lineEndContext="#pop">
-        <RegExpr String="(?i)u?l?l?(?-i)" attribute="Standard Suffix" context="#pop"/>
-      </context>
-      <context name="FloatSuffixes" attribute="Standard Suffix" fallthroughContext="#pop" lineEndContext="#pop">
-        <StringDetect String="f" attribute="Standard Suffix" context="#pop" insensitive="1"/>
-        <StringDetect String="d" attribute="Standard Suffix" context="#pop" insensitive="1"/>
-        <AnyChar String="fFdD" attribute="Standard Suffix" context="#pop"/>
-      </context>
-      <context name="HexPrefix" attribute="Normal Text" fallthroughContext="#pop" lineEndContext="#pop">
-        <RegExpr String="[0-9a-fA-F_]+" attribute="Hex" context="pop"/>
-      </context>
-      <context name="OctalPrefix" attribute="Normal Text" fallthroughContext="#pop" lineEndContext="#pop">
-        <RegExpr String="[0-7_]+" attribute="Octal" context="pop"/>
-      </context>
-      <context name="TypeOrConst" attribute="Data Type" fallthroughContext="#pop" lineEndContext="#pop">
-        <RegExpr String="[A-Za-z0-9_]+" attribute="Data Type" context="#pop"/>
-      </context>
-      <context name="CustomPreprocessor" attribute="Preprocessor" lineEndContext="#pop">
-        <RegExpr String="[a-zA-Z0-9_]+" attribute="Preprocessor" context="#pop" />
-      </context>
-      <context name="CustomAttribute" attribute="Attribute" lineEndContext="#pop">
-        <RegExpr String="[a-zA-Z0-9_]+" attribute="Attribute" context="#pop" />
-      </context>
-      <!-- func highlighting -->
-      <context attribute="Normal Text" lineEndContext="#pop" name="Function">
+
+      <!-- <* doc text, then contract lines *> -->
+      <context name="Doc" attribute="Documentation" lineEndContext="#stay">
         <DetectSpaces/>
-        <RegExpr String="[A-Za-z0-9_]+(?=\.)" attribute="Function" context="#stay" />
-        <!-- built in types -->
-        <keyword attribute="Data Type" context="FindFunctionName" String="types"/>
-        <!-- BEGIN namespaces and such -->
-        <RegExpr String="[A-Z][A-Za-z0-9_]+" attribute="Data Type" context="#stay"/>
-        <RegExpr String="[A-Za-z0-9_]+(?=::)" attribute="Standard Suffix" context="#stay"/>
-        <RegExpr String="(?&lt;=::)[A-Za-z0-9_]+" attribute="Data Type" context="#stay"/>
-        <!-- END namespaces and such -->
-        <IncludeRules context="FindFunctionName" includeAttrib="true"/>
+        <Detect2Chars char="*" char1="&gt;" attribute="Documentation" context="#pop" endRegion="Doc"/>
+        <RegExpr String="@param\b" firstNonSpace="true" attribute="Contract" context="ContractParam"/>
+        <RegExpr String="@_*[a-z][A-Za-z0-9_]*\??" firstNonSpace="true" attribute="Contract" context="ContractCode"/>
+        <IncludeRules context="##Comments"/>
+        <DetectIdentifier/>
       </context>
-      <context attribute="Function" lineEndContext="#pop#pop" name="FindFunctionName">
+      <context name="ContractParam" attribute="Normal Text" lineEndContext="#pop" fallthroughContext="#pop!ContractCode">
         <DetectSpaces/>
-        <RegExpr String="[::|\*|\?|!|\[\]|\.|@]" attribute="Symbol" context="#stay"/>
-        <AnyChar String="(&lt;" attribute="Normal Text" context="#pop#pop" lookAhead="true"/>
+        <RegExpr String="\[&amp;?(?:in|out|inout)\]" attribute="Contract" context="#stay"/>
+        <RegExpr String="[$#]?[A-Za-z_][A-Za-z0-9_]*|\.\.\." attribute="Parameter" context="#pop!ContractCode"/>
       </context>
-      <!-- method highlighting -->
-      <context name="Dot" attribute="Normal Text">
-        <StringDetect String="..." attribute="Keyword" context="#pop"/>
-        <DetectChar char="." attribute="Symbol" context="#pop!Member"/>
+      <context name="ContractCode" attribute="Normal Text" lineEndContext="#pop">
+        <Detect2Chars char="*" char1="&gt;" lookAhead="true" context="#pop"/>
+        <IncludeRules context="Normal"/>
       </context>
-      <context name="Member" attribute="Normal Text" fallthroughContext="#pop">
-        <DetectSpaces attribute="Normal Text"/>
-        <RegExpr String="(?&lt;=\.)[A-Za-z0-9_]+(?=\()" attribute="Function" context="#pop"/>
-        <RegExpr String="(?&lt;=\.)[A-Za-z0-9_]+" attribute="Data Type" context="#pop"/>
+
+      <!-- strings -->
+      <context name="String" attribute="String" lineEndContext="#pop">
+        <DetectChar char="\" lookAhead="true" context="Escape"/>
+        <DetectChar char="&quot;" attribute="String" context="#pop"/>
       </context>
-      <!-- module highlighting -->
-      <context name="ModuleName" attribute="Normal Text">
-        <RegExpr String="[A-Za-z0-9_]+(?=::)" attribute="Standard Suffix" context="#pop"/>
+      <context name="Char" attribute="Char" lineEndContext="#pop">
+        <DetectChar char="\" lookAhead="true" context="Escape"/>
+        <DetectChar char="'" attribute="Char" context="#pop"/>
       </context>
-      <context name="ModuleMember" attribute="Normal Text">
-        <RegExpr String="(?&lt;=::)[A-Za-z0-9_]+(?=\()" attribute="Function" context="#pop"/>
-        <RegExpr String="(?&lt;=::)[A-Za-z0-9_]+" attribute="Data Type" context="#pop"/>
+      <context name="Escape" attribute="String Char" lineEndContext="#pop">
+        <RegExpr String="\\(?:[abefnrtv'&quot;\\0]|x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})" attribute="String Char" context="#pop"/>
+        <RegExpr String="\\.?" attribute="Error" context="#pop"/>
       </context>
-      <!-- contract highlighting -->
-      <context name="Contract" attribute="Comment">
+      <context name="RawString" attribute="String" lineEndContext="#stay">
+        <Detect2Chars char="`" char1="`" attribute="String Char" context="#stay"/>
+        <DetectChar char="`" attribute="String" context="#pop"/>
+      </context>
+      <context name="HexBytes" attribute="Bytes" lineEndContext="#stay" dynamic="true">
         <DetectSpaces/>
-        <!-- change the context to "#pop" for full highlighting. -->
-        <RegExpr String="@require|@ensure|@param|@return" attribute="Attribute" context="#stay"/>
-        <Detect2Chars char="*" char1="&gt;" attribute="Comment" context="#pop" endRegion="Contract"/>
+        <DetectChar char="1" dynamic="true" attribute="Bytes" context="#pop"/>
+        <RegExpr String="[0-9A-Fa-f]+" attribute="Bytes" context="#stay"/>
+        <RegExpr String="." attribute="Error" context="#stay"/>
+      </context>
+      <context name="Base64Bytes" attribute="Bytes" lineEndContext="#stay" dynamic="true">
+        <DetectSpaces/>
+        <DetectChar char="1" dynamic="true" attribute="Bytes" context="#pop"/>
+        <RegExpr String="[A-Za-z0-9+/]+={0,2}" attribute="Bytes" context="#stay"/>
+        <RegExpr String="." attribute="Error" context="#stay"/>
       </context>
     </contexts>
+
     <itemDatas>
-      <itemData name="Normal Text" defStyleNum="dsNormal" spellChecking="false"/>
-      <itemData name="Control Flow" defStyleNum="dsControlFlow" spellChecking="false"/>
-      <itemData name="Keyword" defStyleNum="dsKeyword" spellChecking="false"/>
-      <itemData name="Data Type" defStyleNum="dsDataType" spellChecking="false"/>
-      <itemData name="Attribute" defStyleNum="dsAttribute" spellChecking="false"/>
-      <itemData name="Standard Attribute" defStyleNum="dsAttribute" spellChecking="false"/>
-      <itemData name="Decimal" defStyleNum="dsDecVal" spellChecking="false"/>
-      <itemData name="Octal" defStyleNum="dsBaseN" spellChecking="false"/>
-      <itemData name="Hex" defStyleNum="dsBaseN" spellChecking="false"/>
-      <itemData name="Binary" defStyleNum="dsBaseN" spellChecking="false"/>
-      <itemData name="Float" defStyleNum="dsFloat" spellChecking="false"/>
-      <itemData name="Function" defStyleNum="dsFunction" spellChecking="false"/>
-      <itemData name="Standard Suffix" defStyleNum="dsBuiltIn" spellChecking="false"/>
-      <itemData name="Char" defStyleNum="dsChar" spellChecking="false"/>
-      <itemData name="Char Literal Prefix" defStyleNum="dsChar" spellChecking="false"/>
-      <itemData name="String" defStyleNum="dsString"/>
-      <itemData name="String Char" defStyleNum="dsSpecialChar" spellChecking="false"/>
-      <itemData name="String Literal Prefix" defStyleNum="dsString" spellChecking="true"/>
-      <itemData name="Comment" defStyleNum="dsComment"/>
-      <itemData name="Symbol" defStyleNum="dsOperator" spellChecking="false"/>
-      <itemData name="Preprocessor" defStyleNum="dsPreprocessor" spellChecking="false"/>
-      <itemData name="Prep. Lib" defStyleNum="dsImport" spellChecking="false"/>
-      <itemData name="Region Marker" defStyleNum="dsRegionMarker" spellChecking="false"/>
-      <itemData name="Error" defStyleNum="dsError" spellChecking="false"/>
+      <itemData name="Normal Text"           defStyleNum="dsNormal"        spellChecking="false"/>
+      <itemData name="Keyword"               defStyleNum="dsKeyword"       spellChecking="false"/>
+      <itemData name="Control Flow"          defStyleNum="dsControlFlow"   spellChecking="false"/>
+      <itemData name="Data Type"             defStyleNum="dsDataType"      spellChecking="false"/>
+      <itemData name="Constant"              defStyleNum="dsConstant"      spellChecking="false"/>
+      <itemData name="Function"              defStyleNum="dsFunction"      spellChecking="false"/>
+      <itemData name="Module"                defStyleNum="dsImport"        spellChecking="false"/>
+      <itemData name="Attribute"             defStyleNum="dsAttribute"     spellChecking="false"/>
+      <itemData name="Compile-time"          defStyleNum="dsPreprocessor"  spellChecking="false"/>
+      <itemData name="Compile-time Variable" defStyleNum="dsVariable"      spellChecking="false"/>
+      <itemData name="Builtin"               defStyleNum="dsBuiltIn"       spellChecking="false"/>
+      <itemData name="Decimal"               defStyleNum="dsDecVal"        spellChecking="false"/>
+      <itemData name="Hex"                   defStyleNum="dsBaseN"         spellChecking="false"/>
+      <itemData name="Octal"                 defStyleNum="dsBaseN"         spellChecking="false"/>
+      <itemData name="Binary"                defStyleNum="dsBaseN"         spellChecking="false"/>
+      <itemData name="Float"                 defStyleNum="dsFloat"         spellChecking="false"/>
+      <itemData name="Char"                  defStyleNum="dsChar"          spellChecking="false"/>
+      <itemData name="String"                defStyleNum="dsString"/>
+      <itemData name="String Char"           defStyleNum="dsSpecialChar"   spellChecking="false"/>
+      <itemData name="Bytes"                 defStyleNum="dsSpecialString" spellChecking="false"/>
+      <itemData name="Comment"               defStyleNum="dsComment"/>
+      <itemData name="Documentation"         defStyleNum="dsDocumentation"/>
+      <itemData name="Contract"              defStyleNum="dsAnnotation"    spellChecking="false"/>
+      <itemData name="Parameter"             defStyleNum="dsCommentVar"    spellChecking="false"/>
+      <itemData name="Symbol"                defStyleNum="dsOperator"      spellChecking="false"/>
+      <itemData name="Error"                 defStyleNum="dsError"         spellChecking="false"/>
     </itemDatas>
   </highlighting>
   <general>
     <comments>
       <comment name="singleLine" start="//" position="afterwhitespace"/>
       <comment name="multiLine" start="/*" end="*/" region="Comment"/>
-      <comment name="multiLine" start="&lt;*" end="*&gt;" region="Comment"/>
     </comments>
-    <keywords casesensitive="1" additionalDeliminator="#'&quot;"/>
   </general>
 </language>
-<!-- kate: replace-tabs on; tab-width 2; indent-width 2; -->
