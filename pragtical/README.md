@@ -10,6 +10,9 @@ Download [_find](https://github.com/0riginaln0/_find) plugin.
 
 It covers a big margin of go-to & search definition actions.
 
+## Jump between symbols in the current document
+
+Download [elevator](https://github.com/0riginaln0/elevator) plugin.
 
 ## LSP
 
